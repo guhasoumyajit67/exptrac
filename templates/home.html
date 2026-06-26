@@ -3,15 +3,25 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <p>Hi {{ user.username }}</p>
-        <form action="{% url "logout" %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Log Out</button>
-        </form>
-    {% else %}
-        <p>You are not logged in</p>
-        <a href="{% url "login" %}">Log In</a>
-        <a href="{% url "signup" %}">Sign Up</a>
-    {% endif %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-10 col-lg-8 text-center">
+        <div class="p-5 bg-light rounded-4 shadow-sm border-0">
+            {% if user.is_authenticated %}
+                <h1 class="display-5 fw-bold text-dark mb-3">Welcome Back, {{ user.username }}!</h1>
+                <p class="lead text-secondary mb-4">Track your daily budgets, manage expense allocations, and monitor your personal cash flows effortlessly.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold">View Expenses</a>
+                    <a href="#" class="btn btn-outline-secondary btn-lg px-4 rounded-3">Add New Transaction</a>
+                </div>
+            {% else %}
+                <h1 class="display-4 fw-bold text-dark mb-3">Master Your Financial Balance</h1>
+                <p class="lead text-secondary mb-4">Welcome to ExpTrac. Clear insight into your personal finances, built simply and securely.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold">Get Started</a>
+                    <a href="{% url 'signup' %}" class="btn btn-link link-dark text-decoration-none align-self-center">Create an account &rarr;</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock content %}
