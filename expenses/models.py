@@ -30,7 +30,7 @@ class Item(models.Model):
 class Payer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    color_code = models.CharField(max_length=7, default="#FFFFFF", blank=True, null=True)
+    color = models.CharField(max_length=7, default="#FFFFFF", blank=True, null=True)
 
     class Meta:
         unique_together = ("user", "name")

@@ -6,7 +6,7 @@ from .forms import (
 from django.contrib import admin
 from .models import CustomUser
 
-
+@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
@@ -17,5 +17,3 @@ class CustomUserAdmin(UserAdmin):
         "email",
         "is_staff"
     ]
-
-admin.site.register(CustomUser,CustomUserAdmin)
