@@ -1,29 +1,15 @@
 # Virtual Environment
 .venv/
-venv/
-ENV/
 
-# Databases
+# Databases (Local Development Data)
 *.sqlite3
 
-# Python bytecode / compiled files
-__pycache__/
-*.py[cod]
-*$py.class
+# Python Compiled Cache (Speeds up execution locally)
+**/__pycache__/
+*.pyc
 
-# Local IDE & Editor Settings
+# Local Editor State (VS Code window settings)
 .vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.swp
 
-# Operating System files
+# Operating System Files
 .DS_Store
-Thumbs.db
-
-# Logs and runtimes
-*.log
-local_settings.py
