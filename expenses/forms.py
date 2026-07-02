@@ -18,13 +18,13 @@ class PayerForm(forms.ModelForm):
         model = Payer
         fields = ['name', 'color']
         widgets = {
-            'color': forms.Input(attrs={'type': 'color'}),
+            'color': forms.TextInput(attrs={'type': 'color'}),
         }
 
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ["date", "item", "payer", "amount", "comment"]
+        fields = ["date", "payer", "item", "amount", "comment"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
             "comment": forms.Textarea(attrs={"rows": 3}),

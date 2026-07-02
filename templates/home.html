@@ -11,8 +11,8 @@
                 <p class="lead text-secondary mb-4">Track your daily budgets, manage expense allocations, and monitor your personal cash flows effortlessly.</p>
                 
                 <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
-                    <a href="#" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">View Expenses</a>
-                    <a href="#" class="btn btn-outline-secondary btn-lg px-4 rounded-3 w-100 w-sm-auto">Add New Transaction</a>
+                    <a href="{% url "transaction_list" %}" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">View Expenses</a>
+                    <a href="{% url "create_transaction" %}" class="btn btn-outline-secondary btn-lg px-4 rounded-3 w-100 w-sm-auto">Add New Transaction</a>
                 </div>
             {% else %}
                 <h1 class="display-4 fw-bold text-dark mb-3">Master Your Financial Balance</h1>

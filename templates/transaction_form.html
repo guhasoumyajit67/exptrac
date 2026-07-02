@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Log Transaction{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center px-3 mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
+            <h1 class="h3 fw-bold text-dark mb-4">Log a New Transaction</h1>
+            
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger rounded-3 small">
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="mb-3 text-start">
+                        <label for="{{ field.id_for_label }}" class="form-label small fw-bold text-secondary">
+                            {{ field.label }}
+                        </label>
+                        
+                        {{ field }}
+
+                        {% if field.name == 'item' %}
+                            <div class="form-text text-end mt-1">
+                                <span class="text-muted small">Can't find your item?</span>
+                                <a href="{% url 'create_item' %}" class="text-primary fw-semibold text-decoration-none small ms-1">
+                                    + Add New Custom Item
+                                </a>
+                            </div>
+                        {% elif field.name == 'payer' %}
+                            <div class="form-text text-end mt-1">
+                                <span class="text-muted small">New household member?</span>
+                                <a href="{% url 'create_payer' %}" class="text-primary fw-semibold text-decoration-none small ms-1">
+                                    + Add New Payer
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in field.errors %}
+                                    <span class="d-block">● {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100">
+                        Save Transaction
+                    </button>
+                    <a href="{% url 'transaction_list' %}" class="btn btn-link btn-sm text-secondary w-100 mt-2 text-decoration-none">
+                        View History Ledger
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Automatically inject Bootstrap styling directly into raw Django HTML inputs
+        document.querySelectorAll('input, select, textarea').forEach(function(el) {
+            el.classList.add('form-control', 'rounded-3');
+        });
+
+        // 2. Auto-Sync Category selection when an Item changes
+        const itemSelect = document.querySelector('select[name="item"]');
+        const categorySelect = document.querySelector('select[name="category"]');
+
+        // Build a dynamic lookup object mapping Item ID to its Category ID
+        const itemToCategoryMap = {
+            {% for item in form.fields.item.queryset %}
+                "{{ item.id }}": "{{ item.category.id }}",
+            {% endfor %}
+        };
+
+        if (itemSelect && categorySelect) {
+            itemSelect.addEventListener("change", function() {
+                const selectedItemId = this.value;
+                const targetCategoryId = itemToCategoryMap[selectedItemId];
+
+                if (targetCategoryId) {
+                    categorySelect.value = targetCategoryId;
+                } else {
+                    categorySelect.value = ""; // Clear fallback if custom item is unassigned
+                }
+            });
+        }
+    });
+</script>
+{% endblock content %}

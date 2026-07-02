@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Add Custom Item{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center px-3 mt-5">
+    <div class="col-md-8 col-lg-6">
+        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
+            
+            <h1 class="h3 fw-bold text-dark mb-2">Add New Custom Item</h1>
+            <p class="text-secondary small mb-4">Create a specific tracking item and map it to a global expenditure category.</p>
+            
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger rounded-3 small">
+                        {% for error in form.non_field_errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="mb-3 text-start">
+                        <label for="{{ field.id_for_label }}" class="form-label small fw-bold text-secondary">
+                            {{ field.label }}
+                        </label>
+                        
+                        {{ field }}
+                        
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">
+                                {% for error in field.errors %}
+                                    <span class="d-block">● {{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100">
+                        Save Custom Item
+                    </button>
+                    <a href="{% url 'create_transaction' %}" class="btn btn-link btn-sm text-secondary w-100 mt-2 text-decoration-none">
+                        Back to Log Transaction
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('input, select, textarea').forEach(function(el) {
+            el.classList.add('form-control', 'rounded-3');
+        });
+    });
+</script>
+{% endblock content %}

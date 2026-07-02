@@ -13,3 +13,6 @@
 
 # Operating System Files
 .DS_Store
+
+global_items.csv
+import_items.py

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction Ledger{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center px-3 mt-5">
+    <div class="col-md-11 col-lg-10">
+        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
+            
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+                <div class="text-sm-start">
+                    <h1 class="h2 fw-bold text-dark mb-1">Transaction Ledger</h1>
+                    <p class="text-secondary mb-0 small">Review and manage your personal expense allocations.</p>
+                </div>
+                <a href="{% url 'create_transaction' %}" class="btn btn-primary rounded-3 fw-bold align-self-start align-self-sm-center">
+                    + Add New Expense
+                </a>
+            </div>
+
+            {% if transactions %}
+                <div class="table-responsive rounded-3 border bg-white shadow-sm">
+                    <table class="table table-hover align-middle mb-0 text-start">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3 text-secondary small fw-bold">Date</th>
+                                <th class="text-secondary small fw-bold">Item</th>
+                                <th class="text-secondary small fw-bold">Payer</th>
+                                <th class="text-end text-secondary small fw-bold">Amount</th>
+                                <th class="pe-3 text-secondary small fw-bold">Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in transactions %}
+                                <tr>
+                                    <td class="ps-3 text-nowrap text-secondary fw-semibold small">
+                                        {{ transaction.date|date:"Y-m-d" }}
+                                    </td>
+                                    
+                                    <td>
+                                        <span class="badge bg-opacity-10 rounded-pill px-2.5 py-1.5 text-dark border-start border-3" 
+                                              style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}22; border-color: {{ transaction.item.category.color|default:'#6c757d' }} !important;">
+                                            {{ transaction.item.name }}
+                                        </span>
+                                    </td>
+                                    
+                                    <td>
+                                        <span class="fw-bold px-1" style="color: {{ transaction.payer.color|default:'#212529' }}">
+                                            ● {{ transaction.payer.name }}
+                                        </span>
+                                    </td>
+                                    
+                                    <td class="text-end fw-bold text-dark">
+                                        ₹{{ transaction.amount }}
+                                    </td>
+                                    
+                                    <td class="pe-3 text-secondary small text-truncate" style="max-width: 220px;">
+                                        {{ transaction.comment|default:"-" }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5 border border-dashed rounded-4 bg-white">
+                    <p class="text-secondary mb-3">No transactions recorded under this profile yet.</p>
+                    <a href="{% url 'create_transaction' %}" class="btn btn-outline-primary btn-sm rounded-3 fw-bold">
+                        Log First Expense
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
