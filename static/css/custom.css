@@ -1,0 +1,89 @@
+/* static/css/custom.css */
+
+/* Global Typography & Font Smoothing rules (Kept from base.html) */
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.tracking-tight { 
+    letter-spacing: -0.025em; 
+}
+
+@media (min-width: 992px) {
+    .structure-user-badge:focus, 
+    .structure-user-badge:active {
+        background-color: #343a40 !important;
+    }
+}
+
+/* ==========================================================================
+   TRANSACTION LEDGER SPECIFIC STYLES (Added)
+   ========================================================================== */
+
+/* Interactive table row highlighting mechanics */
+.table tbody tr {
+    border-left: 3px solid transparent;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(248, 249, 250, 0.95);
+    border-left: 3px solid #0d6efd; /* Interactive feedback accent marker */
+}
+
+.transition-all {
+    transition: all 0.15s ease-in-out;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Disables text selection highlights on high speed mobile double taps */
+.user-select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Global design utility extensions */
+.fw-extrabold { 
+    font-weight: 800; 
+}
+
+.fs-7 { 
+    font-size: 0.75rem; 
+}
+
+
+/* ==========================================
+   Payer Profile Custom Color Palette Grid
+   ========================================== */
+.dot-palette-item {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid transparent;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.dot-palette-item:hover {
+    transform: scale(1.15);
+}
+
+/* Uniform, crisp high-contrast selector ring indicator mapping standard UI styling */
+.dot-palette-item.active {
+    border-color: #fff !important;
+    outline: 2.5px solid #0d6efd;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.custom-picker-trigger i {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}

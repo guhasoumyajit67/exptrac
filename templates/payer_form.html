@@ -5,32 +5,56 @@
 {% block content %}
 <div class="row justify-content-center px-3 mt-5">
     <div class="col-md-8 col-lg-6">
-        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
+        <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
             
-            <h1 class="h3 fw-bold text-dark mb-2">Create Payer Profile</h1>
-            <p class="text-secondary small mb-4">Assign a custom name and a color tracker for this account profile.</p>
+            <div class="text-center mb-4">
+                <h1 class="h3 fw-extrabold text-dark tracking-tight mb-1">Create Payer Profile</h1>
+                <p class="text-muted small">Assign a custom name and a tracking color for this profile.</p>
+            </div>
             
-            <form method="post" autocomplete="off">
+            <form method="post" autocomplete="off" class="needs-validation" novalidate>
                 {% csrf_token %}
                 
                 {% if form.non_field_errors %}
-                    <div class="alert alert-danger rounded-3 small">
+                    <div class="alert alert-danger rounded-3 small border-0 shadow-sm mb-3">
                         {% for error in form.non_field_errors %}
-                            <p class="mb-0">{{ error }}</p>
+                            <p class="mb-0">⚠️ {{ error }}</p>
                         {% endfor %}
                     </div>
                 {% endif %}
 
                 {% for field in form %}
                     <div class="mb-3 text-start">
-                        <label for="{{ field.id_for_label }}" class="form-label small fw-bold text-secondary">
+                        <label for="{{ field.id_for_label }}" class="form-label small fw-bold text-secondary text-uppercase mb-1">
                             {{ field.label }}
                         </label>
-                        
-                        {{ field }}
+
+                        {% if field.name == 'color' %}
+                            <div class="d-none">{{ field }}</div>
+                            
+                            <div class="d-flex flex-wrap gap-3 p-3 bg-light rounded-3 border mt-1 align-items-center" id="custom-color-palette">
+                                <span class="dot-palette-item active" data-color="#0d6efd" style="background-color: #0d6efd;"></span>
+                                <span class="dot-palette-item" data-color="#198754" style="background-color: #198754;"></span>
+                                <span class="dot-palette-item" data-color="#dc3545" style="background-color: #dc3545;"></span>
+                                <span class="dot-palette-item" data-color="#ffc107" style="background-color: #ffc107;"></span>
+                                <span class="dot-palette-item" data-color="#0dcaf0" style="background-color: #0dcaf0;"></span>
+                                <span class="dot-palette-item" data-color="#6f42c1" style="background-color: #6f42c1;"></span>
+                                <span class="dot-palette-item" data-color="#fd7e14" style="background-color: #fd7e14;"></span>
+                                <span class="dot-palette-item" data-color="#212529" style="background-color: #212529;"></span>
+                                <div class="position-relative d-inline-block">
+                                    <span class="dot-palette-item custom-picker-trigger d-flex align-items-center justify-content-center text-secondary border border-secondary border-dashed" style="background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff); opacity: 0.85;">
+                                        <i class="bi bi-plus-lg text-white fw-bold fs-5"></i>
+                                    </span>
+                                    <input type="color" id="hidden-wheel-input" class="position-absolute top-0 start-0 opacity-0 w-100 h-100 cursor-pointer" value="#0d6efd">
+                                </div>
+                            </div>
+
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
                         
                         {% if field.errors %}
-                            <div class="text-danger small mt-1">
+                            <div class="text-danger small mt-1 fw-medium">
                                 {% for error in field.errors %}
                                     <span class="d-block">● {{ error }}</span>
                                 {% endfor %}
@@ -39,11 +63,11 @@
                     </div>
                 {% endfor %}
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100">
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold fs-6 py-2.5 shadow-sm">
                         Save Payer Profile
                     </button>
-                    <a href="{% url 'create_transaction' %}" class="btn btn-link btn-sm text-secondary w-100 mt-2 text-decoration-none">
+                    <a href="{% url 'create_transaction' %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
                         Back to Log Transaction
                     </a>
                 </div>
@@ -55,14 +79,37 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll('input, select, textarea').forEach(function(el) {
-            // Apply unique styling parameters depending on input data types
-            if (el.getAttribute('type') === 'color') {
-                el.classList.add('form-control-color', 'w-100', 'p-1');
-            } else {
-                el.classList.add('form-control');
-            }
-            el.classList.add('rounded-3');
+        // Form field injection styling engine for other standard layout elements
+        document.querySelectorAll('input:not([type="hidden"]), select, textarea').forEach(function(el) {
+            el.classList.add('form-control', 'rounded-3');
+        });
+
+        const colorInput = document.querySelector('input[name="color"]');
+        const dots = document.querySelectorAll('.dot-palette-item');
+
+        // Set default tracking color value if empty
+        if (colorInput && !colorInput.value) {
+            colorInput.value = "#0d6efd";
+        } else if (colorInput) {
+            // Match dots active status with initial editing hex values
+            dots.forEach(d => {
+                if(d.getAttribute('data-color') === colorInput.value) {
+                    dots.forEach(item => item.classList.remove('active'));
+                    d.classList.add('active');
+                }
+            });
+        }
+
+        // Handle dynamic selection swaps
+        dots.forEach(function(dot) {
+            dot.addEventListener('click', function() {
+                dots.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (colorInput) {
+                    colorInput.value = this.getAttribute('data-color');
+                }
+            });
         });
     });
 </script>

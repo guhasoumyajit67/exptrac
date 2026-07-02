@@ -1,43 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Expense Tracker{% endblock title %}</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url "home" %}">ExpTrac</a>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
+    <div class="container-fluid px-lg-4">
+        <a class="navbar-brand fw-bold tracking-tight" href="{% url 'home' %}">ExpTrac</a>
         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {% if user.is_authenticated %}
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href=" {% url "home" %}">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="{% url 'transaction_list' %}">Ledger</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ user.username }}
+                    <li class="nav-item dropdown ms-lg-2">
+                        <a class="nav-link dropdown-toggle btn btn-dark btn-sm border-0 text-start text-lg-center px-3 py-1.5 rounded-3 structure-user-badge" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> {{ user.username }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
                             <li>
-                                <form action="{% url 'logout' %}" method="post" class="px-3 py-1">
+                                <a class="dropdown-item py-2" href="{% url 'password_change' %}">
+                                    <i class="bi bi-key me-2 text-muted"></i>Change Password
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider opacity-10"></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post" class="px-2 py-1">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-link dropdown-item p-0 text-start">Logout</button>
+                                    <button type="submit" class="btn btn-link dropdown-item py-2 text-danger rounded-2 d-flex align-items-center gap-2">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </button>
                                 </form>
                             </li>
                         </ul>
@@ -46,20 +58,21 @@
             {% else %}
                 <ul class="navbar-nav ms-auto gap-2 py-2 py-lg-0">
                     <li class="nav-item">
-                        <a href="{% url 'login' %}" class="btn btn-outline-light w-100">Log In</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 w-100">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'signup' %}" class="btn btn-primary w-100">Sign Up</a>
+                        <a href="{% url 'signup' %}" class="btn btn-primary btn-sm px-3 rounded-2 w-100 fw-bold">Sign Up</a>
                     </li>
                 </ul>
             {% endif %}
         </div>
     </div>
 </nav>
-<div class="container mt-4">
+
+<div class="container-fluid">
     {% block content %}
     {% endblock content %}
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
 </body>
 </html>

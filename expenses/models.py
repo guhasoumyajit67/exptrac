@@ -40,15 +40,25 @@ class Payer(models.Model):
 
 
 class Transaction(models.Model):
+    UNIT_CHOICES = [
+        ('kg', 'Kg'),
+        ('ltr', 'Ltr'),
+        ('pcs', 'Pcs'),
+        ('pkt', 'Pkt'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date = models.DateField(db_index=True)
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    unit = models.CharField(max_length=5, choices=UNIT_CHOICES, blank=True, null=True)
     payer = models.ForeignKey(Payer, on_delete=models.PROTECT)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
     comment = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ['-date']
 
     def __str__(self):
-        return f"{self.date} - {self.item.name} (₹{self.amount}) paid by {self.payer.name}"
+        qty_label = f" ({self.quantity} {self.unit})" if self.quantity else ""
+        return f"{self.date} - {self.item.name}{qty_label} [₹{self.price}] paid by {self.payer.name}"

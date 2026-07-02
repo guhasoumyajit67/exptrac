@@ -1,101 +1,92 @@
 {% extends "base.html" %}
 
-{% block title %}Log Transaction{% endblock title %}
+{% block title %}{% if form.instance.pk %}Edit Expense{% else %}Log a New Transaction{% endif %}{% endblock title %}
 
 {% block content %}
 <div class="row justify-content-center px-3 mt-5">
     <div class="col-md-8 col-lg-6">
-        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
-            <h1 class="h3 fw-bold text-dark mb-4">Log a New Transaction</h1>
+        <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
             
-            <form method="post" autocomplete="off">
+            <div class="text-center mb-4">
+                <h1 class="h3 fw-extrabold text-dark tracking-tight mb-1">
+                    {% if form.instance.pk %}Update Expense{% else %}Log a New Transaction{% endif %}
+                </h1>
+                <p class="text-muted small">Fill out the fields below to keep your ledger balanced.</p>
+            </div>
+
+            {% if messages %}
+                <div class="messages mb-4">
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show rounded-3 py-2 px-3 small border-0 shadow-sm fw-medium d-flex align-items-center justify-content-between" role="alert">
+                            <span>✨ {{ message }}</span>
+                            <button type="button" class="btn-close small py-2.5" data-bs-dismiss="alert" aria-label="Close" style="font-size: 0.65rem;"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
-                
-                {% if form.non_field_errors %}
-                    <div class="alert alert-danger rounded-3 small">
-                        {% for error in form.non_field_errors %}
-                            <p class="mb-0">{{ error }}</p>
-                        {% endfor %}
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-between align-items-baseline mb-1" style="min-height: 19.5px;">
+                            <label class="form-label fw-bold text-secondary small text-uppercase mb-0">Date</label>
+                        </div>
+                        {{ form.date }}
                     </div>
-                {% endif %}
-
-                {% for field in form %}
-                    <div class="mb-3 text-start">
-                        <label for="{{ field.id_for_label }}" class="form-label small fw-bold text-secondary">
-                            {{ field.label }}
-                        </label>
-                        
-                        {{ field }}
-
-                        {% if field.name == 'item' %}
-                            <div class="form-text text-end mt-1">
-                                <span class="text-muted small">Can't find your item?</span>
-                                <a href="{% url 'create_item' %}" class="text-primary fw-semibold text-decoration-none small ms-1">
-                                    + Add New Custom Item
-                                </a>
-                            </div>
-                        {% elif field.name == 'payer' %}
-                            <div class="form-text text-end mt-1">
-                                <span class="text-muted small">New household member?</span>
-                                <a href="{% url 'create_payer' %}" class="text-primary fw-semibold text-decoration-none small ms-1">
-                                    + Add New Payer
-                                </a>
-                            </div>
-                        {% endif %}
-
-                        {% if field.errors %}
-                            <div class="text-danger small mt-1">
-                                {% for error in field.errors %}
-                                    <span class="d-block">● {{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-between align-items-baseline mb-1">
+                            <label class="form-label fw-bold text-secondary small text-uppercase mb-0">Paid By</label>
+                            <a href="{% url 'create_payer' %}" class="text-decoration-none small text-primary" style="font-size: 0.75rem;">+ New Payer</a>
+                        </div>
+                        {{ form.payer }}
                     </div>
-                {% endfor %}
+                </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100">
-                        Save Transaction
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="form-label fw-bold text-secondary small text-uppercase mb-0">Item</label>
+                        <a href="{% url 'create_item' %}" class="text-decoration-none small text-primary" style="font-size: 0.75rem;">+ Custom Item</a>
+                    </div>
+                    {{ form.item }}
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Price</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-light text-muted border-end-0">₹</span>
+                            {{ form.price }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Quantity</label>
+                        {{ form.quantity }}
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Unit</label>
+                        {{ form.unit }}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="form-label fw-bold text-secondary small text-uppercase mb-1">Comment / Notes</div>
+                    {{ form.comment }}
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold shadow-sm fs-6 py-2.5">
+                        {% if form.instance.pk %}Update Record{% else %}Save Transaction{% endif %}
                     </button>
-                    <a href="{% url 'transaction_list' %}" class="btn btn-link btn-sm text-secondary w-100 mt-2 text-decoration-none">
-                        View History Ledger
+                    <a href="{% url 'transaction_list' %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
+                        Back to History Ledger
                     </a>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // 1. Automatically inject Bootstrap styling directly into raw Django HTML inputs
-        document.querySelectorAll('input, select, textarea').forEach(function(el) {
-            el.classList.add('form-control', 'rounded-3');
-        });
-
-        // 2. Auto-Sync Category selection when an Item changes
-        const itemSelect = document.querySelector('select[name="item"]');
-        const categorySelect = document.querySelector('select[name="category"]');
-
-        // Build a dynamic lookup object mapping Item ID to its Category ID
-        const itemToCategoryMap = {
-            {% for item in form.fields.item.queryset %}
-                "{{ item.id }}": "{{ item.category.id }}",
-            {% endfor %}
-        };
-
-        if (itemSelect && categorySelect) {
-            itemSelect.addEventListener("change", function() {
-                const selectedItemId = this.value;
-                const targetCategoryId = itemToCategoryMap[selectedItemId];
-
-                if (targetCategoryId) {
-                    categorySelect.value = targetCategoryId;
-                } else {
-                    categorySelect.value = ""; // Clear fallback if custom item is unassigned
-                }
-            });
-        }
-    });
-</script>
 {% endblock content %}

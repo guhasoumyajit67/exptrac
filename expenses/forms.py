@@ -21,19 +21,28 @@ class PayerForm(forms.ModelForm):
             'color': forms.TextInput(attrs={'type': 'color'}),
         }
 
+# Inside your expenses/forms.py
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ["date", "payer", "item", "amount", "comment"]
+        fields = ["date", "item", "price", "quantity", "unit", "payer", "comment"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
-            "comment": forms.Textarea(attrs={"rows": 3}),
+            "comment": forms.Textarea(attrs={"rows": 2}),  # Kept short and neat
         }
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
 
+        # 1. APPLY NATIVE BOOTSTRAP CLASSES TO EVERY FIELD
+        for field_name, field in self.fields.items():
+            if isinstance(field.widget, (forms.Select, forms.RadioSelect)):
+                field.widget.attrs["class"] = "form-select form-select-sm"
+            else:
+                field.widget.attrs["class"] = "form-control form-control-sm"
+
+        # 2. Keep your user queries locked down safely
         if self.user:
             self.fields["item"].queryset = Item.objects.filter(
                 Q(user__isnull=True) | Q(user=self.user)

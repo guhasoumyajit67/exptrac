@@ -43,12 +43,14 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = [
         "date",
         "item",
+        'price',
+        'quantity',
+        'unit',
         "payer",
-        "amount",
-        "user"
+        'comment',
     ]
     list_filer = [
         "date",
-        "user",
+        "payer",
     ]
     date_hierarchy = "date"

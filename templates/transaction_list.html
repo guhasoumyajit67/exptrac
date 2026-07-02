@@ -4,73 +4,130 @@
 
 {% block content %}
 <div class="row justify-content-center px-3 mt-5">
-    <div class="col-md-11 col-lg-10">
-        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
+    <div class="col-md-11 col-lg-12">
+        <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
             
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
-                <div class="text-sm-start">
-                    <h1 class="h2 fw-bold text-dark mb-1">Transaction Ledger</h1>
-                    <p class="text-secondary mb-0 small">Review and manage your personal expense allocations.</p>
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-5">
+                <div>
+                    <h1 class="h2 fw-extrabold text-dark tracking-tight mb-1">Transaction Ledger</h1>
+                    <p class="text-muted mb-0 small">Review and manage your personal expense allocations smoothly.</p>
                 </div>
-                <a href="{% url 'create_transaction' %}" class="btn btn-primary rounded-3 fw-bold align-self-start align-self-sm-center">
+                <a href="{% url 'create_transaction' %}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm align-self-start align-self-sm-center">
                     + Add New Expense
                 </a>
             </div>
 
-            {% if transactions %}
-                <div class="table-responsive rounded-3 border bg-white shadow-sm">
-                    <table class="table table-hover align-middle mb-0 text-start">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="ps-3 text-secondary small fw-bold">Date</th>
-                                <th class="text-secondary small fw-bold">Item</th>
-                                <th class="text-secondary small fw-bold">Payer</th>
-                                <th class="text-end text-secondary small fw-bold">Amount</th>
-                                <th class="pe-3 text-secondary small fw-bold">Comment</th>
+            <div class="table-responsive rounded-3">
+                <table class="table table-hover align-middle mb-0 text-start">
+                    <thead class="bg-light border-bottom">
+                        <tr>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-3" style="width: 12%;">Date</th>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 15%;">Category</th>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 25%;">Item</th>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 text-end" style="width: 13%;">Price</th>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-4" style="width: 13%;">Quantity</th>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 12%;">Paid By</th>
+                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 10%;">Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-top-0">
+                        {% for transaction in transactions %}
+                            <tr class="transition-all cursor-pointer user-select-none" 
+                                ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
+                                <td class="ps-3 text-nowrap text-dark fw-semibold small">
+                                    {{ transaction.date|date:"j M Y" }}
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
+                                          style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
+                                        ● {{ transaction.item.category.name }}
+                                    </span>
+                                </td>
+                                <td class="text-dark fw-medium fs-6">
+                                    {{ transaction.item.name }}
+                                </td>
+                                <td class="text-end fw-extrabold text-dark fs-5">
+                                    ₹{{ transaction.price }}
+                                </td>
+                                <td class="text-secondary small font-monospace ps-4">
+                                    {% if transaction.quantity %}
+                                        {{ transaction.quantity }} <span class="text-muted fs-7">{{ transaction.unit }}</span>
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
+                                          style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
+                                        ● {{ transaction.payer.name }}
+                                    </span>
+                                </td>
+                                <td class="text-muted small text-truncate" style="max-width: 200px;" title="{{ transaction.comment }}">
+                                    {{ transaction.comment|default:"" }}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for transaction in transactions %}
-                                <tr>
-                                    <td class="ps-3 text-nowrap text-secondary fw-semibold small">
-                                        {{ transaction.date|date:"Y-m-d" }}
-                                    </td>
-                                    
-                                    <td>
-                                        <span class="badge bg-opacity-10 rounded-pill px-2.5 py-1.5 text-dark border-start border-3" 
-                                              style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}22; border-color: {{ transaction.item.category.color|default:'#6c757d' }} !important;">
-                                            {{ transaction.item.name }}
-                                        </span>
-                                    </td>
-                                    
-                                    <td>
-                                        <span class="fw-bold px-1" style="color: {{ transaction.payer.color|default:'#212529' }}">
-                                            ● {{ transaction.payer.name }}
-                                        </span>
-                                    </td>
-                                    
-                                    <td class="text-end fw-bold text-dark">
-                                        ₹{{ transaction.amount }}
-                                    </td>
-                                    
-                                    <td class="pe-3 text-secondary small text-truncate" style="max-width: 220px;">
-                                        {{ transaction.comment|default:"-" }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
-                <div class="text-center py-5 border border-dashed rounded-4 bg-white">
-                    <p class="text-secondary mb-3">No transactions recorded under this profile yet.</p>
-                    <a href="{% url 'create_transaction' %}" class="btn btn-outline-primary btn-sm rounded-3 fw-bold">
-                        Log First Expense
-                    </a>
-                </div>
-            {% endif %}
+                        {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    No records available. Click "+ Add New Expense" to get started.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="rowActionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 320px;">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <div class="modal-header border-0 d-block text-center pt-4 pb-2 bg-light-subtle">
+                <h5 class="fw-extrabold text-dark mb-1" id="modalTargetLabel" style="font-size: 1.15rem; tracking-tight;">Manage Transaction</h5>
+                <p class="text-muted small mb-0 px-2 fw-medium text-truncate" id="modalTargetSublabel" style="font-size: 0.85rem;"></p>
+            </div>
+            
+            <div class="modal-body p-0">
+                <div class="list-group list-group-flush">
+                    
+                    <a id="modalEditBtn" href="#" class="list-group-item list-group-item-action py-3 text-primary fw-bold text-center border-bottom d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-pencil-square fs-5"></i>
+                        <span>Edit Details</span>
+                    </a>
+                    
+                    <a id="modalDeleteBtn" href="#" class="list-group-item list-group-item-action py-3 text-danger fw-bold text-center border-bottom d-flex align-items-center justify-content-center gap-2" 
+                       onclick="return confirm('Are you sure you want to permanently delete this record?');">
+                        <i class="bi bi-trash3 fs-5"></i>
+                        <span>Delete Record</span>
+                    </a>
+                    
+                    <button type="button" class="list-group-item list-group-item-action py-3 text-secondary fw-semibold text-center text-uppercase tracking-wider small" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showRowActions(id, itemName, price) {
+        document.getElementById('modalTargetSublabel').textContent = itemName + " (₹" + price + ")";
+        
+        // Corrected naming context identifiers to map directly to your urls.py routing configuration
+        const editUrlPattern = "{% url 'update_transaction' 0 %}".replace('0', id);
+        const deleteUrlPattern = "{% url 'delete_transaction' 0 %}".replace('0', id);
+        
+        document.getElementById('modalEditBtn').href = editUrlPattern;
+        document.getElementById('modalDeleteBtn').href = deleteUrlPattern;
+        
+        const actionModal = new bootstrap.Modal(document.getElementById('rowActionModal'));
+        actionModal.show();
+    }
+</script>
 {% endblock content %}
