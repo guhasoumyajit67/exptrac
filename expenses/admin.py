@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db import models
 from django.forms import widgets
+from django.utils.html import format_html
 from .models import (
     Category,
     Item,
@@ -10,22 +11,16 @@ from .models import (
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display=[
-        "name",
-        "color",
-    ]
+    list_display = ('name', 'color')
+    ordering = ('name',)
+
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = [
-        "name",
-        "category",
-        "user",
-    ]
-    list_filter = [
-        "category",
-        "user",
-    ]
+    list_display = ('name', 'category')
+    list_filter = ('category',)
+    ordering = ('name',)
+
 
 @admin.register(Payer)
 class PayerAdmin(admin.ModelAdmin):
