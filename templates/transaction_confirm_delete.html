@@ -5,24 +5,46 @@
 {% block content %}
 <div class="row justify-content-center px-3 mt-5">
     <div class="col-md-6 col-lg-4 text-center">
-        <div class="p-5 bg-white rounded-4 shadow-sm border">
-            <div class="spinner-border text-danger mb-4" role="status" style="width: 3rem; height: 3rem;">
-                <span class="visually-hidden">Loading...</span>
+        <div class="p-5 bg-white rounded-4 shadow-sm border border-light-subtle">
+            
+            <div class="position-relative d-inline-block mb-4">
+                <div class="spinner-border text-danger" role="status" style="width: 3.5rem; height: 3.5rem; border-width: 0.25em;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
-            <h2 class="h4 fw-extrabold text-dark mb-2">Processing Deletion</h2>
-            <p class="text-muted small mb-0">Securing your ledger database records, please wait...</p>
+            
+            <h2 class="h4 fw-bold text-dark mb-2 tracking-tight">Processing Deletion</h2>
+            <p class="text-secondary small mb-4">Securing your ledger database records, please wait...</p>
+
+            <div class="progress bg-light mb-2" style="height: 4px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" 
+                     role="progressbar" 
+                     style="width: 100%"></div>
+            </div>
 
             <form id="auto-delete-form" method="POST">
                 {% csrf_token %}
+                
+                <noscript>
+                    <div class="alert alert-warning small border-0 py-2 mt-3 mb-0" role="alert">
+                        JavaScript is disabled. Please click below to proceed.
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-sm w-100 rounded-3 fw-medium mt-2">
+                        Click to Confirm Deletion
+                    </button>
+                </noscript>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-    // Automatically executes the database drop operation instantly without forcing a second button click
+    // Automatically executes the database drop operation instantly
     document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("auto-delete-form").submit();
+        const deleteForm = document.getElementById("auto-delete-form");
+        if (deleteForm) {
+            deleteForm.submit();
+        }
     });
 </script>
 {% endblock content %}

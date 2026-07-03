@@ -3,31 +3,14 @@ from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.db.models import Q
-from django.db.models import Sum
+from django.db.models import ProtectedError
 from .models import Transaction, Item, Payer
 from .forms import TransactionForm, ItemForm, PayerForm
 from django.contrib import messages
+from django.shortcuts import redirect
 
 class HomePageView(TemplateView):
     template_name = "home.html"
-
-
-class TransactionListView(LoginRequiredMixin, ListView):
-    model = Transaction
-    template_name = "transaction_list.html"
-    context_object_name = "transactions"
-
-    def get_queryset(self):
-        """
-        Optimized with select_related to prevent N+1 queries when loading items & categories.
-        """
-        return (
-            Transaction.objects.filter(user=self.request.user)
-            .select_related("item__category", "payer")
-            .order_by("-date", "-id")
-        )
-    
 
 
 class TransactionCreateView(LoginRequiredMixin, CreateView):
@@ -101,7 +84,23 @@ class TransactionDeleteView(LoginRequiredMixin, DeleteView):
     def get_queryset(self):
         """Security: Only allow a user to drop transaction record instances they completely own."""
         return Transaction.objects.filter(user=self.request.user)
+    
 
+class TransactionListView(LoginRequiredMixin, ListView):
+    model = Transaction
+    template_name = "transaction_list.html"
+    context_object_name = "transactions"
+
+    def get_queryset(self):
+        """
+        Optimized with select_related to prevent N+1 queries when loading items & categories.
+        """
+        return (
+            Transaction.objects.filter(user=self.request.user)
+            .select_related("item__category", "payer")
+            .order_by("-date", "-id")
+        )
+    
 
 class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
@@ -113,6 +112,39 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
         """Securely ties custom created unique items straight to this user footprint profile."""
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class ItemUpdateView(LoginRequiredMixin, UpdateView):
+    model = Item
+    form_class = ItemForm
+    template_name = "item_form.html"  # Same template you already made!
+    success_url = reverse_lazy("create_transaction")
+
+    def get_queryset(self):
+        return Item.objects.filter(user=self.request.user)
+    
+
+class ItemDeleteView(LoginRequiredMixin, DeleteView):
+    model = Item
+    success_url = reverse_lazy("create_transaction")
+    template_name = "item_confirm_delete.html"
+
+    def get_queryset(self):
+        """
+        Security Guardrail: Only fetch items belonging to the current user.
+        This automatically protects global/built-in items from being deleted.
+        """
+        return Item.objects.filter(user=self.request.user) # Adjust field name if using 'is_global=False'
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(
+                request, 
+                "Cannot delete this item because it is currently tracked inside active ledger logs!"
+            )
+            return redirect("create_transaction")
     
 
 class PayerCreateView(LoginRequiredMixin, CreateView):
@@ -125,3 +157,34 @@ class PayerCreateView(LoginRequiredMixin, CreateView):
         """Securely logs the dashboard payer account instance directly into the user relational map."""
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+
+class PayerUpdateView(LoginRequiredMixin, UpdateView):
+    model = Payer
+    form_class = PayerForm
+    template_name = "payer_form.html"  # Same template you already made!
+    success_url = reverse_lazy("create_transaction")
+
+    def get_queryset(self):
+        return Payer.objects.filter(user=self.request.user)
+    
+    
+class PayerDeleteView(LoginRequiredMixin, DeleteView):
+    model = Payer
+    success_url = reverse_lazy("create_transaction")  # Redirects back to your transaction logger page
+    template_name = "payer_confirm_delete.html"
+
+    def get_queryset(self):
+        """Security: Only allow users to access/delete their own profiles."""
+        return Payer.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        """Intercept ProtectedError if payer is linked to existing transactions."""
+        try:
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(
+                request, 
+                "Cannot delete this payer profile because it is currently linked to active transactions. Reassign those transactions first!"
+            )
+            return redirect("create_transaction")

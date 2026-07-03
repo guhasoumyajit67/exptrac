@@ -3,10 +3,14 @@ from .views import (
     HomePageView,
     TransactionCreateView,
     TransactionListView,
-    TransactionUpdateView,  # Added
-    TransactionDeleteView,  # Added
+    TransactionUpdateView,  
+    TransactionDeleteView,  
     ItemCreateView,
+    ItemUpdateView,    # Added for editing items
+    ItemDeleteView,    # Added for deleting items
     PayerCreateView,
+    PayerUpdateView,   # Added for editing payers
+    PayerDeleteView,   # Added for deleting payers
 )
 
 urlpatterns = [
@@ -14,10 +18,17 @@ urlpatterns = [
     path("transaction/", TransactionListView.as_view(), name="transaction_list"),
     path("transaction/create/", TransactionCreateView.as_view(), name="create_transaction"),
     
-    # Dedicated separate CRUD routing paths
+    # Dedicated separate Transaction CRUD routing paths
     path("transaction/edit/<int:pk>/", TransactionUpdateView.as_view(), name="update_transaction"),
     path("transaction/delete/<int:pk>/", TransactionDeleteView.as_view(), name="delete_transaction"),
     
-    path("item/create/", ItemCreateView.as_view(), name="create_item"),
+    # Payer CRUD Routing Parameters
     path("payer/create/", PayerCreateView.as_view(), name="create_payer"),
-] # Don't forget to close the bracket!
+    path("payer/<int:pk>/update/", PayerUpdateView.as_view(), name="update_payer"),
+    path("payer/<int:pk>/delete/", PayerDeleteView.as_view(), name="delete_payer"),
+    
+    # Custom Item CRUD Routing Parameters
+    path("item/create/", ItemCreateView.as_view(), name="create_item"),
+    path("item/<int:pk>/update/", ItemUpdateView.as_view(), name="update_item"),
+    path("item/<int:pk>/delete/", ItemDeleteView.as_view(), name="delete_item"),
+]

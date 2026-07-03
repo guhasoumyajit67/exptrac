@@ -27,52 +27,158 @@
 
             <form method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
-
-                <div class="row g-2 mb-3">
+                {% comment %} DATE and PAID BY section {% endcomment %}
+                <div class="row g-2 mb-3 align-items-center">
+    
+                    {% comment %} DATE section {% endcomment %}
                     <div class="col-md-6">
-                        <div class="d-flex justify-content-between align-items-baseline mb-1" style="min-height: 19.5px;">
+                        <div class="mb-1">
                             <label class="form-label fw-bold text-secondary small text-uppercase mb-0">Date</label>
                         </div>
                         {{ form.date }}
                     </div>
                     
-                    <div class="col-md-6">
-                        <div class="d-flex justify-content-between align-items-baseline mb-1">
+                    {% comment %} PAID BY section {% endcomment %}
+                    <div class="col-md-6 position-relative">
+                        <div class="mb-1">
                             <label class="form-label fw-bold text-secondary small text-uppercase mb-0">Paid By</label>
-                            <a href="{% url 'create_payer' %}" class="text-decoration-none small text-primary" style="font-size: 0.75rem;">+ New Payer</a>
                         </div>
-                        {{ form.payer }}
+
+                        <a href="{% url 'create_payer' %}" class="text-primary text-decoration-none fw-bold position-absolute end-0 top-0 mt-0 me-2" style="font-size: 1rem; line-height: 1.2;">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+
+                        <select name="payer" id="id_payer" class="d-none" required>
+                            {% for x, y in form.fields.payer.choices %}
+                                <option value="{{ x }}" {% if form.payer.value|stringformat:"s" == x|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <div class="dropdown w-100">
+                            <button class="form-select text-start d-flex justify-content-between align-items-center rounded-3 w-100" type="button" id="payerDropdownTrigger" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span id="payerDropdownLabel" class="text-dark">Select Payer...</span>
+                            </button>
+                            
+                            <ul class="dropdown-menu w-100 shadow border rounded-3 overflow-hidden py-0" aria-labelledby="payerDropdownTrigger">
+                                {% for pk, name in form.fields.payer.choices %}
+                                    {% if pk %}
+                                        <li class="dropdown-item d-flex align-items-center justify-content-between py-2 px-3 border-bottom custom-payer-item" style="cursor: pointer;" data-value="{{ pk }}" data-name="{{ name }}">
+                                            <span class="text-dark small option-text-click w-100">{{ name }}</span>
+                                            
+                                            <div class="dropdown no-bubble">
+                                                <button class="btn btn-link text-secondary p-0 border-0 m-0 shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical small"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow border rounded-3" style="font-size: 0.8rem;">
+                                                    <li><a class="dropdown-item py-1.5" href="{% url 'update_payer' pk %}"><i class="bi bi-pencil me-2 text-primary"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item py-1.5 text-danger" href="{% url 'delete_payer' pk %}"><i class="bi bi-trash3 me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-
-                <div class="mb-3">
+                
+                {% comment %} ITEM Section {% endcomment %}
+                <div class="mb-3 text-start position-relative" id="itemAutocompleteWrapper">
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         <label class="form-label fw-bold text-secondary small text-uppercase mb-0">Item</label>
-                        <a href="{% url 'create_item' %}" class="text-decoration-none small text-primary" style="font-size: 0.75rem;">+ Custom Item</a>
+                        <a href="{% url 'create_item' %}" class="text-primary text-decoration-none fw-bold" style="font-size: 1rem;">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
                     </div>
-                    {{ form.item }}
-                </div>
 
+                    <select name="item" id="id_item" class="d-none" required>
+                        {% for x, y in form.fields.item.choices %}
+                            <option value="{{ x }}" {% if form.item.value|stringformat:"s" == x|stringformat:"s" %}selected{% endif %}>
+                                {{ y|cut:" (Global)"|cut:" (Custom)" }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="position-relative">
+                        <input type="text" id="itemSearchInput" class="form-control text-start rounded-3 w-100" placeholder="Type to search item..." autocomplete="off">
+                    </div>
+
+                    <div id="itemDropdownPanel" class="card shadow-lg border rounded-3 position-absolute w-100 mt-1 d-none" style="z-index: 1050; max-height: 240px; overflow-y: auto;">
+                        <div class="list-group list-group-flush">
+                            {% for pk, name in form.fields.item.choices %}
+                                {% if pk %}
+                                    {% with clean_name=name|cut:" (Global)"|cut:" (Custom)" %}
+                                        
+                                        {% ifchanged clean_name %}
+                                            <div class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2 px-3 border-bottom custom-item-row" style="cursor: pointer;" data-value="{{ pk }}" data-name="{{ clean_name }}">
+                                                <span class="text-dark small item-text-click fw-medium w-100">
+                                                    {{ clean_name }}
+                                                </span>
+                                                {% if "(global)" not in name.lower %}
+                                                    <div class="d-flex gap-2 ms-auto no-bubble">
+                                                        <a href="{% url 'update_item' pk %}" 
+                                                        class="btn btn-sm btn-link text-primary p-0 border-0 shadow-none text-decoration-none small fw-medium me-1">
+                                                            <i class="bi bi-pencil small"></i> Edit
+                                                        </a>
+                                                        <a href="{% url 'delete_item' pk %}" 
+                                                        class="btn btn-sm btn-link text-danger p-0 border-0 shadow-none text-decoration-none small fw-medium">
+                                                            <i class="bi bi-trash3 small"></i> Delete
+                                                        </a>
+                                                    </div>
+                                                {% endif %}                                         
+                                            </div>
+                                        {% endifchanged %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>             
+
+                {% comment %} PRICE, QUANTITY & UNIT Section {% endcomment %}
                 <div class="row g-2 mb-3">
+                    {% comment %} PRICE Section {% endcomment %}
                     <div class="col-md-5">
                         <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Price</label>
                         <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-light text-muted border-end-0">₹</span>
-                            {{ form.price }}
+                            <span class="input-group-text bg-light text-muted border-end-0 rounded-start-3">₹</span>
+                            
+                            <input type="number" 
+                                name="price" 
+                                id="id_price" 
+                                step="0.01" 
+                                class="form-control border-start-0 rounded-end-3" 
+                                value="{{ form.price.value|default:'' }}" 
+                                required>
                         </div>
                     </div>
+
+                    {% comment %} QUANTITY Section {% endcomment %}
                     <div class="col-md-4">
                         <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Quantity</label>
                         {{ form.quantity }}
                     </div>
+
+                    {% comment %} UNIT {% endcomment %}
                     <div class="col-md-3">
                         <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Unit</label>
-                        {{ form.unit }}
+                        <select name="unit" id="id_unit" class="form-select form-select-sm rounded-3">
+                            {% for value, text in form.fields.unit.choices %}
+                                {% if not value %}
+                                    <option value="" {% if not form.unit.value %}selected{% endif %}>N/A</option>
+                                {% else %}
+                                    <option value="{{ value }}" {% if form.unit.value == value %}selected{% endif %}>
+                                        {{ text }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
 
+                {% comment %} NOTE Section {% endcomment %}
                 <div class="mb-4">
-                    <div class="form-label fw-bold text-secondary small text-uppercase mb-1">Comment / Notes</div>
+                    <div class="form-label fw-bold text-secondary small text-uppercase mb-1">Note</div>
                     {{ form.comment }}
                 </div>
 
@@ -89,4 +195,141 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Form field layout styling class injector
+        document.querySelectorAll('input:not([type="hidden"]), select, textarea').forEach(function(el) {
+            if (el.tagName.toLowerCase() === 'select') {
+                el.classList.add('form-select');
+            } else {
+                el.classList.add('form-control');
+            }
+            if (!el.closest('.input-group')){
+                el.classList.add('rounded-3')
+            }
+        });
+
+        // ===================================================
+        // PAYER DROPDOWN WORKFLOW SYNC ENGINE
+        // ===================================================
+        const hiddenPayerSelect = document.getElementById('id_payer');
+        const dropdownLabel = document.getElementById('payerDropdownLabel');
+
+        if (hiddenPayerSelect && dropdownLabel) {
+            const selectedOption = hiddenPayerSelect.options[hiddenPayerSelect.selectedIndex];
+            if (selectedOption && selectedOption.value) {
+                dropdownLabel.textContent = selectedOption.text;
+                dropdownLabel.classList.remove('text-muted');
+            }
+
+            document.querySelectorAll('.custom-payer-item .option-text-click, .custom-payer-option').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.closest('[data-value]');
+                    const val = parentLi ? parentLi.getAttribute('data-value') : '';
+                    const text = parentLi ? parentLi.getAttribute('data-name') : '---------';
+
+                    hiddenPayerSelect.value = val;
+                    dropdownLabel.textContent = text;
+                    
+                    if(val === '') {
+                        dropdownLabel.classList.add('text-muted');
+                    } else {
+                        dropdownLabel.classList.remove('text-muted');
+                    }
+                });
+            });
+
+            // Prevent three-dots menu clicks from collapsing the menu list
+            document.querySelectorAll('.no-bubble').forEach(menu => {
+                menu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        }
+        // ===================================================
+        // DIRECT ONE-STEP INTERACTIVE SEARCH ENGINE
+        // ===================================================
+        const hiddenItemSelect = document.getElementById('id_item');
+        const itemSearchInput = document.getElementById('itemSearchInput');
+        const itemDropdownPanel = document.getElementById('itemDropdownPanel');
+
+        if (hiddenItemSelect && itemSearchInput && itemDropdownPanel) {
+            
+            // On page load, if an item is pre-selected, show its text name in the input box
+            const initialOption = hiddenItemSelect.options[hiddenItemSelect.selectedIndex];
+            if (initialOption && initialOption.value) {
+                itemSearchInput.value = initialOption.text;
+            }
+
+            // Step 1: When user clicks the box, show all options instantly
+            itemSearchInput.addEventListener('focus', function() {
+                itemDropdownPanel.classList.remove('d-none');
+                filterItems(this.value);
+            });
+
+            // Step 2: As they type, filter the rows instantly
+            itemSearchInput.addEventListener('input', function() {
+                filterItems(this.value);
+            });
+
+            function filterItems(searchText) {
+                const filterText = searchText.toLowerCase().trim();
+                const itemRows = document.querySelectorAll('.custom-item-row');
+                let matches = 0;
+
+                itemRows.forEach(row => {
+                    const itemName = row.getAttribute('data-name').toLowerCase();
+                    if (itemName.includes(filterText)) {
+                        row.style.setProperty('display', 'flex', 'important');
+                        matches++;
+                    } else {
+                        row.style.setProperty('display', 'none', 'important');
+                    }
+                });
+
+                if (matches === 0 && filterText.length > 0) {
+                    itemDropdownPanel.classList.add('d-none');
+                } else {
+                    itemDropdownPanel.classList.remove('d-none');
+                }
+            }
+
+            // Step 3: Clicking a row selects it and populates the main text box
+            document.querySelectorAll('.custom-item-row').forEach(row => {
+                row.addEventListener('click', function(e) {
+                    if (e.target.closest('.no-bubble')) return; // Ignore if clicking 3 vertical dots
+
+                    const val = this.getAttribute('data-value');
+                    const text = this.getAttribute('data-name');
+
+                    hiddenItemSelect.value = val;
+                    itemSearchInput.value = text;
+                    itemDropdownPanel.classList.add('d-none');
+                });
+            });
+
+            // Prevent three-dots menu actions from closing our text input filter
+            document.querySelectorAll('.no-bubble').forEach(menu => {
+                menu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+
+            // Close the panel safely if the user clicks anywhere else outside the component
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#itemAutocompleteWrapper')) {
+                    itemDropdownPanel.classList.add('d-none');
+                    
+                    // If they click away without selecting a valid item, revert input to current saved match
+                    const currentSaved = hiddenItemSelect.options[hiddenItemSelect.selectedIndex];
+                    itemSearchInput.value = (currentSaved && currentSaved.value) ? currentSaved.text : '';
+                }
+            });
+        }
+
+    });
+</script>
 {% endblock content %}
