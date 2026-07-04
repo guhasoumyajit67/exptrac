@@ -11,8 +11,9 @@ from .models import (
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        # Regular users only provide the name and assign it to a global category
-        fields = ['name', 'category']
+        # 🚨 UPDATED: Added 'unit' so users can choose a unit type when creating items manually
+        fields = ['name', 'category', 'unit']
+
 
 class PayerForm(forms.ModelForm):
     class Meta:
@@ -22,11 +23,12 @@ class PayerForm(forms.ModelForm):
             'color': forms.TextInput(attrs={'type': 'color'}),
         }
 
-# Inside your expenses/forms.py
+
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ["date", "item", "price", "quantity", "unit", "payer", "comment"]
+        # 🚨 FIXED: Removed 'unit' from this list since it now lives on the Item model
+        fields = ["date", "item", "price", "quantity", "payer", "comment"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
             "comment": forms.Textarea(attrs={"rows": 2}),  # Kept short and neat
@@ -36,7 +38,7 @@ class TransactionForm(forms.ModelForm):
         self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
 
-        # 1. APPLY NATIVE BOOTSTRAP CLASSES TO EVERY FIELD
+        # 1. APPLY STYLE CLASSES TO EVERY FIELD
         for field_name, field in self.fields.items():
             if isinstance(field.widget, (forms.Select, forms.RadioSelect)):
                 field.widget.attrs["class"] = "form-select form-select-sm"
@@ -49,6 +51,10 @@ class TransactionForm(forms.ModelForm):
                 Q(user__isnull=True) | Q(user=self.user)
             )
             self.fields["payer"].queryset = Payer.objects.filter(user=self.user)
+
+
+
+
 
 
 class ExcelUploadForm(forms.Form):

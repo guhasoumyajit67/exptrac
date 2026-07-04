@@ -14,22 +14,25 @@
                 <p class="text-muted small">Fill out the fields below to keep your ledger balanced.</p>
             </div>
 
+
+
             {% if messages %}
                 <div class="messages mb-4">
                     {% for message in messages %}
-                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show rounded-3 py-2 px-3 small border-0 shadow-sm fw-medium d-flex align-items-center justify-content-between" role="alert">
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show rounded-3 py-2 px-3 small border-0 shadow-sm fw-medium" role="alert">
                             <span>✨ {{ message }}</span>
-                            <button type="button" class="btn-close small py-2.5" data-bs-dismiss="alert" aria-label="Close" style="font-size: 0.65rem;"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.85rem 1rem;"></button>
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
+            
 
             <form method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
+                
                 {% comment %} DATE and PAID BY section {% endcomment %}
                 <div class="row g-2 mb-3 align-items-center">
-    
                     {% comment %} DATE section {% endcomment %}
                     <div class="col-md-6">
                         <div class="mb-1">
@@ -94,7 +97,7 @@
                     <select name="item" id="id_item" class="d-none" required>
                         {% for x, y in form.fields.item.choices %}
                             <option value="{{ x }}" {% if form.item.value|stringformat:"s" == x|stringformat:"s" %}selected{% endif %}>
-                                {{ y|cut:" (Global)"|cut:" (Custom)" }}
+                                {{ y }}
                             </option>
                         {% endfor %}
                     </select>
@@ -105,44 +108,41 @@
 
                     <div id="itemDropdownPanel" class="card shadow-lg border rounded-3 position-absolute w-100 mt-1 d-none" style="z-index: 1050; max-height: 240px; overflow-y: auto;">
                         <div class="list-group list-group-flush">
-                            {% for pk, name in form.fields.item.choices %}
-                                {% if pk %}
-                                    {% with clean_name=name|cut:" (Global)"|cut:" (Custom)" %}
-                                        
-                                        {% ifchanged clean_name %}
-                                            <div class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2 px-3 border-bottom custom-item-row" style="cursor: pointer;" data-value="{{ pk }}" data-name="{{ clean_name }}">
-                                                <span class="text-dark small item-text-click fw-medium w-100">
-                                                    {{ clean_name }}
-                                                </span>
-                                                {% if "(global)" not in name.lower %}
-                                                    <div class="d-flex gap-2 ms-auto no-bubble">
-                                                        <a href="{% url 'update_item' pk %}" 
-                                                        class="btn btn-sm btn-link text-primary p-0 border-0 shadow-none text-decoration-none small fw-medium me-1">
-                                                            <i class="bi bi-pencil small"></i> Edit
-                                                        </a>
-                                                        <a href="{% url 'delete_item' pk %}" 
-                                                        class="btn btn-sm btn-link text-danger p-0 border-0 shadow-none text-decoration-none small fw-medium">
-                                                            <i class="bi bi-trash3 small"></i> Delete
-                                                        </a>
-                                                    </div>
-                                                {% endif %}                                         
-                                            </div>
-                                        {% endifchanged %}
-                                    {% endwith %}
-                                {% endif %}
+                            {% for item_obj in form.fields.item.queryset %}
+                                <div class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-2 px-3 border-bottom custom-item-row" 
+                                     style="cursor: pointer;" 
+                                     data-value="{{ item_obj.pk }}" 
+                                     data-name="{{ item_obj.name|lower }}" 
+                                     data-display-name="{{ item_obj.name }}"
+                                     data-unit="{{ item_obj.unit|default:'' }}">
+                                    
+                                    <span class="text-dark small item-text-click fw-medium w-100">
+                                        {{ item_obj.name }}
+                                    </span>
+                                    
+                                    {% if item_obj.user %}
+                                        <div class="d-flex gap-2 ms-auto no-bubble">
+                                            <a href="{% url 'update_item' item_obj.pk %}" class="btn btn-sm btn-link text-primary p-0 border-0 shadow-none text-decoration-none small fw-medium me-1">
+                                                <i class="bi bi-pencil small"></i> Edit
+                                            </a>
+                                            <a href="{% url 'delete_item' item_obj.pk %}" class="btn btn-sm btn-link text-danger p-0 border-0 shadow-none text-decoration-none small fw-medium">
+                                                <i class="bi bi-trash3 small"></i> Delete
+                                            </a>
+                                        </div>
+                                    {% endif %}                                    
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
                 </div>             
 
-                {% comment %} PRICE, QUANTITY & UNIT Section {% endcomment %}
+                {% comment %} PRICE & QUANTITY Section {% endcomment %}
                 <div class="row g-2 mb-3">
                     {% comment %} PRICE Section {% endcomment %}
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Price</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-light text-muted border-end-0 rounded-start-3">₹</span>
-                            
                             <input type="number" 
                                 name="price" 
                                 id="id_price" 
@@ -153,26 +153,13 @@
                         </div>
                     </div>
 
-                    {% comment %} QUANTITY Section {% endcomment %}
-                    <div class="col-md-4">
+                    {% comment %} QUANTITY Section with Dynamic Input Group Addon {% endcomment %}
+                    <div class="col-md-6">
                         <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Quantity</label>
-                        {{ form.quantity }}
-                    </div>
-
-                    {% comment %} UNIT {% endcomment %}
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold text-secondary small text-uppercase mb-1">Unit</label>
-                        <select name="unit" id="id_unit" class="form-select form-select-sm rounded-3">
-                            {% for value, text in form.fields.unit.choices %}
-                                {% if not value %}
-                                    <option value="" {% if not form.unit.value %}selected{% endif %}>N/A</option>
-                                {% else %}
-                                    <option value="{{ value }}" {% if form.unit.value == value %}selected{% endif %}>
-                                        {{ text }}
-                                    </option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                        <div class="input-group input-group-sm">
+                            {{ form.quantity }}
+                            <span id="quantity-unit-addon" class="input-group-text bg-light text-secondary border-start-0 font-monospace fw-bold rounded-end-3" style="min-width: 45px; justify-content: center;">-</span>
+                        </div>
                     </div>
                 </div>
 
@@ -196,7 +183,6 @@
     </div>
 </div>
 
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // 1. Form field layout styling class injector
@@ -210,6 +196,13 @@
                 el.classList.add('rounded-3')
             }
         });
+
+        // Ensure quantity field input inherits flat styling inside its group wrapper
+        const qtyField = document.getElementById('id_quantity');
+        if (qtyField) {
+            qtyField.classList.remove('rounded-3');
+            qtyField.classList.add('rounded-start-3', 'border-end-0');
+        }
 
         // ===================================================
         // PAYER DROPDOWN WORKFLOW SYNC ENGINE
@@ -242,37 +235,54 @@
                 });
             });
 
-            // Prevent three-dots menu clicks from collapsing the menu list
             document.querySelectorAll('.no-bubble').forEach(menu => {
                 menu.addEventListener('click', function(e) {
                     e.stopPropagation();
                 });
             });
         }
+
         // ===================================================
-        // DIRECT ONE-STEP INTERACTIVE SEARCH ENGINE
+        // DIRECT ONE-STEP INTERACTIVE SEARCH ENGINE WITH AUTO-UNIT FETCH
         // ===================================================
         const hiddenItemSelect = document.getElementById('id_item');
         const itemSearchInput = document.getElementById('itemSearchInput');
         const itemDropdownPanel = document.getElementById('itemDropdownPanel');
+        const unitAddon = document.getElementById('quantity-unit-addon');
+
+        // Helper to update the text label element smoothly
+        function updateUnitBadge(unitValue) {
+            if (unitAddon) {
+                unitAddon.textContent = unitValue ? unitValue : '-';
+            }
+        }
 
         if (hiddenItemSelect && itemSearchInput && itemDropdownPanel) {
             
-            // On page load, if an item is pre-selected, show its text name in the input box
+            // On page edit load, match pre-selected items and fetch their unit attributes
             const initialOption = hiddenItemSelect.options[hiddenItemSelect.selectedIndex];
             if (initialOption && initialOption.value) {
-                itemSearchInput.value = initialOption.text;
+                // Find the matching row on edit load to get the clean name string
+                const matchingRow = document.querySelector(`.custom-item-row[data-value="${initialOption.value}"]`);
+                if (matchingRow) {
+                    itemSearchInput.value = matchingRow.getAttribute('data-display-name');
+                    updateUnitBadge(matchingRow.getAttribute('data-unit'));
+                } else {
+                    itemSearchInput.value = initialOption.text;
+                }
             }
 
-            // Step 1: When user clicks the box, show all options instantly
             itemSearchInput.addEventListener('focus', function() {
                 itemDropdownPanel.classList.remove('d-none');
                 filterItems(this.value);
             });
 
-            // Step 2: As they type, filter the rows instantly
             itemSearchInput.addEventListener('input', function() {
                 filterItems(this.value);
+                if (this.value === '') {
+                    hiddenItemSelect.value = '';
+                    updateUnitBadge('-');
+                }
             });
 
             function filterItems(searchText) {
@@ -281,7 +291,7 @@
                 let matches = 0;
 
                 itemRows.forEach(row => {
-                    const itemName = row.getAttribute('data-name').toLowerCase();
+                    const itemName = row.getAttribute('data-name');
                     if (itemName.includes(filterText)) {
                         row.style.setProperty('display', 'flex', 'important');
                         matches++;
@@ -297,39 +307,52 @@
                 }
             }
 
-            // Step 3: Clicking a row selects it and populates the main text box
+            // Clicking a row maps the database key and injects the unit label
             document.querySelectorAll('.custom-item-row').forEach(row => {
                 row.addEventListener('click', function(e) {
-                    if (e.target.closest('.no-bubble')) return; // Ignore if clicking 3 vertical dots
+                    if (e.target.closest('.no-bubble')) return;
 
                     const val = this.getAttribute('data-value');
-                    const text = this.getAttribute('data-name');
+                    const text = this.getAttribute('data-display-name');
+                    const unit = this.getAttribute('data-unit');
 
                     hiddenItemSelect.value = val;
                     itemSearchInput.value = text;
+                    
+                    // AUTO-FETCH SYNC: Updates the quantity badge layout instantly!
+                    updateUnitBadge(unit);
+                    
                     itemDropdownPanel.classList.add('d-none');
                 });
             });
 
-            // Prevent three-dots menu actions from closing our text input filter
             document.querySelectorAll('.no-bubble').forEach(menu => {
                 menu.addEventListener('click', function(e) {
                     e.stopPropagation();
                 });
             });
 
-            // Close the panel safely if the user clicks anywhere else outside the component
+            // 🚨 FIXED: Pulls from data-display-name on blur instead of raw option text
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('#itemAutocompleteWrapper')) {
                     itemDropdownPanel.classList.add('d-none');
                     
-                    // If they click away without selecting a valid item, revert input to current saved match
                     const currentSaved = hiddenItemSelect.options[hiddenItemSelect.selectedIndex];
-                    itemSearchInput.value = (currentSaved && currentSaved.value) ? currentSaved.text : '';
+                    if (currentSaved && currentSaved.value) {
+                        const matchingRow = document.querySelector(`.custom-item-row[data-value="${currentSaved.value}"]`);
+                        if (matchingRow) {
+                            itemSearchInput.value = matchingRow.getAttribute('data-display-name');
+                            updateUnitBadge(matchingRow.getAttribute('data-unit'));
+                        } else {
+                            itemSearchInput.value = currentSaved.text;
+                        }
+                    } else {
+                        itemSearchInput.value = '';
+                        updateUnitBadge('-');
+                    }
                 }
             });
         }
-
     });
 </script>
 {% endblock content %}

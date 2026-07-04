@@ -106,6 +106,9 @@ class TransactionListView(LoginRequiredMixin, ListView):
         )
     
 
+
+
+
 class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
     form_class = ItemForm
@@ -114,8 +117,17 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         """Securely ties custom created unique items straight to this user footprint profile."""
+        item_name = form.cleaned_data.get('name')
+        
+        # 🚨 front-line shield: catch duplicate name before hitting database constraint crash
+        if Item.objects.filter(user=self.request.user, name__iexact=item_name).exists():
+            form.add_error('name', f'You have already created a custom item named "{item_name}".')
+            return self.form_invalid(form)
+            
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+
 
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
@@ -237,7 +249,7 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
                 price_digits = re.sub(r'[^\d.]', '', str(price_raw))
                 final_price = float(price_digits) if price_digits else 0.0
 
-            final_quantity = 1
+            final_quantity = None
             if quantity_raw is not None and str(quantity_raw).strip():
                 qty_match = re.search(r'\d+(\.\d+)?', str(quantity_raw))
                 if qty_match:
@@ -293,7 +305,6 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
 
 
 
-
 class TransactionBulkReviewView(LoginRequiredMixin, View):
     template_name = "bulk_review.html"
 
@@ -305,7 +316,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             messages.info(request, "No transaction staging queue found. Please upload a spreadsheet first.")
             return redirect('bulk_upload_transactions')
 
-        # FIXED: Perfectly balanced parentheses parsing set expressions
         missing_items = sorted(list(set(
             row['item_name'] for row in review_rows if row.get('error') == "Missing Item"
         )))
@@ -330,12 +340,22 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
 
         if action == "create_custom":
             category_id = request.POST.get('category_id')
+            unit_value = request.POST.get('unit')
+            
             category_obj = Category.objects.get(id=category_id)
             
+            # 🚨 CLEANED WARNING: No emojis, direct message string output
+            if Item.objects.filter(user=request.user, name__iexact=target_item_name).exists():
+                messages.error(request, f"You already have a custom item named '{target_item_name}'. Use 'Map to Existing' instead.")
+                return redirect('bulk_upload_review')
+
             new_custom_item, created = Item.objects.get_or_create(
                 name=target_item_name,
                 user=request.user,
-                defaults={'category': category_obj}
+                defaults={
+                    'category': category_obj,
+                    'unit': unit_value
+                }
             )
 
             updated_review_rows = []
@@ -350,7 +370,9 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             review_rows = updated_review_rows
             request.session['bulk_upload_review_rows'] = review_rows
             request.session['bulk_upload_valid_rows'] = valid_rows
-            messages.success(request, f"✨ Created Custom Item '{target_item_name}' and updated transaction rows!")
+            
+            # 🚨 FIXED: Removed custom emoji parameters and stripped out bracketed units
+            messages.success(request, f"Created Custom Item '{target_item_name}' and updated transaction rows.")
 
         elif action == "map_existing":
             existing_item_id = request.POST.get('existing_item_id')
@@ -369,21 +391,22 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             review_rows = updated_review_rows
             request.session['bulk_upload_review_rows'] = review_rows
             request.session['bulk_upload_valid_rows'] = valid_rows
-            messages.success(request, f"🔄 Successfully re-mapped spreadsheet entries to '{existing_item.name}'!")
+            
+            # 🚨 CLEANED: Removed emoji parameters
+            messages.success(request, f"Successfully re-mapped spreadsheet entries to '{existing_item.name}'.")
 
         elif action == "skip_item":
             review_rows = [r for r in review_rows if r['item_name'] != target_item_name]
             request.session['bulk_upload_review_rows'] = review_rows
-            messages.info(request, f"❌ Discarded spreadsheet lines containing '{target_item_name}'.")
+            
+            # 🚨 CLEANED: Removed emoji parameters
+            messages.info(request, f"Discarded spreadsheet lines containing '{target_item_name}'.")
 
-        # 🚨 THE SOLUTION: ROUTING LOGIC GATEWAYS
-
-        # GATEWAY A: If there are STILL unmapped items left (like "Nunu"),
-        # reload this same staging area. The notification will now render instantly here!
+        # ROUTING LOGIC GATEWAYS
         if review_rows:
             return redirect('bulk_upload_review')
 
-        # GATEWAY B: If NO MORE cards remain, save all valid rows to the database directly!
+        # Save all valid rows to the database directly
         transactions_to_create = []
         for row in valid_rows:
             transactions_to_create.append(
@@ -400,14 +423,18 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
         
         if transactions_to_create:
             Transaction.objects.bulk_create(transactions_to_create)
-            # This final message will clear out cleanly onto the live ledger page layout
-            messages.success(request, f"🚀 Success! Safely committed {len(transactions_to_create)} rows into your ledger.")
+            
+            # 🚨 CLEANED: Removed emoji parameters
+            messages.success(request, f"Success! Safely committed {len(transactions_to_create)} rows into your ledger.")
         
         # Wipe session storage variables completely clean
         request.session.pop('bulk_upload_valid_rows', None)
         request.session.pop('bulk_upload_review_rows', None)
         
         return redirect('transaction_list')
+
+
+
 
 
 

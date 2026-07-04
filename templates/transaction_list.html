@@ -32,8 +32,8 @@
                     <div class="col-12">
                         {% for message in messages %}
                             <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 shadow-sm fw-medium small py-2 px-3 mb-2" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close small style-none pt-2.5" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <span>✨ {{ message }}</span>
+                                <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.85rem 1rem;"></button>
                             </div>
                         {% endfor %}
                     </div>
@@ -99,13 +99,16 @@
                                     <td class="text-end fw-extrabold text-dark fs-5">
                                         ₹{{ transaction.price }}
                                     </td>
-                                    <td class="text-secondary small font-monospace ps-4">
+                                    <td class="text-secondary small font-monospace ps-4 text-nowrap">
                                         {% if transaction.quantity %}
-                                            {{ transaction.quantity }} 
-                                            {% if transaction.item.default_unit and transaction.item.default_unit != "None" %}
-                                                <span class="text-muted fs-7">{{ transaction.item.default_unit }}</span>
-                                            {% elif transaction.unit and transaction.unit != "None" %}
-                                                <span class="text-muted fs-7">{{ transaction.unit }}</span>
+                                            {# Strips trailing decimals smoothly (e.g., 1.00 -> 1, 0.15 -> 0.15) #}
+                                            {{ transaction.quantity|floatformat:"-2" }}
+                                            
+                                            {# Fetch and append unit directly from the related item context #}
+                                            {% if transaction.item.unit and transaction.item.unit != "None" %}
+                                                <span class="fs-7 ms-1 fw-bold">{{ transaction.item.unit }}</span>
+                                            {% elif transaction.item.default_unit and transaction.item.default_unit != "None" %}
+                                                <span class="fs-7 ms-1 fw-bold">{{ transaction.item.default_unit }}</span>
                                             {% endif %}
                                         {% else %}
                                             <span class="text-muted">-</span>

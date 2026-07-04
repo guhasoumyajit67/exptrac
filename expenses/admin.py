@@ -1,7 +1,4 @@
 from django.contrib import admin
-from django.db import models
-from django.forms import widgets
-from django.utils.html import format_html
 from .models import (
     Category,
     Item,
@@ -17,21 +14,50 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category')
+    # 🚨 REMOVED 'user': The column is gone so your grid stays perfectly clean!
+    list_display = ('name', 'category', 'unit')
     list_filter = ('category',)
     ordering = ('name',)
+    search_fields = ('name',)
+
+    def get_queryset(self, request):
+        """
+        Superusers see the global records + their own custom items.
+        Normal staff users only see their own custom items.
+        """
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs.filter(user__isnull=True) | qs.filter(user=request.user)
+        return qs.filter(user=request.user)
+
+    def has_change_permission(self, request, obj=None):
+        """
+        🔒 Only a Superuser can edit global items (where user is None).
+        """
+        if obj is not None and obj.user is None:
+            return request.user.is_superuser
+        return super().has_change_permission(request, obj)
+
+    def has_delete_permission(self, request, obj=None):
+        """
+        🔒 Only a Superuser can delete global items.
+        """
+        if obj is not None and obj.user is None:
+            return request.user.is_superuser
+        return super().has_delete_permission(request, obj)
 
 
 @admin.register(Payer)
 class PayerAdmin(admin.ModelAdmin):
-    list_display = [
-        "name",
-        "user",
-        "color",
-    ]
-    list_filter = [
-        "user",
-    ]
+    list_display = ["name", "color"]  # Kept concise
+    
+    def get_queryset(self, request):
+        """
+        🔒 Privacy barrier: Users only see their own payer configurations.
+        """
+        qs = super().get_queryset(request)
+        return qs.filter(user=request.user)
+
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
@@ -40,12 +66,20 @@ class TransactionAdmin(admin.ModelAdmin):
         "item",
         'price',
         'quantity',
-        'unit',
         "payer",
         'comment',
     ]
-    list_filer = [
+    list_filter = [
         "date",
         "payer",
+        "item__category",
     ]
     date_hierarchy = "date"
+
+    def get_queryset(self, request):
+        """
+        🔒 Absolute privacy wall: Even inside the admin panel, 
+        no user can see another user's financial transactions.
+        """
+        qs = super().get_queryset(request)
+        return qs.filter(user=request.user)
