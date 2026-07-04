@@ -1,5 +1,6 @@
 from django import forms
 from django.db.models import Q
+import os
 from .models import (
     Category,
     Item,
@@ -48,3 +49,17 @@ class TransactionForm(forms.ModelForm):
                 Q(user__isnull=True) | Q(user=self.user)
             )
             self.fields["payer"].queryset = Payer.objects.filter(user=self.user)
+
+
+class ExcelUploadForm(forms.Form):
+    excel_file = forms.FileField(
+        label="Select Excel File",
+        help_text="Upload a spreadsheet containing your transaction logs."
+    )
+
+    def clean_excel_file(self):
+        file = self.cleaned_data.get('excel_file')
+        ext = os.path.splitext(file.name)[1].lower()
+        if ext not in ['.xlsx', '.xls']:
+            raise forms.ValidationError("Unsupported file format! Please upload a valid Excel spreadsheet (.xlsx or .xls).")
+        return file

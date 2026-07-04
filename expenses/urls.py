@@ -11,6 +11,10 @@ from .views import (
     PayerCreateView,
     PayerUpdateView,   # Added for editing payers
     PayerDeleteView,   # Added for deleting payers
+    TransactionBulkUploadView,
+    TransactionBulkReviewView,
+    BulkUploadCommitView,
+    TransactionBulkDeleteView
 )
 
 urlpatterns = [
@@ -31,4 +35,12 @@ urlpatterns = [
     path("item/create/", ItemCreateView.as_view(), name="create_item"),
     path("item/<int:pk>/update/", ItemUpdateView.as_view(), name="update_item"),
     path("item/<int:pk>/delete/", ItemDeleteView.as_view(), name="delete_item"),
+
+    # Bulk upload
+    path('transaction/bulk-upload/', TransactionBulkUploadView.as_view(), name='bulk_upload_transactions'),
+    path('transaction/bulk-review/', TransactionBulkReviewView.as_view(), name='bulk_upload_review'),
+    path('transaction/bulk-commit/', BulkUploadCommitView.as_view(), name='bulk_upload_confirm_commit'),
+
+    # Bulk Delete
+    path('transaction/bulk-delete/', TransactionBulkDeleteView.as_view(), name='bulk_delete_transactions'),
 ]

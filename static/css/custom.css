@@ -1,5 +1,3 @@
-/* static/css/custom.css */
-
 /* Global Typography & Font Smoothing rules (Kept from base.html) */
 body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -18,18 +16,21 @@ body {
     }
 }
 
+
+
+
 /* ==========================================================================
-   TRANSACTION LEDGER SPECIFIC STYLES (Added)
+   TRANSACTION LEDGER SPECIFIC STYLES
    ========================================================================== */
 
 /* Interactive table row highlighting mechanics */
 .table tbody tr {
-    border-left: 3px solid transparent;
+    border-left: 4px solid transparent; /* Changed to 4px to match selected border footprint */
 }
 
 .table tbody tr:hover {
     background-color: rgba(248, 249, 250, 0.95);
-    border-left: 3px solid #0d6efd; /* Interactive feedback accent marker */
+    border-left: 4px solid #0d6efd; /* Interactive feedback accent marker */
 }
 
 .transition-all {
@@ -56,6 +57,9 @@ body {
 .fs-7 { 
     font-size: 0.75rem; 
 }
+
+
+
 
 
 /* ==========================================
@@ -89,12 +93,13 @@ body {
 }
 
 
+
+
+
+
 /* ==========================================================================
    Price Input Flex Alignment Override
    ========================================================================== */
-
-/* Ensures the inner text input perfectly shares the horizontal line and 
-   height of the currency addon box natively. */
 .input-group > .form-control:not(:first-child) {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
@@ -103,4 +108,207 @@ body {
 .input-group > .input-group-text {
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+}
+
+
+
+
+
+
+/* ==========================================================================
+    MULTI-SELECT KEYBOARD WORKFLOW NAVIGATION STYLES
+   ========================================================================== */
+
+.table tbody tr:focus {
+    outline: none !important;
+    background-color: rgba(248, 249, 250, 0.85) !important;
+}
+
+.checkbox-col {
+    width: 0px;
+    opacity: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    text-align: center;
+}
+
+.checkbox-col input[type="checkbox"] {
+    transform: scale(0.85);
+}
+
+.show-checkboxes .checkbox-col {
+    width: 45px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    padding: 0.75rem 0.5rem !important;
+}
+
+/* 🚨 DETAILED SELECTION CHAINS: Forces red highlight over native hover overrides */
+.table tbody tr.row-selected,
+.table tbody tr.row-selected td,
+.table tbody tr.row-selected:hover,
+.table tbody tr.row-selected:hover td {
+    background-color: #fff5f5 !important;
+    border-left-color: #dc3545 !important;
+}
+
+.table tbody tr.row-selected {
+    box-shadow: inset 0 1px 0 rgba(220, 53, 69, 0.1), 
+                inset 0 -1px 0 rgba(220, 53, 69, 0.1), 
+                inset 8px 0 16px rgba(220, 53, 69, 0.03),
+                0 4px 10px rgba(0, 0, 0, 0.06) !important;
+    transform: scale(0.999);
+}
+
+
+
+
+
+/* ==========================================================================
+    UNIFIED CLEAR & DELETE ACTION BUTTONS (HEIGHT & VISIBILITY LOCK)
+   ========================================================================== */
+
+#clear-selection-btn,
+#bulk-delete-btn {
+    box-sizing: border-box !important;
+    padding: 7px 16px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    border-radius: 8px !important;
+    letter-spacing: -0.01em !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+/* Translucent Minimal Gray Button (Blends into dashboard backdrop elegantly) */
+#clear-selection-btn {
+    background-color: rgba(241, 243, 245, 0.8) !important;
+    color: #495057 !important;
+    border: 1px solid #ced4da !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+#clear-selection-btn:hover {
+    background-color: #e9ecef !important;
+    color: #212529 !important;
+    border-color: #adb5bd !important;
+}
+
+#clear-selection-btn:active,
+#bulk-delete-btn:active {
+    transform: scale(0.98) !important;
+}
+
+#bulk-delete-btn {
+    border: 1px solid transparent !important; /* 1px spacer eliminates horizontal baseline shifts */
+    box-shadow: 0 1px 3px rgba(220, 53, 69, 0.15) !important;
+}
+
+/* Smooth structural drawer slide animation rules */
+#bulk-delete-actions {
+    opacity: 0;
+    transform: translateY(-8px);
+    visibility: hidden;
+    height: 0;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#bulk-delete-actions.show-actions {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    height: auto;
+    margin-bottom: 1rem !important;
+}
+
+
+
+
+
+
+
+/* ==========================================================================
+   Spreadsheet Ingestion Staging Area Components
+   ========================================================================== */
+.staging-alert-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff9db; /* Soft professional amber background */
+    border: 1px solid #fff3bf; /* Match the banner tone seamlessly */
+    border-left: 4px solid #f59f00; /* Distinct amber indicator strip */
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+/* 🚨 THE FIX: Constrain the massive SVG scale */
+.alert-icon {
+    width: 20px;  /* Force standard UI icon size */
+    height: 20px; /* Force standard UI icon size */
+    color: #f59f00; /* Amber color fill */
+    flex-shrink: 0; /* Keep it from squishing on wrap */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.alert-heading {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #d9480f; /* Premium readable contrast dark amber */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.2;
+}
+
+.btn-svg-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: inline-block;
+    /* 🚨 THE ALIGNMENT TWEAK: Prevents the icon from hanging slightly too high */
+    position: relative;
+    top: -0.5px; 
+}
+
+
+
+
+
+/* ==========================================================================
+   Spreadsheet Staging Area - Row Discard & Deletion Actions
+   ========================================================================== */
+.btn-skip-icon-only {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    color: #adb5bd; /* Sleek neutral grey baseline */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Vector geometry boundaries box */
+.bin-svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Turns standard danger-red and presents a soft halo background on mouse over */
+.btn-skip-icon-only:hover {
+    color: #fa5252;
+    background-color: #fff5f5;
+}
+
+.btn-skip-icon-only:active {
+    transform: scale(0.95); /* Tactile shrink down click tracking layer */
 }

@@ -7,75 +7,134 @@
     <div class="col-md-11 col-lg-12">
         <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
             
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-5">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
                 <div>
                     <h1 class="h2 fw-extrabold text-dark tracking-tight mb-1">Transaction Ledger</h1>
                     <p class="text-muted mb-0 small">Review and manage your personal expense allocations smoothly.</p>
                 </div>
-                <a href="{% url 'create_transaction' %}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm align-self-start align-self-sm-center">
-                    + Add New Expense
-                </a>
+
+                <div class="d-flex gap-2 align-items-center">
+                    <a href="{% url 'bulk_upload_transactions' %}" class="btn btn-outline-primary btn-md rounded-3 fw-medium py-2 px-3 shadow-sm d-inline-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5zM3 12v-2h2v2zm0 1h2v2H4a1 1 0 0 1-1-1zm3 2v-2h3v2zm4 0v-2h3v1a1 1 0 0 1-1 1zm3-3h-3v-2h3zm-7 0v-2h3v2zm0-3V9H3V7h3zm4 0v2H7V7h3zm0-1H7V4h3zm3 1v2h-3V6z"/>
+                        </svg>
+                        Bulk Upload Excel
+                    </a>
+                    <a href="{% url 'create_transaction' %}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm align-self-start align-self-sm-center">
+                        + Add New Expense
+                    </a>
+                </div>
             </div>
 
-            <div class="table-responsive rounded-3">
-                <table class="table table-hover align-middle mb-0 text-start">
-                    <thead class="bg-light border-bottom">
-                        <tr>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-3" style="width: 12%;">Date</th>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 15%;">Category</th>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 25%;">Item</th>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 text-end" style="width: 13%;">Price</th>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-4" style="width: 13%;">Quantity</th>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 12%;">Paid By</th>
-                            <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 10%;">Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody class="border-top-0">
-                        {% for transaction in transactions %}
-                            <tr class="transition-all cursor-pointer user-select-none" 
-                                ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
-                                <td class="ps-3 text-nowrap text-dark fw-semibold small">
-                                    {{ transaction.date|date:"j M Y" }}
-                                </td>
-                                <td>
-                                    <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
-                                          style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
-                                        ● {{ transaction.item.category.name }}
-                                    </span>
-                                </td>
-                                <td class="text-dark fw-medium fs-6">
-                                    {{ transaction.item.name }}
-                                </td>
-                                <td class="text-end fw-extrabold text-dark fs-5">
-                                    ₹{{ transaction.price }}
-                                </td>
-                                <td class="text-secondary small font-monospace ps-4">
-                                    {% if transaction.quantity %}
-                                        {{ transaction.quantity }} <span class="text-muted fs-7">{{ transaction.unit }}</span>
-                                    {% else %}
-                                        <span class="text-muted">-</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
-                                          style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
-                                        ● {{ transaction.payer.name }}
-                                    </span>
-                                </td>
-                                <td class="text-muted small text-truncate" style="max-width: 200px;" title="{{ transaction.comment }}">
-                                    {{ transaction.comment|default:"" }}
-                                </td>
-                            </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="7" class="text-center py-5 text-muted">
-                                    No records available. Click "+ Add New Expense" to get started.
-                                </td>
-                            </tr>
+
+            {% if messages %}
+                <div class="row mb-3">
+                    <div class="col-12">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 shadow-sm fw-medium small py-2 px-3 mb-2" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close small style-none pt-2.5" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            <form method="post" action="{% url 'bulk_delete_transactions' %}" id="bulk-delete-form" onsubmit="return confirm('Are you sure you want to permanently delete all selected transactions?');">
+                {% csrf_token %}
+
+                <div id="bulk-delete-actions" class="d-flex justify-content-end align-items-center gap-2 mb-3" style="min-height: 40px;">
+                    
+                    <button type="button" id="clear-selection-btn" class="btn fw-bold d-inline-flex align-items-center justify-content-center gap-2" onclick="event.stopPropagation();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        Clear Selection
+                    </button>
+
+                    <button type="submit" id="bulk-delete-btn" class="btn btn-danger fw-bold d-inline-flex align-items-center justify-content-center gap-2" onclick="event.stopPropagation();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                        </svg>
+                        <span id="delete-btn-text">Delete Selected</span>
+                    </button>
+                </div>
+                <div id="ledger-table-wrapper" class="table-responsive rounded-3 border">
+                    <table class="table table-hover align-middle mb-0 text-start">
+                        <thead class="bg-light border-bottom">
+                            <tr>
+                                <th class="checkbox-col">
+                                    <input type="checkbox" id="select-all-checkbox" class="form-check-input">
+                                </th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-3" style="width: 12%;">Date</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 15%;">Category</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 25%;">Item</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 text-end" style="width: 13%;">Price</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-4" style="width: 13%;">Quantity</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 12%;">Paid By</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 10%;">Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-top-0">
+                            {% for transaction in transactions %}
+                                <tr class="transition-all cursor-pointer user-select-none" 
+                                    ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
+                                    <td class="checkbox-col" onclick="event.stopPropagation();">
+                                        <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" class="transaction-checkbox">
+                                    </td>
+                                    <td class="ps-3 text-nowrap text-dark fw-semibold small">
+                                        {{ transaction.date|date:"j M Y" }}
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
+                                              style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
+                                            ● {{ transaction.item.category.name }}
+                                        </span>
+                                    </td>
+                                    <td class="text-dark fw-medium fs-6">
+                                        {{ transaction.item.name }}
+                                    </td>
+                                    <td class="text-end fw-extrabold text-dark fs-5">
+                                        ₹{{ transaction.price }}
+                                    </td>
+                                    <td class="text-secondary small font-monospace ps-4">
+                                        {% if transaction.quantity %}
+                                            {{ transaction.quantity }} 
+                                            {% if transaction.item.default_unit and transaction.item.default_unit != "None" %}
+                                                <span class="text-muted fs-7">{{ transaction.item.default_unit }}</span>
+                                            {% elif transaction.unit and transaction.unit != "None" %}
+                                                <span class="text-muted fs-7">{{ transaction.unit }}</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
+                                            style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                            </svg>
+                                            {{ transaction.payer.name }}
+                                        </span>
+                                    </td>
+                                    <td class="text-muted small text-truncate" style="max-width: 200px;" title="{{ transaction.comment }}">
+                                        {{ transaction.comment|default:"" }}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center py-5 text-muted">
+                                        No records available. Click "+ Add New Expense" to get started.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
 
         </div>
     </div>
@@ -84,33 +143,24 @@
 <div class="modal fade" id="rowActionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 320px;">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-            
             <div class="modal-header border-0 d-block text-center pt-4 pb-2 bg-light-subtle">
                 <h5 class="fw-extrabold text-dark mb-1" id="modalTargetLabel" style="font-size: 1.15rem; tracking-tight;">Manage Transaction</h5>
                 <p class="text-muted small mb-0 px-2 fw-medium text-truncate" id="modalTargetSublabel" style="font-size: 0.85rem;"></p>
             </div>
-            
             <div class="modal-body p-0">
                 <div class="list-group list-group-flush">
-                    
                     <a id="modalEditBtn" href="#" class="list-group-item list-group-item-action py-3 text-primary fw-bold text-center border-bottom d-flex align-items-center justify-content-center gap-2">
-                        <i class="bi bi-pencil-square fs-5"></i>
                         <span>Edit Details</span>
                     </a>
-                    
                     <a id="modalDeleteBtn" href="#" class="list-group-item list-group-item-action py-3 text-danger fw-bold text-center border-bottom d-flex align-items-center justify-content-center gap-2" 
                        onclick="return confirm('Are you sure you want to permanently delete this record?');">
-                        <i class="bi bi-trash3 fs-5"></i>
                         <span>Delete Record</span>
                     </a>
-                    
                     <button type="button" class="list-group-item list-group-item-action py-3 text-secondary fw-semibold text-center text-uppercase tracking-wider small" data-bs-dismiss="modal">
                         Cancel
                     </button>
-                    
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -118,8 +168,6 @@
 <script>
     function showRowActions(id, itemName, price) {
         document.getElementById('modalTargetSublabel').textContent = itemName + " (₹" + price + ")";
-        
-        // Corrected naming context identifiers to map directly to your urls.py routing configuration
         const editUrlPattern = "{% url 'update_transaction' 0 %}".replace('0', id);
         const deleteUrlPattern = "{% url 'delete_transaction' 0 %}".replace('0', id);
         
@@ -129,5 +177,181 @@
         const actionModal = new bootstrap.Modal(document.getElementById('rowActionModal'));
         actionModal.show();
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const tableBody = document.querySelector('tbody');
+        const tableWrapper = document.getElementById('ledger-table-wrapper');
+        const actionsBar = document.getElementById('bulk-delete-actions');
+        const selectedCountSpan = document.getElementById('selected-count');
+        const selectAllBox = document.getElementById('select-all-checkbox');
+        const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
+        const clearSelectionBtn = document.getElementById('clear-selection-btn');
+
+        let lastFocusedRow = null;
+
+        if (bulkDeleteBtn) {
+            bulkDeleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // Mouse click binding execution hook for the text control button link
+        if (clearSelectionBtn) {
+            clearSelectionBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                resetAllSelections();
+            });
+        }
+
+        // Reusable core workspace function to wipe current active indices clean
+        function resetAllSelections() {
+            const rowCheckboxes = tableBody.querySelectorAll('.transaction-checkbox');
+            rowCheckboxes.forEach(cb => cb.checked = false);
+            
+            if (selectAllBox) selectAllBox.checked = false;
+            
+            lastFocusedRow = null;
+            updateUIState();
+        }
+
+        function updateUIState() {
+            const checkedRows = tableBody.querySelectorAll('tr:not(.empty-row)');
+            let checkedCount = 0;
+
+            checkedRows.forEach(row => {
+                const cb = row.querySelector('.transaction-checkbox');
+                if (cb && cb.checked) {
+                    row.classList.add('row-selected');
+                    checkedCount++;
+                } else {
+                    row.classList.remove('row-selected');
+                }
+            });
+
+            // 🚨 CLEAN & DRY TARGET OVERRIDE:
+            const deleteBtnText = document.getElementById('delete-btn-text');
+            if (deleteBtnText) {
+                if (checkedCount >= 2) {
+                    // Displays count metric smoothly only for high-density selections
+                    deleteBtnText.textContent = `Delete Selected (${checkedCount})`;
+                } else {
+                    // A solitary item displays a perfectly flat, clean typography label
+                    deleteBtnText.textContent = "Delete Selected";
+                }
+            }
+
+            if (checkedCount >= 1) {
+                tableWrapper.classList.add('show-checkboxes');
+                actionsBar.classList.add('show-actions');
+            } else {
+                tableWrapper.classList.remove('show-checkboxes');
+                actionsBar.classList.remove('show-actions');
+                
+                if (checkedCount === 0 && selectAllBox) {
+                    selectAllBox.checked = false;
+                }
+            }
+        }
+
+        const rows = tableBody.querySelectorAll('tr:not(.empty-row)');
+        rows.forEach(row => {
+            row.setAttribute('tabindex', '0');
+            
+            row.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.type === 'checkbox') {
+                    e.stopPropagation();
+                    updateUIState();
+                    return;
+                }
+
+                const checkbox = this.querySelector('.transaction-checkbox');
+                if (!checkbox) return;
+
+                if (e.shiftKey && lastFocusedRow) {
+                    e.preventDefault();
+                    toggleRange(lastFocusedRow, this, true);
+                } else {
+                    checkbox.checked = !checkbox.checked;
+                    lastFocusedRow = this;
+                }
+                updateUIState();
+            });
+        });
+
+        function toggleRange(startRow, endRow, checkState) {
+            const allRows = Array.from(tableBody.querySelectorAll('tr:not(.empty-row)'));
+            const startIndex = allRows.indexOf(startRow);
+            const endIndex = allRows.indexOf(endRow);
+            
+            const low = Math.min(startIndex, endIndex);
+            const high = Math.max(startIndex, endIndex);
+            
+            allRows.forEach((row, index) => {
+                const cb = row.querySelector('.transaction-checkbox');
+                if (cb) {
+                    cb.checked = (index >= low && index <= high) ? checkState : false;
+                }
+            });
+            
+            updateUIState();
+        }
+
+        tableBody.addEventListener('keydown', function(e) {
+            // Intercept Escape key press before focus checks run to wipe targets cleanly
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                resetAllSelections();
+                return;
+            }
+
+            const activeRow = document.activeElement;
+            if (!activeRow || activeRow.tagName !== 'TR') return;
+
+            const allRows = Array.from(tableBody.querySelectorAll('tr:not(.empty-row)'));
+            const currentIndex = allRows.indexOf(activeRow);
+            let targetRow = null;
+
+            if (e.key === 'ArrowDown') {
+                if (currentIndex < allRows.length - 1) targetRow = allRows[currentIndex + 1];
+            } else if (e.key === 'ArrowUp') {
+                if (currentIndex > 0) targetRow = allRows[currentIndex - 1];
+            } else if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                const cb = activeRow.querySelector('.transaction-checkbox');
+                if (cb) {
+                    cb.checked = !cb.checked;
+                    if (cb.checked) lastFocusedRow = activeRow;
+                    updateUIState();
+                }
+                return;
+            }
+
+            if (targetRow) {
+                e.preventDefault();
+                
+                if (e.shiftKey && !lastFocusedRow) {
+                    lastFocusedRow = activeRow;
+                }
+
+                targetRow.focus();
+
+                if (e.shiftKey && lastFocusedRow) {
+                    toggleRange(lastFocusedRow, targetRow, true);
+                } else {
+                    lastFocusedRow = targetRow;
+                    updateUIState();
+                }
+            }
+        });
+
+        if (selectAllBox) {
+            selectAllBox.addEventListener('change', function() {
+                const rowCheckboxes = tableBody.querySelectorAll('.transaction-checkbox');
+                rowCheckboxes.forEach(cb => cb.checked = this.checked);
+                updateUIState();
+            });
+        }
+    });
 </script>
 {% endblock content %}
