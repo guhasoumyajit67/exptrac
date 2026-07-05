@@ -3,6 +3,7 @@
 {% block title %}Transaction Ledger{% endblock title %}
 
 {% block content %}
+
 <div class="row justify-content-center px-3 mt-5">
     <div class="col-md-11 col-lg-12">
         <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
@@ -26,7 +27,6 @@
                 </div>
             </div>
 
-
             {% if messages %}
                 <div class="row mb-3">
                     <div class="col-12">
@@ -40,71 +40,145 @@
                 </div>
             {% endif %}
 
-
             <form method="post" action="{% url 'bulk_delete_transactions' %}" id="bulk-delete-form" onsubmit="return confirm('Are you sure you want to permanently delete all selected transactions?');">
                 {% csrf_token %}
 
-                <div id="bulk-delete-actions" class="d-flex justify-content-end align-items-center gap-2 mb-3" style="min-height: 40px;">
-                    
-                    <button type="button" id="clear-selection-btn" class="btn fw-bold d-inline-flex align-items-center justify-content-center gap-2" onclick="event.stopPropagation();">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                        </svg>
-                        Clear Selection
-                    </button>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3 text-start">
+    
+    <div class="d-flex flex-wrap align-items-center gap-2 text-secondary small fw-medium">
+        <div class="d-flex align-items-center gap-1">
+            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">From:</span>
+            <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
+        </div>
+        <div class="d-flex align-items-center gap-1">
+            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">To:</span>
+            <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
+        </div>
+        <button type="button" id="clearDateRangeBtn" class="btn btn-sm btn-light border small fw-bold text-secondary rounded-2 px-2.5" style="font-size: 0.78rem; height: 31px; display: inline-flex; align-items: center;">
+            Clear Range
+        </button>
+    </div>
 
-                    <button type="submit" id="bulk-delete-btn" class="btn btn-danger fw-bold d-inline-flex align-items-center justify-content-center gap-2" onclick="event.stopPropagation();">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                        </svg>
-                        <span id="delete-btn-text">Delete Selected</span>
-                    </button>
-                </div>
+    <div id="bulk-delete-actions" class="d-flex justify-content-end align-items-center gap-2 m-0" style="height: 31px;">
+        <button type="button" id="clear-selection-btn" class="btn btn-sm fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            Clear Selection
+        </button>
+
+        <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+            </svg>
+            <span id="delete-btn-text">Delete Selected</span>
+        </button>
+    </div>
+
+</div>
+
                 <div id="ledger-table-wrapper" class="table-responsive rounded-3 border">
-                    <table class="table table-hover align-middle mb-0 text-start">
+                    <table class="table table-hover align-middle mb-0 text-start" id="ledgerTable">
                         <thead class="bg-light border-bottom">
                             <tr>
-                                <th class="checkbox-col">
+                                <th class="checkbox-col" style="width: 4%;">
                                     <input type="checkbox" id="select-all-checkbox" class="form-check-input">
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-3" style="width: 12%;">Date</th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 15%;">Category</th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 25%;">Item</th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 text-end" style="width: 13%;">Price</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header" data-column="1" style="width: 12%; position: relative;">
+                                    <div class="d-flex align-items-center gap-1">
+                                        Date <i class="bi bi-arrow-down-up text-muted extra-small"></i>
+                                    </div>
+                                </th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 filterable-header" style="width: 17%; position: relative;">
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span>Category</span>
+                                        <i class="bi bi-filter text-muted excel-filter-icon" onclick="toggleExcelFilter(event, 'categoryFilterMenu')"></i>
+                                    </div>
+                                    
+                                    <div id="categoryFilterMenu" class="excel-filter-menu d-none shadow border rounded-4 position-absolute bg-white p-2 mt-1 text-start" style="z-index: 1060; min-width: 200px;">
+                                        
+                                        <div class="d-flex flex-column gap-1 pb-2 mb-2 border-bottom">
+                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="2" data-order="asc">
+                                                <i class="bi bi-sort-alpha-down text-secondary"></i> Sort A to Z
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="2" data-order="desc">
+                                                <i class="bi bi-sort-alpha-up-alt text-secondary"></i> Sort Z to A
+                                            </button>
+                                        </div>
+
+                                        <div class="form-check py-1 px-2 mb-2 rounded-2 bg-light d-flex align-items-center border-bottom border-top border-light">
+                                            <input class="form-check-input ms-0 me-2 master-filter-checkbox" type="checkbox" checked id="master_chk_category" data-target="category">
+                                            <label class="form-check-label text-dark fw-bold cursor-pointer small w-100 ps-1" for="master_chk_category">(Select All)</label>
+                                        </div>
+
+                                        <div class="filter-options-container" style="max-height: 160px; overflow-y: auto;"></div>
+                                    </div>
+                                </th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 sortable-header" data-column="3" style="width: 22%; position: relative;">
+                                    <div class="d-flex align-items-center gap-1">
+                                        Item <i class="bi bi-arrow-down-up text-muted extra-small"></i>
+                                    </div>
+                                </th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 text-end sortable-header" data-column="4" style="width: 13%; position: relative;">
+                                    <div class="d-flex align-items-center justify-content-end gap-1">
+                                        Price <i class="bi bi-arrow-down-up text-muted extra-small"></i>
+                                    </div>
+                                </th>
                                 <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-4" style="width: 13%;">Quantity</th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 12%;">Paid By</th>
+                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 filterable-header text-nowrap" style="width: 15%; position: relative;">
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <span>Paid By</span>
+                                        <i class="bi bi-filter text-muted excel-filter-icon" onclick="toggleExcelFilter(event, 'payerFilterMenu')"></i>
+                                    </div>
+                                    
+                                    <div id="payerFilterMenu" class="excel-filter-menu d-none shadow border rounded-4 position-absolute bg-white p-2 mt-1 text-start" style="z-index: 1060; min-width: 180px;">
+                                        
+                                        <div class="d-flex flex-column gap-1 pb-2 mb-2 border-bottom">
+                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="6" data-order="asc">
+                                                <i class="bi bi-sort-alpha-down text-secondary"></i> Sort A to Z
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="6" data-order="desc">
+                                                <i class="bi bi-sort-alpha-up-alt text-secondary"></i> Sort Z to A
+                                            </button>
+                                        </div>
+
+                                        <div class="form-check py-1 px-2 mb-2 rounded-2 bg-light d-flex align-items-center border-bottom border-top border-light">
+                                            <input class="form-check-input ms-0 me-2 master-filter-checkbox" type="checkbox" checked id="master_chk_payer" data-target="payer">
+                                            <label class="form-check-label text-dark fw-bold cursor-pointer small w-100 ps-1" for="master_chk_payer">(Select All)</label>
+                                        </div>
+
+                                        <div class="filter-options-container" style="max-height: 160px; overflow-y: auto;"></div>
+                                    </div>
+                                </th>
                                 <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3" style="width: 10%;">Comment</th>
                             </tr>
                         </thead>
                         <tbody class="border-top-0">
                             {% for transaction in transactions %}
-                                <tr class="transition-all cursor-pointer user-select-none" 
+                                <tr class="transition-all cursor-pointer user-select-none ledger-row" 
                                     ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
                                     <td class="checkbox-col" onclick="event.stopPropagation();">
                                         <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" class="transaction-checkbox">
                                     </td>
-                                    <td class="ps-3 text-nowrap text-dark fw-semibold small">
+                                    <td class="ps-3 text-nowrap text-dark fw-semibold small" data-sort-val="{{ transaction.date|date:'Ymd' }}">
                                         {{ transaction.date|date:"j M Y" }}
                                     </td>
-                                    <td>
+                                    <td class="excel-cat-cell" data-filter-val="{{ transaction.item.category.name }}">
                                         <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
                                               style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
                                             ● {{ transaction.item.category.name }}
                                         </span>
                                     </td>
-                                    <td class="text-dark fw-medium fs-6">
+                                    <td class="text-dark fw-medium fs-6 excel-item-cell">
                                         {{ transaction.item.name }}
                                     </td>
-                                    <td class="text-end fw-extrabold text-dark fs-5">
+                                    <td class="text-end fw-extrabold text-dark fs-5" data-sort-val="{{ transaction.price }}">
                                         ₹{{ transaction.price }}
                                     </td>
                                     <td class="text-secondary small font-monospace ps-4 text-nowrap">
                                         {% if transaction.quantity %}
-                                            {# Strips trailing decimals smoothly (e.g., 1.00 -> 1, 0.15 -> 0.15) #}
                                             {{ transaction.quantity|floatformat:"-2" }}
-                                            
-                                            {# Fetch and append unit directly from the related item context #}
                                             {% if transaction.item.unit and transaction.item.unit != "None" %}
                                                 <span class="fs-7 ms-1 fw-bold">{{ transaction.item.unit }}</span>
                                             {% elif transaction.item.default_unit and transaction.item.default_unit != "None" %}
@@ -114,7 +188,7 @@
                                             <span class="text-muted">-</span>
                                         {% endif %}
                                     </td>
-                                    <td>
+                                    <td class="excel-payer-cell" data-filter-val="{{ transaction.payer.name }}">
                                         <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
                                             style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -128,12 +202,18 @@
                                     </td>
                                 </tr>
                             {% empty %}
-                                <tr>
+                                <tr class="empty-row">
                                     <td colspan="8" class="text-center py-5 text-muted">
                                         No records available. Click "+ Add New Expense" to get started.
                                     </td>
                                 </tr>
                             {% endfor %}
+                            
+                            <tr id="excelNoMatchesRow" class="d-none empty-row">
+                                <td colspan="8" class="text-center py-5 text-muted small fw-medium">
+                                    No records match the active filter criteria configuration.
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -168,6 +248,10 @@
     </div>
 </div>
 
+
+
+
+
 <script>
     function showRowActions(id, itemName, price) {
         document.getElementById('modalTargetSublabel').textContent = itemName + " (₹" + price + ")";
@@ -185,41 +269,270 @@
         const tableBody = document.querySelector('tbody');
         const tableWrapper = document.getElementById('ledger-table-wrapper');
         const actionsBar = document.getElementById('bulk-delete-actions');
-        const selectedCountSpan = document.getElementById('selected-count');
         const selectAllBox = document.getElementById('select-all-checkbox');
         const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
         const clearSelectionBtn = document.getElementById('clear-selection-btn');
+        const table = document.getElementById("ledgerTable");
+        const rows = Array.from(tableBody.querySelectorAll(".ledger-row"));
+        const noMatchesRow = document.getElementById('excelNoMatchesRow');
+
+        // 🚨 Date Range Toolbar Inputs Elements
+        const dateStartInput = document.getElementById('dateFilterStart');
+        const dateEndInput = document.getElementById('dateFilterEnd');
+        const clearDateBtn = document.getElementById('clearDateRangeBtn');
 
         let lastFocusedRow = null;
+        let unselectedFilters = { category: [], payer: [] };
+        let currentSortColumn = -1;
+        let isAscending = true;
 
-        if (bulkDeleteBtn) {
-            bulkDeleteBtn.addEventListener('click', function(e) {
+        // ===================================================
+        // 1. DYNAMIC EXCEL FILTERING ENGINE (WITH DATE RANGE)
+        // ===================================================
+        function populateFilterMenus() {
+            const uniqueCategories = new Set();
+            const uniquePayers = new Set();
+
+            rows.forEach(row => {
+                const catCell = row.querySelector(".excel-cat-cell");
+                const payerCell = row.querySelector(".excel-payer-cell");
+                
+                if (catCell) uniqueCategories.add(catCell.getAttribute("data-filter-val").trim());
+                if (payerCell) uniquePayers.add(payerCell.getAttribute("data-filter-val").trim());
+            });
+
+            buildMenuOptions("categoryFilterMenu", Array.from(uniqueCategories), "category");
+            buildMenuOptions("payerFilterMenu", Array.from(uniquePayers), "payer");
+        }
+
+        function buildMenuOptions(menuId, optionList, filterKey) {
+            const menuEl = document.getElementById(menuId);
+            if (!menuEl) return;
+            const container = menuEl.querySelector('.filter-options-container');
+            const masterCheckbox = menuEl.querySelector('.master-filter-checkbox');
+            if (!container) return;
+            
+            container.innerHTML = "";
+            let isUpdatingMaster = false;
+
+            optionList.sort().forEach(optionText => {
+                if (!optionText) return;
+                const div = document.createElement("div");
+                div.className = "form-check py-1 px-2 filter-option-item rounded-2 m-0 small d-flex align-items-center";
+                div.innerHTML = `
+                    <input class="form-check-input ms-0 me-2 cursor-pointer sub-checkbox" type="checkbox" value="${optionText}" checked id="chk_${filterKey}_${optionText}">
+                    <label class="form-check-label text-dark cursor-pointer small w-100 ps-1" for="chk_${filterKey}_${optionText}">${optionText}</label>
+                `;
+                
+                div.querySelector("input").addEventListener("change", function() {
+                    if (this.checked) {
+                        unselectedFilters[filterKey] = unselectedFilters[filterKey].filter(v => v !== this.value);
+                    } else {
+                        if (!unselectedFilters[filterKey].includes(this.value)) {
+                            unselectedFilters[filterKey].push(this.value);
+                        }
+                    }
+                    
+                    if (!isUpdatingMaster && masterCheckbox) {
+                        const totalSubs = container.querySelectorAll('.sub-checkbox').length;
+                        const checkedSubs = container.querySelectorAll('.sub-checkbox:checked').length;
+                        
+                        masterCheckbox.checked = (totalSubs === checkedSubs);
+                        masterCheckbox.indeterminate = (checkedSubs > 0 && checkedSubs < totalSubs);
+                    }
+                    
+                    applyExcelFilters();
+                });
+                container.appendChild(div);
+            });
+
+            if (masterCheckbox) {
+                masterCheckbox.addEventListener('change', function() {
+                    isUpdatingMaster = true;
+                    const checkboxes = container.querySelectorAll('.sub-checkbox');
+                    checkboxes.forEach(cb => {
+                        if (cb.checked !== this.checked) {
+                            cb.checked = this.checked;
+                            cb.dispatchEvent(new Event('change'));
+                        }
+                    });
+                    this.indeterminate = false;
+                    isUpdatingMaster = false;
+                });
+            }
+        }
+
+        window.toggleExcelFilter = function(event, menuId) {
+            event.stopPropagation();
+            document.querySelectorAll(".excel-filter-menu").forEach(m => {
+                if(m.id !== menuId) m.classList.add("d-none");
+            });
+            document.getElementById(menuId).classList.toggle("d-none");
+        };
+
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".filterable-header")) {
+                document.querySelectorAll(".excel-filter-menu").forEach(m => m.classList.add("d-none"));
+            }
+        });
+
+        function applyExcelFilters() {
+            let visibleRows = 0;
+
+            // Gather date limits from toolbar picker bounding parameters
+            const startDateVal = dateStartInput && dateStartInput.value ? new Date(dateStartInput.value) : null;
+            const endDateVal = dateEndInput && dateEndInput.value ? new Date(dateEndInput.value) : null;
+
+            if (startDateVal) startDateVal.setHours(0,0,0,0);
+            if (endDateVal) endDateVal.setHours(23,59,59,999);
+
+            rows.forEach(row => {
+                const catVal = row.querySelector(".excel-cat-cell")?.getAttribute("data-filter-val")?.trim();
+                const payerVal = row.querySelector(".excel-payer-cell")?.getAttribute("data-filter-val")?.trim();
+
+                // Process custom date rows structures matching Ymd format metrics
+                const dateCell = row.querySelector("[data-sort-val]");
+                let rowDate = null;
+                if (dateCell) {
+                    const rawDateStr = dateCell.getAttribute("data-sort-val");
+                    if (rawDateStr && rawDateStr.length === 8) {
+                        const yr = parseInt(rawDateStr.substring(0, 4));
+                        const mo = parseInt(rawDateStr.substring(4, 6)) - 1;
+                        const dy = parseInt(rawDateStr.substring(6, 8));
+                        rowDate = new Date(yr, mo, dy);
+                    }
+                }
+
+                const blockCat = unselectedFilters.category.includes(catVal);
+                const blockPayer = unselectedFilters.payer.includes(payerVal);
+                
+                let blockDate = false;
+                if (rowDate) {
+                    if (startDateVal && rowDate < startDateVal) blockDate = true;
+                    if (endDateVal && rowDate > endDateVal) blockDate = true;
+                }
+
+                if (blockCat || blockPayer || blockDate) {
+                    row.style.display = "none";
+                    const cb = row.querySelector('.transaction-checkbox');
+                    if (cb) cb.checked = false;
+                } else {
+                    row.style.display = "";
+                    visibleRows++;
+                }
+            });
+
+            if (visibleRows === 0 && rows.length > 0) {
+                noMatchesRow.classList.remove('d-none');
+            } else {
+                noMatchesRow.classList.add('d-none');
+            }
+            updateUIState();
+        }
+
+        // 🚨 Register Toolbar Date Filter Events Linkage
+        if (dateStartInput) dateStartInput.addEventListener('change', applyExcelFilters);
+        if (dateEndInput) dateEndInput.addEventListener('change', applyExcelFilters);
+        if (clearDateBtn) {
+            clearDateBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
+                if (dateStartInput) dateStartInput.value = "";
+                if (dateEndInput) dateEndInput.value = "";
+                applyExcelFilters();
             });
         }
 
-        // Mouse click binding execution hook for the text control button link
+        // ===================================================
+        // 2. EXCEL COLUMN SORT ENGINE & MENU TRIGGERS
+        // ===================================================
+        document.querySelectorAll(".sortable-header").forEach(header => {
+            header.addEventListener("click", function(e) {
+                if (e.target.closest('.excel-filter-menu') || e.target.classList.contains('excel-filter-icon')) return;
+                
+                const colIndex = parseInt(this.getAttribute("data-column"));
+                if (currentSortColumn === colIndex) {
+                    isAscending = !isAscending;
+                } else {
+                    currentSortColumn = colIndex;
+                    isAscending = true;
+                }
+
+                syncSortIcons(this.querySelector("i"), isAscending);
+                sortColumn(colIndex, isAscending);
+            });
+        });
+
+        document.querySelectorAll(".menu-sort-trigger").forEach(btn => {
+            btn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                const colIndex = parseInt(this.getAttribute("data-column"));
+                const order = this.getAttribute("data-order");
+                
+                isAscending = (order === "asc");
+                currentSortColumn = colIndex;
+
+                const nativeHeaderIcon = table.querySelector(`.sortable-header[data-column="${colIndex}"] i`);
+                syncSortIcons(nativeHeaderIcon, isAscending);
+                
+                sortColumn(colIndex, isAscending);
+                document.querySelectorAll(".excel-filter-menu").forEach(m => m.classList.add("d-none"));
+            });
+        });
+
+        function syncSortIcons(activeIcon, asc) {
+            document.querySelectorAll(".sortable-header i").forEach(icon => {
+                icon.className = "bi bi-arrow-down-up text-muted extra-small";
+            });
+            if (activeIcon) {
+                activeIcon.className = asc ? "bi bi-arrow-up text-primary extra-small" : "bi bi-arrow-down text-primary extra-small";
+            }
+        }
+
+        function sortColumn(index, asc) {
+            const sortedRows = rows.sort((a, b) => {
+                const cellA = a.children[index];
+                const cellB = b.children[index];
+
+                let valA = cellA.getAttribute("data-sort-val") || cellA.innerText.trim();
+                let valB = cellB.getAttribute("data-sort-val") || cellB.innerText.trim();
+
+                const numA = parseFloat(valA.replace(/[₹,\s]/g, ''));
+                const numB = parseFloat(valB.replace(/[₹,\s]/g, ''));
+
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return asc ? numA - numB : numB - numA;
+                }
+                return asc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            });
+
+            sortedRows.forEach(row => tableBody.appendChild(row));
+            if(noMatchesRow) tableBody.appendChild(noMatchesRow); 
+        }
+
+        // ===================================================
+        // 3. KEYBOARD SHORTCUTS & SELECTIONS OPERATORS
+        // ===================================================
+        if (bulkDeleteBtn) {
+            bulkDeleteBtn.addEventListener('click', function(e) { e.stopPropagation(); });
+        }
+
         if (clearSelectionBtn) {
             clearSelectionBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(); e.stopPropagation();
                 resetAllSelections();
             });
         }
 
-        // Reusable core workspace function to wipe current active indices clean
         function resetAllSelections() {
             const rowCheckboxes = tableBody.querySelectorAll('.transaction-checkbox');
             rowCheckboxes.forEach(cb => cb.checked = false);
-            
             if (selectAllBox) selectAllBox.checked = false;
-            
             lastFocusedRow = null;
             updateUIState();
         }
 
         function updateUIState() {
-            const checkedRows = tableBody.querySelectorAll('tr:not(.empty-row)');
+            const checkedRows = tableBody.querySelectorAll('tr.ledger-row');
             let checkedCount = 0;
 
             checkedRows.forEach(row => {
@@ -232,16 +545,9 @@
                 }
             });
 
-            // 🚨 CLEAN & DRY TARGET OVERRIDE:
             const deleteBtnText = document.getElementById('delete-btn-text');
             if (deleteBtnText) {
-                if (checkedCount >= 2) {
-                    // Displays count metric smoothly only for high-density selections
-                    deleteBtnText.textContent = `Delete Selected (${checkedCount})`;
-                } else {
-                    // A solitary item displays a perfectly flat, clean typography label
-                    deleteBtnText.textContent = "Delete Selected";
-                }
+                deleteBtnText.textContent = checkedCount >= 2 ? `Delete Selected (${checkedCount})` : "Delete Selected";
             }
 
             if (checkedCount >= 1) {
@@ -250,26 +556,21 @@
             } else {
                 tableWrapper.classList.remove('show-checkboxes');
                 actionsBar.classList.remove('show-actions');
-                
-                if (checkedCount === 0 && selectAllBox) {
-                    selectAllBox.checked = false;
-                }
+                if (checkedCount === 0 && selectAllBox) selectAllBox.checked = false;
             }
         }
 
-        const rows = tableBody.querySelectorAll('tr:not(.empty-row)');
         rows.forEach(row => {
             row.setAttribute('tabindex', '0');
-            
             row.addEventListener('click', function(e) {
-                if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.type === 'checkbox') {
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.type === 'checkbox' || e.target.closest('.excel-filter-menu') || e.target.classList.contains('excel-filter-icon')) {
                     e.stopPropagation();
                     updateUIState();
                     return;
                 }
 
                 const checkbox = this.querySelector('.transaction-checkbox');
-                if (!checkbox) return;
+                if (!checkbox || this.style.display === "none") return;
 
                 if (e.shiftKey && lastFocusedRow) {
                     e.preventDefault();
@@ -283,25 +584,22 @@
         });
 
         function toggleRange(startRow, endRow, checkState) {
-            const allRows = Array.from(tableBody.querySelectorAll('tr:not(.empty-row)'));
-            const startIndex = allRows.indexOf(startRow);
-            const endIndex = allRows.indexOf(endRow);
+            const visibleRows = Array.from(tableBody.querySelectorAll('tr.ledger-row')).filter(r => r.style.display !== "none");
+            const startIndex = visibleRows.indexOf(startRow);
+            const endIndex = visibleRows.indexOf(endRow);
             
+            if(startIndex === -1 || endIndex === -1) return;
             const low = Math.min(startIndex, endIndex);
             const high = Math.max(startIndex, endIndex);
             
-            allRows.forEach((row, index) => {
+            visibleRows.forEach((row, index) => {
                 const cb = row.querySelector('.transaction-checkbox');
-                if (cb) {
-                    cb.checked = (index >= low && index <= high) ? checkState : false;
-                }
+                if (cb) cb.checked = (index >= low && index <= high) ? checkState : false;
             });
-            
             updateUIState();
         }
 
         tableBody.addEventListener('keydown', function(e) {
-            // Intercept Escape key press before focus checks run to wipe targets cleanly
             if (e.key === 'Escape') {
                 e.preventDefault();
                 resetAllSelections();
@@ -309,16 +607,16 @@
             }
 
             const activeRow = document.activeElement;
-            if (!activeRow || activeRow.tagName !== 'TR') return;
+            if (!activeRow || !activeRow.classList.contains('ledger-row')) return;
 
-            const allRows = Array.from(tableBody.querySelectorAll('tr:not(.empty-row)'));
-            const currentIndex = allRows.indexOf(activeRow);
+            const visibleRows = Array.from(tableBody.querySelectorAll('tr.ledger-row')).filter(r => r.style.display !== "none");
+            const currentIndex = visibleRows.indexOf(activeRow);
             let targetRow = null;
 
             if (e.key === 'ArrowDown') {
-                if (currentIndex < allRows.length - 1) targetRow = allRows[currentIndex + 1];
+                if (currentIndex < visibleRows.length - 1) targetRow = visibleRows[currentIndex + 1];
             } else if (e.key === 'ArrowUp') {
-                if (currentIndex > 0) targetRow = allRows[currentIndex - 1];
+                if (currentIndex > 0) targetRow = visibleRows[currentIndex - 1];
             } else if (e.key === ' ' || e.key === 'Enter') {
                 e.preventDefault();
                 const cb = activeRow.querySelector('.transaction-checkbox');
@@ -332,11 +630,7 @@
 
             if (targetRow) {
                 e.preventDefault();
-                
-                if (e.shiftKey && !lastFocusedRow) {
-                    lastFocusedRow = activeRow;
-                }
-
+                if (e.shiftKey && !lastFocusedRow) lastFocusedRow = activeRow;
                 targetRow.focus();
 
                 if (e.shiftKey && lastFocusedRow) {
@@ -350,11 +644,13 @@
 
         if (selectAllBox) {
             selectAllBox.addEventListener('change', function() {
-                const rowCheckboxes = tableBody.querySelectorAll('.transaction-checkbox');
-                rowCheckboxes.forEach(cb => cb.checked = this.checked);
+                const visibleCheckboxes = tableBody.querySelectorAll('tr.ledger-row:not([style*="display: none"]) .transaction-checkbox');
+                visibleCheckboxes.forEach(cb => cb.checked = this.checked);
                 updateUIState();
             });
         }
+
+        populateFilterMenus();
     });
 </script>
-{% endblock content %}
+{% endblock content%}

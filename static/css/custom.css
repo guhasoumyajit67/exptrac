@@ -312,3 +312,161 @@ body {
 .btn-skip-icon-only:active {
     transform: scale(0.95); /* Tactile shrink down click tracking layer */
 }
+
+
+
+
+
+
+
+/* ==========================================================================
+   EXCEL-STYLE HEADER FILTERING & SORTING OVERLAYS
+   ========================================================================== */
+
+/* Sorting Column Triggers */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.sortable-header:hover {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+.sortable-header i {
+    transition: color 0.15s ease-in-out;
+}
+
+/* Micro sizing for indicator symbols */
+.extra-small {
+    font-size: 0.65rem;
+}
+
+/* Excel Style Dropdown Checkbox Panels */
+.excel-filter-menu {
+    top: 100%;
+    left: 0;
+    font-weight: normal;
+    text-transform: none;
+    background-color: #ffffff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    min-width: 160px;
+    z-index: 1060;
+}
+
+/* Scrollable dynamic wrapper logic */
+.filter-options-container {
+    max-height: 160px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+}
+
+/* Custom Scrollbar for option panel frames */
+.filter-options-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.filter-options-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.filter-options-container::-webkit-scrollbar-thumb {
+    background: #e9ecef;
+    border-radius: 10px;
+}
+
+.filter-options-container::-webkit-scrollbar-thumb:hover {
+    background: #dee2e6;
+}
+
+/* Checkbox item wrapper mechanics */
+.filter-option-item {
+    transition: background-color 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.filter-option-item:hover {
+    background-color: #f8f9fa;
+}
+
+.filter-option-item input[type="checkbox"] {
+    cursor: pointer;
+    transform: scale(0.9);
+}
+
+.filter-option-item label {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Minimal vector filter toggle trigger icon buttons */
+.excel-filter-icon {
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease-in-out;
+}
+
+.excel-filter-icon:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: #212529 !important;
+}
+
+/* Ensures dropdown menus don't clip under clipped responsive outer wraps */
+#ledger-table-wrapper {
+    overflow: visible !important;
+}
+
+
+
+
+/* ===================================================
+   1. BULK ACTIONS DRAWER ANIMATION ENGINE
+   =================================================== */
+#bulk-delete-actions {
+    opacity: 0;
+    transform: translateX(8px);
+    visibility: hidden;
+    
+    /* Enforces exact vertical flex centering and height metrics layout */
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 31px !important; 
+    margin: 0 !important;
+    
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#bulk-delete-actions.show-actions {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+/* ===================================================
+   2. SELECTION WORKSPACE ACTIONS BUTTON CONTROL BOOT
+   =================================================== */
+#clear-selection-btn,
+#bulk-delete-btn {
+    box-sizing: border-box !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    font-size: 0.8rem !important;
+    
+    /* Formats internal baselines to sit perfectly flat inside the 31px grid height */
+    height: 31px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    
+    border-radius: 8px !important;
+    letter-spacing: -0.01em !important;
+    transition: all 0.15s ease-in-out !important;
+}

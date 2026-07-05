@@ -27,19 +27,26 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {% if user.is_authenticated %}
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
+                    
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" 
+                        href="{% url 'home' %}" 
+                        {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a>
                     </li>
+                    
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transaction_list' %}">Ledger</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'transaction_list' %}active fw-semibold{% endif %}" 
+                        href="{% url 'transaction_list' %}"
+                        {% if request.resolver_match.url_name == 'transaction_list' %}aria-current="page"{% endif %}>Ledger</a>
                     </li>
+                    
                     <li class="nav-item dropdown ms-lg-2">
                         <a class="nav-link dropdown-toggle btn btn-dark btn-sm border-0 text-start text-lg-center px-3 py-1.5 rounded-3 structure-user-badge" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle me-1"></i> {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
                             <li>
-                                <a class="dropdown-item py-2" href="{% url 'password_change' %}">
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
                                     <i class="bi bi-key me-2 text-muted"></i>Change Password
                                 </a>
                             </li>
@@ -58,15 +65,14 @@
             {% else %}
                 <ul class="navbar-nav ms-auto gap-2 py-2 py-lg-0">
                     <li class="nav-item">
-                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 w-100">Log In</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 w-100 {% if request.resolver_match.url_name == 'login' %}active{% endif %}">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'signup' %}" class="btn btn-primary btn-sm px-3 rounded-2 w-100 fw-bold">Sign Up</a>
+                        <a href="{% url 'signup' %}" class="btn btn-primary btn-sm px-3 rounded-2 w-100 fw-bold {% if request.resolver_match.url_name == 'signup' %}active{% endif %}">Sign Up</a>
                     </li>
                 </ul>
             {% endif %}
         </div>
-    </div>
 </nav>
 
 <div class="container-fluid">
