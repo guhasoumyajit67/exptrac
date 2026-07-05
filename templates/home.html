@@ -3,16 +3,16 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-<div class="row justify-content-center px-3 mt-5">
+<div class="row justify-content-center align-items-center px-3" style="min-height: calc(100vh - 56px);">
     <div class="col-md-10 col-lg-8 text-center">
-        <div class="p-4 p-sm-5 bg-light rounded-4 shadow-sm border-0">
+        <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
             {% if user.is_authenticated %}
                 <h1 class="display-5 fw-bold text-dark mb-3">Welcome Back, {{ user.username }}!</h1>
                 <p class="lead text-secondary mb-4">Track your daily budgets, manage expense allocations, and monitor your personal cash flows effortlessly.</p>
                 
                 <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
-                    <a href="{% url "transaction_list" %}" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">View Expenses</a>
-                    <a href="{% url "create_transaction" %}" class="btn btn-outline-secondary btn-lg px-4 rounded-3 w-100 w-sm-auto">Add New Transaction</a>
+                    <a href="{% url 'transaction_list' %}" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">View Expenses</a>
+                    <a href="{% url 'create_transaction' %}" class="btn btn-outline-secondary btn-lg px-4 rounded-3 w-100 w-sm-auto">Add New Transaction</a>
                 </div>
             {% else %}
                 <h1 class="display-4 fw-bold text-dark mb-3">Master Your Financial Balance</h1>
