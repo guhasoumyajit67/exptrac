@@ -20,7 +20,7 @@ class HomePageView(TemplateView):
 class TransactionCreateView(LoginRequiredMixin, CreateView):
     model = Transaction
     form_class = TransactionForm
-    template_name = "transaction_form.html"
+    template_name = "expenses/transaction_form.html"
     
     # 1. REDIRECT BACK TO SELF: Keeps the form open for back-to-back logs
     success_url = reverse_lazy("create_transaction")
@@ -66,7 +66,7 @@ class TransactionCreateView(LoginRequiredMixin, CreateView):
 class TransactionUpdateView(LoginRequiredMixin, UpdateView):
     model = Transaction
     form_class = TransactionForm
-    template_name = "transaction_form.html"
+    template_name = "expenses/transaction_form.html"
     success_url = reverse_lazy("transaction_list")
 
     def get_queryset(self):
@@ -82,7 +82,7 @@ class TransactionUpdateView(LoginRequiredMixin, UpdateView):
 
 class TransactionDeleteView(LoginRequiredMixin, DeleteView):
     model = Transaction
-    template_name = "transaction_confirm_delete.html"
+    template_name = "expenses/transaction_confirm_delete.html"
     success_url = reverse_lazy("transaction_list")
 
     def get_queryset(self):
@@ -92,7 +92,7 @@ class TransactionDeleteView(LoginRequiredMixin, DeleteView):
 
 class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
-    template_name = "transaction_list.html"
+    template_name = "expenses/transaction_list.html"
     context_object_name = "transactions"
 
     def get_queryset(self):
@@ -112,7 +112,7 @@ class TransactionListView(LoginRequiredMixin, ListView):
 class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
     form_class = ItemForm
-    template_name = "item_form.html"
+    template_name = "expenses/item_form.html"
     success_url = reverse_lazy("create_transaction")
 
     def form_valid(self, form):
@@ -133,7 +133,7 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
     form_class = ItemForm
-    template_name = "item_form.html"  # Same template you already made!
+    template_name = "expenses/item_form.html"  # Same template you already made!
     success_url = reverse_lazy("create_transaction")
 
     def get_queryset(self):
@@ -143,7 +143,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
 class ItemDeleteView(LoginRequiredMixin, DeleteView):
     model = Item
     success_url = reverse_lazy("create_transaction")
-    template_name = "item_confirm_delete.html"
+    template_name = "expenses/item_confirm_delete.html"
 
     def get_queryset(self):
         """
@@ -166,7 +166,7 @@ class ItemDeleteView(LoginRequiredMixin, DeleteView):
 class PayerCreateView(LoginRequiredMixin, CreateView):
     model = Payer
     form_class = PayerForm
-    template_name = "payer_form.html"
+    template_name = "expenses/payer_form.html"
     success_url = reverse_lazy("create_transaction")
 
     def form_valid(self, form):
@@ -178,7 +178,7 @@ class PayerCreateView(LoginRequiredMixin, CreateView):
 class PayerUpdateView(LoginRequiredMixin, UpdateView):
     model = Payer
     form_class = PayerForm
-    template_name = "payer_form.html"  # Same template you already made!
+    template_name = "expenses/payer_form.html"  # Same template you already made!
     success_url = reverse_lazy("create_transaction")
 
     def get_queryset(self):
@@ -188,7 +188,7 @@ class PayerUpdateView(LoginRequiredMixin, UpdateView):
 class PayerDeleteView(LoginRequiredMixin, DeleteView):
     model = Payer
     success_url = reverse_lazy("create_transaction")  # Redirects back to your transaction logger page
-    template_name = "payer_confirm_delete.html"
+    template_name = "expenses/payer_confirm_delete.html"
 
     def get_queryset(self):
         """Security: Only allow users to access/delete their own profiles."""
@@ -216,7 +216,7 @@ class PayerDeleteView(LoginRequiredMixin, DeleteView):
 
 class TransactionBulkUploadView(LoginRequiredMixin, FormView):
     form_class = ExcelUploadForm
-    template_name = "bulk_upload.html"
+    template_name = "expenses/bulk_upload.html"
     success_url = reverse_lazy("transaction_list")
 
     def form_valid(self, form):
@@ -306,7 +306,7 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
 
 
 class TransactionBulkReviewView(LoginRequiredMixin, View):
-    template_name = "bulk_review.html"
+    template_name = "expenses/bulk_review.html"
 
     def get(self, request, *args, **kwargs):
         review_rows = request.session.get('bulk_upload_review_rows', [])

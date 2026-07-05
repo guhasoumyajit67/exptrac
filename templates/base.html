@@ -18,7 +18,11 @@
 
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
     <div class="container-fluid px-lg-4">
-        <a class="navbar-brand fw-bold tracking-tight" href="{% url 'home' %}">ExpTrac</a>
+        <a class="navbar-brand d-flex align-items-center text-white text-decoration-none" href="{% url 'home' %}" style="font-family: system-ui, -apple-system, sans-serif;">
+            <span class="fs-4 fw-black tracking-tight text-white">
+                Exp<span class="text-primary">Trac</span><span class="text-success ms-1" style="font-size: 1.5rem; line-height: 0;">.</span>
+            </span>
+        </a>
         
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
