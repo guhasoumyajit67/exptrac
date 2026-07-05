@@ -485,18 +485,31 @@ class TransactionBulkDeleteView(LoginRequiredMixin, View):
             messages.warning(request, "No transactions were selected for deletion.")
             return redirect('transaction_list')
             
-        deleted_count, _ = Transaction.objects.filter(
+        # 1. 🚨 FIXED: Target your direct 'user' field rather than traversing the 'item__user' join
+        target_queryset = Transaction.objects.filter(
             id__in=transaction_ids,
-            item__user=request.user
-        ).delete()
+            user=request.user
+        )
         
-        if deleted_count == 0:
-            print("--- DEBUG: Retrying deletion without strict user scope for local testing ---")
-            deleted_count, _ = Transaction.objects.filter(id__in=transaction_ids).delete()
+        total_selected = target_queryset.count()
+        deleted_count = 0
+        
+        # 2. 🚨 FIXED: Loop safely to allow models.PROTECT to evaluate individual rows cleanly
+        if total_selected > 0:
+            for transaction in target_queryset:
+                try:
+                    transaction.delete()
+                    deleted_count += 1
+                except Exception as e:
+                    print(f"--- DEBUG: Protected constraint block on ID {transaction.id}: {str(e)} ---")
 
+        # 3. Present crisp dashboard notifications
         if deleted_count > 0:
             messages.success(request, f"Successfully deleted {deleted_count} selected transactions.")
+            if deleted_count < total_selected:
+                ignored = total_selected - deleted_count
+                messages.warning(request, f"{ignored} transactions were protected by database constraints and could not be removed.")
         else:
-            messages.error(request, "Failed to delete transactions. The records could not be found.")
+            messages.error(request, "Failed to delete transactions. Selected records are protected or could not be found.")
             
         return redirect('transaction_list')

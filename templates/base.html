@@ -46,11 +46,26 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
                             <li>
-                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
-                                    <i class="bi bi-key me-2 text-muted"></i>Change Password
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'create_item' %}active{% endif %}" href="{% url 'create_item' %}">
+                                    <i class="bi bi-plus-circle me-2 text-success"></i>Add Item
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'create_payer' %}active{% endif %}" href="{% url 'create_payer' %}">
+                                    <i class="bi bi-person-plus me-2 text-info"></i>Add Payer
+                                </a>
+                            </li>
+                            
                             <li><hr class="dropdown-divider opacity-10"></li>
+                            
+                            <li>
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
+                                    <i class="bi bi-key me-2 text-white-50"></i>Change Password
+                                </a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider opacity-10"></li>
+                            
                             <li>
                                 <form action="{% url 'logout' %}" method="post" class="px-2 py-1">
                                     {% csrf_token %}

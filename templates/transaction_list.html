@@ -43,40 +43,40 @@
             <form method="post" action="{% url 'bulk_delete_transactions' %}" id="bulk-delete-form" onsubmit="return confirm('Are you sure you want to permanently delete all selected transactions?');">
                 {% csrf_token %}
 
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3 text-start">
-    
-    <div class="d-flex flex-wrap align-items-center gap-2 text-secondary small fw-medium">
-        <div class="d-flex align-items-center gap-1">
-            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">From:</span>
-            <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
-        </div>
-        <div class="d-flex align-items-center gap-1">
-            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">To:</span>
-            <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
-        </div>
-        <button type="button" id="clearDateRangeBtn" class="btn btn-sm btn-light border small fw-bold text-secondary rounded-2 px-2.5" style="font-size: 0.78rem; height: 31px; display: inline-flex; align-items: center;">
-            Clear Range
-        </button>
-    </div>
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3 text-start">
+                    
+                    <div class="d-flex flex-wrap align-items-center gap-2 text-secondary small fw-medium">
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">From:</span>
+                            <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">To:</span>
+                            <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
+                        </div>
+                        <button type="button" id="clearDateRangeBtn" class="btn btn-sm btn-light border small fw-bold text-secondary rounded-2 px-2.5" style="font-size: 0.78rem; height: 31px; display: inline-flex; align-items: center;">
+                            Clear Range
+                        </button>
+                    </div>
 
-    <div id="bulk-delete-actions" class="d-flex justify-content-end align-items-center gap-2 m-0" style="height: 31px;">
-        <button type="button" id="clear-selection-btn" class="btn btn-sm fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-            Clear Selection
-        </button>
+                    <div id="bulk-delete-actions" class="d-flex justify-content-end align-items-center gap-2 m-0" style="height: 31px;">
+                        <button type="button" id="clear-selection-btn" class="btn btn-sm fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                            Clear Selection
+                        </button>
 
-        <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-            </svg>
-            <span id="delete-btn-text">Delete Selected</span>
-        </button>
-    </div>
+                        <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                            </svg>
+                            <span id="delete-btn-text">Delete Selected</span>
+                        </button>
+                    </div>
 
-</div>
+                </div>
 
                 <div id="ledger-table-wrapper" class="table-responsive rounded-3 border">
                     <table class="table table-hover align-middle mb-0 text-start" id="ledgerTable">
@@ -276,7 +276,7 @@
         const rows = Array.from(tableBody.querySelectorAll(".ledger-row"));
         const noMatchesRow = document.getElementById('excelNoMatchesRow');
 
-        // 🚨 Date Range Toolbar Inputs Elements
+        // Date Range Toolbar Inputs Elements
         const dateStartInput = document.getElementById('dateFilterStart');
         const dateEndInput = document.getElementById('dateFilterEnd');
         const clearDateBtn = document.getElementById('clearDateRangeBtn');
@@ -379,7 +379,6 @@
         function applyExcelFilters() {
             let visibleRows = 0;
 
-            // Gather date limits from toolbar picker bounding parameters
             const startDateVal = dateStartInput && dateStartInput.value ? new Date(dateStartInput.value) : null;
             const endDateVal = dateEndInput && dateEndInput.value ? new Date(dateEndInput.value) : null;
 
@@ -390,7 +389,6 @@
                 const catVal = row.querySelector(".excel-cat-cell")?.getAttribute("data-filter-val")?.trim();
                 const payerVal = row.querySelector(".excel-payer-cell")?.getAttribute("data-filter-val")?.trim();
 
-                // Process custom date rows structures matching Ymd format metrics
                 const dateCell = row.querySelector("[data-sort-val]");
                 let rowDate = null;
                 if (dateCell) {
@@ -415,7 +413,7 @@
                 if (blockCat || blockPayer || blockDate) {
                     row.style.display = "none";
                     const cb = row.querySelector('.transaction-checkbox');
-                    if (cb) cb.checked = false;
+                    if (cb) cb.checked = false; // Force clear checkbox state on hide
                 } else {
                     row.style.display = "";
                     visibleRows++;
@@ -430,7 +428,6 @@
             updateUIState();
         }
 
-        // 🚨 Register Toolbar Date Filter Events Linkage
         if (dateStartInput) dateStartInput.addEventListener('change', applyExcelFilters);
         if (dateEndInput) dateEndInput.addEventListener('change', applyExcelFilters);
         if (clearDateBtn) {
@@ -524,20 +521,26 @@
         }
 
         function resetAllSelections() {
-            const rowCheckboxes = tableBody.querySelectorAll('.transaction-checkbox');
-            rowCheckboxes.forEach(cb => cb.checked = false);
+            rows.forEach(row => {
+                const cb = row.querySelector('.transaction-checkbox');
+                if (cb) cb.checked = false;
+            });
             if (selectAllBox) selectAllBox.checked = false;
             lastFocusedRow = null;
             updateUIState();
         }
 
         function updateUIState() {
-            const checkedRows = tableBody.querySelectorAll('tr.ledger-row');
             let checkedCount = 0;
 
-            checkedRows.forEach(row => {
+            rows.forEach(row => {
                 const cb = row.querySelector('.transaction-checkbox');
-                if (cb && cb.checked) {
+                
+                // 🚨 FIXED: Programmatically uncheck rows hidden by filters
+                if (row.style.display === "none") {
+                    if (cb) cb.checked = false;
+                    row.classList.remove('row-selected');
+                } else if (cb && cb.checked) {
                     row.classList.add('row-selected');
                     checkedCount++;
                 } else {
@@ -584,7 +587,7 @@
         });
 
         function toggleRange(startRow, endRow, checkState) {
-            const visibleRows = Array.from(tableBody.querySelectorAll('tr.ledger-row')).filter(r => r.style.display !== "none");
+            const visibleRows = rows.filter(r => r.style.display !== "none");
             const startIndex = visibleRows.indexOf(startRow);
             const endIndex = visibleRows.indexOf(endRow);
             
@@ -609,7 +612,7 @@
             const activeRow = document.activeElement;
             if (!activeRow || !activeRow.classList.contains('ledger-row')) return;
 
-            const visibleRows = Array.from(tableBody.querySelectorAll('tr.ledger-row')).filter(r => r.style.display !== "none");
+            const visibleRows = rows.filter(r => r.style.display !== "none");
             const currentIndex = visibleRows.indexOf(activeRow);
             let targetRow = null;
 
@@ -644,8 +647,13 @@
 
         if (selectAllBox) {
             selectAllBox.addEventListener('change', function() {
-                const visibleCheckboxes = tableBody.querySelectorAll('tr.ledger-row:not([style*="display: none"]) .transaction-checkbox');
-                visibleCheckboxes.forEach(cb => cb.checked = this.checked);
+                // 🚨 FIXED: Programmatically loops visibility states instead of dynamic string parsing
+                rows.forEach(row => {
+                    if (row.style.display !== "none") {
+                        const cb = row.querySelector('.transaction-checkbox');
+                        if (cb) cb.checked = this.checked;
+                    }
+                });
                 updateUIState();
             });
         }
@@ -653,4 +661,7 @@
         populateFilterMenus();
     });
 </script>
+
+
+
 {% endblock content%}
