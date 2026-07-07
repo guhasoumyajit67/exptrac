@@ -35,56 +35,70 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" 
                         href="{% url 'home' %}" 
-                        {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'transaction_list' %}active fw-semibold{% endif %}" 
-                        href="{% url 'transaction_list' %}"
-                        {% if request.resolver_match.url_name == 'transaction_list' %}aria-current="page"{% endif %}>Ledger</a>
+                        {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link fw-bold" href="{% url 'dashboard_analytics' %}">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'transaction_list' %}active fw-semibold{% endif %}" 
+                        href="{% url 'transaction_list' %}"
+                        {% if request.resolver_match.url_name == 'transaction_list' %}aria-current="page"{% endif %}>
+                            <i class="bi bi-receipt me-1"></i> Ledger
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_analytics' %}active fw-semibold{% endif %}" 
+                        href="{% url 'dashboard_analytics' %}"
+                        {% if request.resolver_match.url_name == 'dashboard_analytics' %}aria-current="page"{% endif %}>
                             <i class="bi bi-graph-up-arrow me-1"></i> Analytics
                         </a>
                     </li>
-                    
+
+                    <li class="nav-item me-lg-2">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'create_transaction' %}active fw-semibold{% endif %}" 
+                        href="{% url 'create_transaction' %}"
+                        {% if request.resolver_match.url_name == 'create_transaction' %}aria-current="page"{% endif %}>
+                            <i class="bi bi-plus-circle me-1"></i> Add Expense
+                        </a>
+                    </li>
+                                        
                     <li class="nav-item dropdown ms-lg-2">
                         <a class="nav-link dropdown-toggle btn btn-dark btn-sm border-0 text-start text-lg-center px-3 py-1.5 rounded-3 structure-user-badge" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle me-1"></i> {{ user.username }}
                         </a>
-<ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
-    <li>
-        <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_items' %}active{% endif %}" href="{% url 'manage_items' %}">
-            <i class="bi bi-tags me-2 text-success"></i>Items
-        </a>
-    </li>
-    <li>
-        <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_payers' %}active{% endif %}" href="{% url 'manage_payers' %}">
-            <i class="bi bi-people me-2 text-info"></i>Payers
-        </a>
-    </li>
-    
-    <li><hr class="dropdown-divider opacity-10"></li>
-    
-    <li>
-        <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
-            <i class="bi bi-key me-2 text-white-50"></i>Change Password
-        </a>
-    </li>
-    
-    <li><hr class="dropdown-divider opacity-10"></li>
-    
-    <li>
-        <form action="{% url 'logout' %}" method="post" class="px-2 py-1">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link dropdown-item py-2 text-danger rounded-2 d-flex align-items-center gap-2">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </button>
-        </form>
-    </li>
-</ul>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
+                            <li>
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_items' %}active{% endif %}" href="{% url 'manage_items' %}">
+                                    <i class="bi bi-tags me-2 text-success"></i>Items
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_payers' %}active{% endif %}" href="{% url 'manage_payers' %}">
+                                    <i class="bi bi-people me-2 text-info"></i>Payers
+                                </a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider opacity-10"></li>
+                            
+                            <li>
+                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
+                                    <i class="bi bi-key me-2 text-white-50"></i>Change Password
+                                </a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider opacity-10"></li>
+                            
+                            <li>
+                                <form action="{% url 'logout' %}" method="post" class="px-2 py-1">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link dropdown-item py-2 text-danger rounded-2 d-flex align-items-center gap-2">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             {% else %}
