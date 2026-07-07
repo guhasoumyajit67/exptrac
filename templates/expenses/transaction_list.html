@@ -33,14 +33,14 @@
                         {% for message in messages %}
                             <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3 shadow-sm fw-medium small py-2 px-3 mb-2" role="alert">
                                 <span>✨ {{ message }}</span>
-                                <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.85rem 1rem;"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.85rem 1rem;"></button>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
             {% endif %}
 
-            <form method="post" action="{% url 'bulk_delete_transactions' %}" id="bulk-delete-form" onsubmit="return confirm('Are you sure you want to permanently delete all selected transactions?');">
+            <form method="post" action="{% url 'bulk_delete_transactions' %}" id="bulk-delete-form">
                 {% csrf_token %}
 
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3 text-start">
@@ -97,7 +97,6 @@
                                     </div>
                                     
                                     <div id="categoryFilterMenu" class="excel-filter-menu d-none shadow border rounded-4 position-absolute bg-white p-2 mt-1 text-start" style="z-index: 1060; min-width: 200px;">
-                                        
                                         <div class="d-flex flex-column gap-1 pb-2 mb-2 border-bottom">
                                             <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="2" data-order="asc">
                                                 <i class="bi bi-sort-alpha-down text-secondary"></i> Sort A to Z
@@ -133,7 +132,6 @@
                                     </div>
                                     
                                     <div id="payerFilterMenu" class="excel-filter-menu d-none shadow border rounded-4 position-absolute bg-white p-2 mt-1 text-start" style="z-index: 1060; min-width: 180px;">
-                                        
                                         <div class="d-flex flex-column gap-1 pb-2 mb-2 border-bottom">
                                             <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="6" data-order="asc">
                                                 <i class="bi bi-sort-alpha-down text-secondary"></i> Sort A to Z
@@ -248,15 +246,52 @@
     </div>
 </div>
 
+<div id="delete-loading-overlay">
+    <div class="spinner-border text-light mb-3" role="status" style="width: 3rem; height: 3rem; border-width: 0.25em;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <h5 class="text-white fw-bold tracking-wide mb-1">Deleting Transactions</h5>
+    <p class="text-white-50 small mb-0">Processing batch cleanup. Please do not close or reload this page...</p>
+</div>
 
 
+<style>
+    #delete-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    #delete-loading-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+</style>
 
 
 <script>
+    // 🚨 PATCHED ENGINE: Binds path queries seamlessly to protect view lifecycles
     function showRowActions(id, itemName, price) {
         document.getElementById('modalTargetSublabel').textContent = itemName + " (₹" + price + ")";
+        
         const editUrlPattern = "{% url 'update_transaction' 0 %}".replace('0', id);
-        const deleteUrlPattern = "{% url 'delete_transaction' 0 %}".replace('0', id);
+        let deleteUrlPattern = "{% url 'delete_transaction' 0 %}".replace('0', id);
+        
+        // Dynamic location calculations mapping context structures dynamically
+        const currentPath = encodeURIComponent(window.location.pathname);
+        deleteUrlPattern = `${deleteUrlPattern}?next=${currentPath}`;
         
         document.getElementById('modalEditBtn').href = editUrlPattern;
         document.getElementById('modalDeleteBtn').href = deleteUrlPattern;
@@ -276,7 +311,6 @@
         const rows = Array.from(tableBody.querySelectorAll(".ledger-row"));
         const noMatchesRow = document.getElementById('excelNoMatchesRow');
 
-        // Date Range Toolbar Inputs Elements
         const dateStartInput = document.getElementById('dateFilterStart');
         const dateEndInput = document.getElementById('dateFilterEnd');
         const clearDateBtn = document.getElementById('clearDateRangeBtn');
@@ -413,7 +447,7 @@
                 if (blockCat || blockPayer || blockDate) {
                     row.style.display = "none";
                     const cb = row.querySelector('.transaction-checkbox');
-                    if (cb) cb.checked = false; // Force clear checkbox state on hide
+                    if (cb) cb.checked = false;
                 } else {
                     row.style.display = "";
                     visibleRows++;
@@ -536,7 +570,6 @@
             rows.forEach(row => {
                 const cb = row.querySelector('.transaction-checkbox');
                 
-                // 🚨 FIXED: Programmatically uncheck rows hidden by filters
                 if (row.style.display === "none") {
                     if (cb) cb.checked = false;
                     row.classList.remove('row-selected');
@@ -647,7 +680,6 @@
 
         if (selectAllBox) {
             selectAllBox.addEventListener('change', function() {
-                // 🚨 FIXED: Programmatically loops visibility states instead of dynamic string parsing
                 rows.forEach(row => {
                     if (row.style.display !== "none") {
                         const cb = row.querySelector('.transaction-checkbox');
@@ -660,8 +692,23 @@
 
         populateFilterMenus();
     });
+
+    // ===================================================
+    // 4. BATCH DELETION LOADER ENGINE INTERCEPTOR
+    // ===================================================
+    const bulkDeleteForm = document.getElementById("bulk-delete-form");
+    const processingLoader = document.getElementById("delete-loading-overlay");
+
+    if (bulkDeleteForm && processingLoader) {
+        bulkDeleteForm.addEventListener("submit", function (event) {
+            const userConfirmed = confirm("Are you sure you want to permanently delete all selected transactions?");
+            if (userConfirmed) {
+                processingLoader.classList.add("active");
+            } else {
+                event.preventDefault();
+            }
+        });
+    }   
 </script>
-
-
 
 {% endblock content%}

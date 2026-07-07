@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Payers{% endblock title %}
+
+{% block content %}
+<div class="container mt-5 px-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 border-bottom pb-3 mb-4">
+                <div>
+                    <h1 class="h3 fw-extrabold text-dark mb-1">Payer Configuration Dashboard</h1>
+                    <p class="text-muted small mb-0">Review, add, or remove specific payer configurations associated with your ledger ecosystem.</p>
+                </div>
+                <a href="{% url 'create_payer' %}?next={{ request.path }}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm">
+                    + Add New Payer
+                </a>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show rounded-3 shadow-sm fw-medium" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="table-responsive rounded-3 border bg-white shadow-sm">
+                <table class="table table-hover align-middle mb-0 text-start">
+                    <thead class="bg-light border-bottom text-uppercase tracking-wider fw-bold text-muted small" style="font-size: 0.75rem;">
+                        <tr>
+                            <th class="py-3 ps-4" style="width: 50%;">Payer Name</th>
+                            <th class="py-3" style="width: 25%;">Usage Count</th>
+                            <th class="py-3 text-end pe-4" style="width: 25%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payer in payers %}
+                            <tr>
+                                <td class="ps-4 fw-bold text-dark">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-person text-secondary"></i>
+                                        <span>{{ payer.name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if payer.transaction_count > 0 %}
+                                        <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2.5 py-1.5 border border-secondary-subtle">
+                                            {{ payer.transaction_count }} Transaction{% if payer.transaction_count > 1 %}s{% endif %}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted small fw-normal">Unused</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <a href="{% url 'update_payer' payer.pk %}" class="btn btn-sm btn-outline-secondary px-2.5 py-1 fw-semibold small" style="font-size: 0.8rem;">
+                                            Edit
+                                        </a>
+
+                                        <form method="post" action="{% url 'delete_managed_payer' payer.pk %}" onsubmit="return confirm('Are you sure you want to permanently delete this payer config?');" class="d-inline">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{{ request.path }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger px-2.5 py-1 fw-semibold small" style="font-size: 0.8rem;">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center py-5 text-muted small fw-medium">
+                                    No custom configuration payers found. Click "+ Add New Payer" to populate this register grid.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -6,23 +6,26 @@ from .views import (
     TransactionUpdateView,  
     TransactionDeleteView,  
     ItemCreateView,
-    ItemUpdateView,    # Added for editing items
-    ItemDeleteView,    # Added for deleting items
+    ItemUpdateView,    
+    ItemDeleteView,    
     PayerCreateView,
-    PayerUpdateView,   # Added for editing payers
-    PayerDeleteView,   # Added for deleting payers
+    PayerUpdateView,   
+    PayerDeleteView,   
     TransactionBulkUploadView,
     TransactionBulkReviewView,
     BulkUploadCommitView,
-    TransactionBulkDeleteView
+    TransactionBulkDeleteView,
+    ItemManagementListView,
+    PayerManagementListView,
 )
 
 urlpatterns = [
+    # Home & Core Transactions
     path("", HomePageView.as_view(), name="home"),
     path("transaction/", TransactionListView.as_view(), name="transaction_list"),
     path("transaction/create/", TransactionCreateView.as_view(), name="create_transaction"),
     
-    # Dedicated separate Transaction CRUD routing paths
+    # Dedicated Separate Transaction CRUD Routing Paths
     path("transaction/edit/<int:pk>/", TransactionUpdateView.as_view(), name="update_transaction"),
     path("transaction/delete/<int:pk>/", TransactionDeleteView.as_view(), name="delete_transaction"),
     
@@ -36,11 +39,17 @@ urlpatterns = [
     path("item/<int:pk>/update/", ItemUpdateView.as_view(), name="update_item"),
     path("item/<int:pk>/delete/", ItemDeleteView.as_view(), name="delete_item"),
 
-    # Bulk upload
+    # Bulk Operations
     path('transaction/bulk-upload/', TransactionBulkUploadView.as_view(), name='bulk_upload_transactions'),
     path('transaction/bulk-review/', TransactionBulkReviewView.as_view(), name='bulk_upload_review'),
     path('transaction/bulk-commit/', BulkUploadCommitView.as_view(), name='bulk_upload_confirm_commit'),
-
-    # Bulk Delete
     path('transaction/bulk-delete/', TransactionBulkDeleteView.as_view(), name='bulk_delete_transactions'),
+
+    # Configuration Dashboard List Views
+    path("items/manage/", ItemManagementListView.as_view(), name="manage_items"),
+    path("payers/manage/", PayerManagementListView.as_view(), name="manage_payers"),
+
+    # Consolidated Dashboard Deletion Target URIs
+    path("items/manage/<int:pk>/delete/", ItemDeleteView.as_view(), name="delete_managed_item"),
+    path("payers/manage/<int:pk>/delete/", PayerDeleteView.as_view(), name="delete_managed_payer"),
 ]

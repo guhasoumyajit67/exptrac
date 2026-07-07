@@ -14,8 +14,6 @@
                 <p class="text-muted small">Fill out the fields below to keep your ledger balanced.</p>
             </div>
 
-
-
             {% if messages %}
                 <div class="messages mb-4">
                     {% for message in messages %}
@@ -27,7 +25,6 @@
                 </div>
             {% endif %}
             
-
             <form method="POST" class="needs-validation" novalidate>
                 {% csrf_token %}
                 
@@ -73,8 +70,8 @@
                                                     <i class="bi bi-three-dots-vertical small"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end shadow border rounded-3" style="font-size: 0.8rem;">
-                                                    <li><a class="dropdown-item py-1.5" href="{% url 'update_payer' pk %}"><i class="bi bi-pencil me-2 text-primary"></i>Edit</a></li>
-                                                    <li><a class="dropdown-item py-1.5 text-danger" href="{% url 'delete_payer' pk %}"><i class="bi bi-trash3 me-2"></i>Delete</a></li>
+                                                    <li><a class="dropdown-item py-1.5" href="{% url 'update_payer' pk %}?next={{ request.path }}"><i class="bi bi-pencil me-2 text-primary"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item py-1.5 text-danger" href="{% url 'delete_payer' pk %}?next={{ request.path }}"><i class="bi bi-trash3 me-2"></i>Delete</a></li>
                                                 </ul>
                                             </div>
                                         </li>
@@ -122,10 +119,10 @@
                                     
                                     {% if item_obj.user %}
                                         <div class="d-flex gap-2 ms-auto no-bubble">
-                                            <a href="{% url 'update_item' item_obj.pk %}" class="btn btn-sm btn-link text-primary p-0 border-0 shadow-none text-decoration-none small fw-medium me-1">
+                                            <a href="{% url 'update_item' item_obj.pk %}?next={{ request.path }}" class="btn btn-sm btn-link text-primary p-0 border-0 shadow-none text-decoration-none small fw-medium me-1">
                                                 <i class="bi bi-pencil small"></i> Edit
                                             </a>
-                                            <a href="{% url 'delete_item' item_obj.pk %}" class="btn btn-sm btn-link text-danger p-0 border-0 shadow-none text-decoration-none small fw-medium">
+                                            <a href="{% url 'delete_item' item_obj.pk %}?next={{ request.path }}" class="btn btn-sm btn-link text-danger p-0 border-0 shadow-none text-decoration-none small fw-medium">
                                                 <i class="bi bi-trash3 small"></i> Delete
                                             </a>
                                         </div>
@@ -134,7 +131,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                </div>             
+                </div>            
 
                 {% comment %} PRICE & QUANTITY Section {% endcomment %}
                 <div class="row g-2 mb-3">
@@ -250,7 +247,6 @@
         const itemDropdownPanel = document.getElementById('itemDropdownPanel');
         const unitAddon = document.getElementById('quantity-unit-addon');
 
-        // Helper to update the text label element smoothly
         function updateUnitBadge(unitValue) {
             if (unitAddon) {
                 unitAddon.textContent = unitValue ? unitValue : '-';
@@ -259,10 +255,8 @@
 
         if (hiddenItemSelect && itemSearchInput && itemDropdownPanel) {
             
-            // On page edit load, match pre-selected items and fetch their unit attributes
             const initialOption = hiddenItemSelect.options[hiddenItemSelect.selectedIndex];
             if (initialOption && initialOption.value) {
-                // Find the matching row on edit load to get the clean name string
                 const matchingRow = document.querySelector(`.custom-item-row[data-value="${initialOption.value}"]`);
                 if (matchingRow) {
                     itemSearchInput.value = matchingRow.getAttribute('data-display-name');
@@ -307,7 +301,6 @@
                 }
             }
 
-            // Clicking a row maps the database key and injects the unit label
             document.querySelectorAll('.custom-item-row').forEach(row => {
                 row.addEventListener('click', function(e) {
                     if (e.target.closest('.no-bubble')) return;
@@ -319,9 +312,7 @@
                     hiddenItemSelect.value = val;
                     itemSearchInput.value = text;
                     
-                    // AUTO-FETCH SYNC: Updates the quantity badge layout instantly!
                     updateUnitBadge(unit);
-                    
                     itemDropdownPanel.classList.add('d-none');
                 });
             });
@@ -332,7 +323,6 @@
                 });
             });
 
-            // 🚨 FIXED: Pulls from data-display-name on blur instead of raw option text
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('#itemAutocompleteWrapper')) {
                     itemDropdownPanel.classList.add('d-none');

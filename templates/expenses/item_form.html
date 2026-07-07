@@ -15,6 +15,10 @@
             <form method="post" autocomplete="off" class="needs-validation" novalidate>
                 {% csrf_token %}
                 
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+                
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger rounded-3 small border-0 shadow-sm mb-3">
                         {% for error in form.non_field_errors %}
@@ -57,7 +61,7 @@
                             <input type="text" id="categorySearchInput" class="form-control text-start rounded-3 w-100" placeholder="Type to search category..." autocomplete="off">
                         </div>
 
-                        <div id="categoryDropdownPanel" class="card shadow-lg border rounded-3 position-absolute w-100 mt-1 d-none" style="z-index: 1050; max-height: 200px; overflow-y: auto;">
+                        <div id="categoryDropdownPanel" class="card shadow-lg border rounded-3 position-absolute w-100 mt-1 d-none" style="z-index: 1050; max-height: 240px; overflow-y: auto;">
                             <div class="list-group list-group-flush">
                                 {% for pk, name in form.fields.category.choices %}
                                     {% if pk %}
@@ -78,7 +82,7 @@
                         {% endif %}
                     </div>
 
-                    {% comment %} 🚨 NEW: UNIT SELECTOR FIELD {% endcomment %}
+                    {% comment %} UNIT SELECTOR FIELD {% endcomment %}
                     <div class="col-md-4">
                         <label for="{{ form.unit.id_for_label }}" class="form-label small fw-bold text-secondary text-uppercase mb-1">
                             Unit
@@ -99,7 +103,7 @@
                     <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold fs-6 py-2.5 shadow-sm">
                         Save Custom Item
                     </button>
-                    <a href="{% url 'create_transaction' %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
+                    <a href="{% if request.GET.next %}{{ request.GET.next }}{% else %}{% url 'create_transaction' %}{% endif %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
                         Back to Log Transaction
                     </a>
                 </div>

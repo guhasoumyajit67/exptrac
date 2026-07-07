@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # Local
     'accounts',
     'expenses',
+    'analytics',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,8 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# Increase the maximum number of GET/POST parameters allowed in a single upload.
+# Default is 1000. Raising it to 5000 or 10000 is perfectly fine for large tables.
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
