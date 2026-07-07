@@ -81,3 +81,17 @@ class Transaction(models.Model):
         # Clean spacing if qty_label ends up being empty
         qty_display = f" {qty_label}" if qty_label else ""
         return f"{self.date} - {self.item.name}{qty_display} [₹{self.price}] paid by {self.payer.name}"
+    
+
+class StagingTransaction(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    row_idx = models.IntegerField()
+    date = models.CharField(max_length=20)
+    item_name = models.CharField(max_length=255, blank=True)
+    item_id = models.IntegerField(null=True, blank=True)
+    price = models.FloatField(default=0.0)
+    quantity = models.FloatField(null=True, blank=True)
+    payer_name = models.CharField(max_length=255, blank=True)
+    payer_id = models.IntegerField(null=True, blank=True)
+    comment = models.TextField(blank=True)
+    error = models.CharField(max_length=255, blank=True)

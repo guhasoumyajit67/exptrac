@@ -138,6 +138,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
-# Increase the maximum number of GET/POST parameters allowed in a single upload.
-# Default is 1000. Raising it to 5000 or 10000 is perfectly fine for large tables.
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
+
+# Prevent Django from dropping large multi-row spreadsheet forms
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000  # Default is 1000
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880  # Expand max upload size to 5MB

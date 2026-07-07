@@ -11,17 +11,12 @@ from django.views import View
 import openpyxl
 import re
 
-from .models import Transaction, Item, Payer, Category
+from .models import Transaction, Item, Payer, Category, StagingTransaction
 from .forms import TransactionForm, ItemForm, PayerForm, ExcelUploadForm
-
-
 
 
 class HomePageView(TemplateView):
     template_name = "home.html"
-
-
-
 
 
 # ==============================================================================
@@ -296,7 +291,7 @@ class PayerDeleteView(LoginRequiredMixin, DeleteView):
 class TransactionBulkUploadView(LoginRequiredMixin, FormView):
     form_class = ExcelUploadForm
     template_name = "expenses/bulk_upload.html"
-    success_url = reverse_lazy("transaction_list")
+    success_url = reverse_lazy("bulk_upload_review")
 
     def form_valid(self, form):
         excel_file = self.request.FILES['excel_file']
@@ -306,8 +301,10 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
         item_cache = {item.name.strip().lower(): item for item in Item.objects.all()}
         payer_cache = {payer.name.strip().lower(): payer for payer in Payer.objects.filter(user=self.request.user)}
         
-        transactions_to_create = []
-        pending_review_rows = []
+        # Clear out any previous unfinished staging rows for this user
+        StagingTransaction.objects.filter(user=self.request.user).delete()
+        
+        staging_pool = []
 
         for row_idx, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
             if not row or row[0] is None:
@@ -331,198 +328,216 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
 
             item_obj = item_cache.get(item_raw_name.lower())
             payer_obj = payer_cache.get(payer_raw_name.lower())
-
             date_str = date_val.strftime('%Y-%m-%d') if hasattr(date_val, 'strftime') else str(date_val)
 
-            row_data = {
-                'row_idx': row_idx,
-                'date': date_str,
-                'item_name': item_raw_name,
-                'price': final_price,
-                'quantity': final_quantity,
-                'payer_name': payer_raw_name,
-                'comment': str(comment_val).strip() if comment_val else ""
-            }
+            errors = []
+            if not item_obj:
+                errors.append("Missing Item")
+            if not payer_obj:
+                errors.append("Missing Payer")
 
-            if item_obj and payer_obj:
-                row_data['item_id'] = item_obj.id
-                row_data['payer_id'] = payer_obj.id
-                transactions_to_create.append(row_data)
-            else:
-                if item_obj:
-                    row_data['item_id'] = item_obj.id
-                if payer_obj:
-                    row_data['payer_id'] = payer_obj.id
-                
-                if not item_obj:
-                    row_data['error'] = "Missing Item"
-                elif not payer_obj:
-                    row_data['error'] = "Missing Payer"
-                    
-                pending_review_rows.append(row_data)
+            staging_pool.append(
+                StagingTransaction(
+                    user=self.request.user,
+                    row_idx=row_idx,
+                    date=date_str,
+                    item_name=item_raw_name,
+                    item_id=item_obj.id if item_obj else None,
+                    price=final_price,
+                    quantity=final_quantity,
+                    payer_name=payer_raw_name,
+                    payer_id=payer_obj.id if payer_obj else None,
+                    comment=str(comment_val).strip() if comment_val else "",
+                    error=" & ".join(errors)
+                )
+            )
 
-        self.request.session['bulk_upload_valid_rows'] = transactions_to_create
-        self.request.session['bulk_upload_review_rows'] = pending_review_rows
+        # Bulk save into the database staging table instantly
+        if staging_pool:
+            StagingTransaction.objects.bulk_create(staging_pool)
 
-        if pending_review_rows:
-            return redirect('bulk_upload_review')
-            
-        return redirect('bulk_upload_confirm_commit')
+        return redirect('bulk_upload_review')
 
 
 class TransactionBulkReviewView(LoginRequiredMixin, View):
     template_name = "expenses/bulk_review.html"
 
     def get(self, request, *args, **kwargs):
-        review_rows = request.session.get('bulk_upload_review_rows', [])
-        valid_rows = request.session.get('bulk_upload_valid_rows', [])
+        # 🚨 FIXED: Pull records straight from the Database table, completely avoiding session memory issues
+        user_rows = StagingTransaction.objects.filter(user=request.user)
+        review_rows = user_rows.exclude(error="")
+        valid_rows_count = user_rows.filter(error="").count()
         
-        if not review_rows and not valid_rows:
+        if not user_rows.exists():
             messages.info(request, "No transaction staging queue found. Please upload a spreadsheet first.")
             return redirect('bulk_upload_transactions')
 
         missing_items = []
-        for row in review_rows:
-            name = row.get('item_name')
-            if name and not row.get('item_id'):
-                cleaned_name = name.strip()
-                if cleaned_name not in missing_items:
-                    missing_items.append(cleaned_name)
-                    
-        missing_items = sorted(missing_items)
-        all_items = Item.objects.all().order_by('name')
-        all_categories = Category.objects.all().order_by('name')
+        missing_payers = []
+        has_blank_payers = False  
 
+        for row in review_rows:
+            # 1. Check for Missing Items
+            if row.item_name and not row.item_id:
+                cleaned_item = row.item_name.strip()
+                if cleaned_item not in missing_items:
+                    missing_items.append(cleaned_item)
+            
+            # 2. Check for Unmapped or Blank Payers
+            if not row.payer_id:
+                if not row.payer_name or not str(row.payer_name).strip():
+                    has_blank_payers = True
+                else:
+                    cleaned_payer = row.payer_name.strip()
+                    if cleaned_payer not in missing_payers:
+                        missing_payers.append(cleaned_payer)
+                    
         context = {
-            'missing_items': missing_items,
-            'review_rows_count': len(review_rows),
-            'valid_rows_count': len(valid_rows),
-            'all_items': all_items,
-            'all_categories': all_categories,
+            'missing_items': sorted(missing_items),
+            'missing_payers': sorted(missing_payers),
+            'has_blank_payers': has_blank_payers,  
+            'review_rows_count': review_rows.count(),
+            'valid_rows_count': valid_rows_count,
+            'all_items': Item.objects.all().order_by('name'),
+            'all_payers': Payer.objects.filter(user=request.user).order_by('name'),
+            'all_categories': Category.objects.all().order_by('name'),
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         action = request.POST.get('action')
-        review_rows = request.session.get('bulk_upload_review_rows', [])
-        valid_rows = request.session.get('bulk_upload_valid_rows', [])
-        target_item_name = request.POST.get('target_item_name')
-        
-        if target_item_name:
-            target_item_name = target_item_name.strip()
+        target_item_name = request.POST.get('target_item_name', '').strip()
+        target_payer_name = request.POST.get('target_payer_name', '').strip()
 
-        if action == "create_custom":
-            category_id = request.POST.get('category_id')
-            unit_value = request.POST.get('unit')
-            category_obj = Category.objects.get(id=category_id)
+        # ======================================================================
+        # ACTION 1: RESOLVE BLANK PAYERS IN BULK via Database Table
+        # ======================================================================
+        if action == "resolve_blank_payers":
+            existing_payer_id = request.POST.get('existing_payer_id')
+            existing_payer = Payer.objects.get(id=existing_payer_id, user=request.user)
             
-            if Item.objects.filter(user=request.user, name__iexact=target_item_name).exists():
-                messages.error(request, f"You already have a custom item named '{target_item_name}'. Use 'Map to Existing' instead.")
-                return redirect('bulk_upload_review')
-
-            new_custom_item, created = Item.objects.get_or_create(
-                name=target_item_name,
-                user=request.user,
-                defaults={
-                    'category': category_obj,
-                    'unit': unit_value
-                }
-            )
-
-            updated_review_rows = []
-            for row in review_rows:
-                row_name = row.get('item_name', '').strip() if row.get('item_name') else ''
-                if row_name == target_item_name:
-                    row['item_id'] = new_custom_item.id
-                    row.pop('error', None)  
-                    valid_rows.append(row)
-                else:
-                    updated_review_rows.append(row)
+            blank_rows = StagingTransaction.objects.filter(user=request.user, payer_id__isnull=True)
+            for row in blank_rows:
+                if not row.payer_name or not str(row.payer_name).strip():
+                    row.payer_id = existing_payer.id
+                    row.payer_name = existing_payer.name
+                    # Re-evaluate row error state
+                    row.error = "Missing Item" if not row.item_id else ""
+                    row.save()
             
-            review_rows = updated_review_rows
-            request.session['bulk_upload_review_rows'] = review_rows
-            request.session['bulk_upload_valid_rows'] = valid_rows
-            messages.success(request, f"Created Custom Item '{target_item_name}' and updated transaction rows.")
-
-        elif action == "map_existing":
-            existing_item_id = request.POST.get('existing_item_id')
-            existing_item = Item.objects.get(id=existing_item_id)
-
-            updated_review_rows = []
-            for row in review_rows:
-                row_name = row.get('item_name', '').strip() if row.get('item_name') else ''
-                if row_name == target_item_name:
-                    row['item_id'] = existing_item.id
-                    row['item_name'] = existing_item.name  
-                    row.pop('error', None)
-                    valid_rows.append(row)
-                else:
-                    updated_review_rows.append(row)
-
-            review_rows = updated_review_rows
-            request.session['bulk_upload_review_rows'] = review_rows
-            request.session['bulk_upload_valid_rows'] = valid_rows
-            messages.success(request, f"Successfully re-mapped spreadsheet entries to '{existing_item.name}'.")
-
-        elif action == "skip_item":
-            review_rows = [r for r in review_rows if r.get('item_name', '').strip() != target_item_name]
-            request.session['bulk_upload_review_rows'] = review_rows
-            messages.info(request, f"Discarded spreadsheet lines containing '{target_item_name}'.")
-
-        if review_rows:
+            messages.success(request, f"Assigned payer profile '{existing_payer.name}' to all unassigned rows.")
             return redirect('bulk_upload_review')
 
-        transactions_to_create = []
-        for row in valid_rows:
-            transactions_to_create.append(
-                Transaction(
-                    user=request.user,
-                    date=row['date'],
-                    item_id=row['item_id'],
-                    price=row['price'],
-                    quantity=row['quantity'],
-                    payer_id=row['payer_id'],
-                    comment=row['comment']
-                )
-            )
-        
-        if transactions_to_create:
-            Transaction.objects.bulk_create(transactions_to_create)
-            messages.success(request, f"Success! Safely committed {len(transactions_to_create)} rows into your ledger.")
-        
-        request.session.pop('bulk_upload_valid_rows', None)
-        request.session.pop('bulk_upload_review_rows', None)
-        return redirect('transaction_list')
+        # ======================================================================
+        # ACTION 2: CREATE CUSTOM ITEM
+        # ======================================================================
+        elif action == "create_custom":
+            category_obj = Category.objects.get(id=request.POST.get('category_id'))
+            new_item = Item.objects.create(name=target_item_name, user=request.user, category=category_obj, unit=request.POST.get('unit'))
+            
+            matches = StagingTransaction.objects.filter(user=request.user, item_name__iexact=target_item_name)
+            for row in matches:
+                row.item_id = new_item.id
+                row.error = "Missing Payer" if not row.payer_id else ""
+                row.save()
+                
+            messages.success(request, f"Created Custom Item '{target_item_name}'.")
+            return redirect('bulk_upload_review')
+
+        # ======================================================================
+        # ACTION 3: MAP EXISTING ITEM
+        # ======================================================================
+        elif action == "map_existing":
+            existing_item = Item.objects.get(id=request.POST.get('existing_item_id'))
+            
+            matches = StagingTransaction.objects.filter(user=request.user, item_name__iexact=target_item_name)
+            for row in matches:
+                row.item_id = existing_item.id
+                row.item_name = existing_item.name
+                row.error = "Missing Payer" if not row.payer_id else ""
+                row.save()
+                
+            messages.success(request, f"Mapped lines to tracking item '{existing_item.name}'.")
+            return redirect('bulk_upload_review')
+
+        # ======================================================================
+        # ACTION 4: CREATE CUSTOM PAYER
+        # ======================================================================
+        elif action == "create_custom_payer":
+            new_payer = Payer.objects.create(name=target_payer_name, user=request.user)
+            
+            matches = StagingTransaction.objects.filter(user=request.user, payer_name__iexact=target_payer_name)
+            for row in matches:
+                row.payer_id = new_payer.id
+                row.error = "Missing Item" if not row.item_id else ""
+                row.save()
+                
+            messages.success(request, f"Created Payer profile '{target_payer_name}'.")
+            return redirect('bulk_upload_review')
+
+        # ======================================================================
+        # ACTION 5: MAP EXISTING PAYER
+        # ======================================================================
+        elif action == "map_existing_payer":
+            existing_payer = Payer.objects.get(id=request.POST.get('existing_payer_id'), user=request.user)
+            
+            matches = StagingTransaction.objects.filter(user=request.user, payer_name__iexact=target_payer_name)
+            for row in matches:
+                row.payer_id = existing_payer.id
+                row.payer_name = existing_payer.name
+                row.error = "Missing Item" if not row.item_id else ""
+                row.save()
+                
+            messages.success(request, f"Mapped lines to payer '{existing_payer.name}'.")
+            return redirect('bulk_upload_review')
+
+        # ======================================================================
+        # ACTION 6: SKIP ITEM (DELETE FROM STAGING)
+        # ======================================================================
+        elif action == "skip_item":
+            StagingTransaction.objects.filter(user=request.user, item_name__iexact=target_item_name).delete()
+            messages.info(request, f"Discarded spreadsheet lines containing '{target_item_name}'.")
+            return redirect('bulk_upload_review')
+
+        # ======================================================================
+        # AUTOMATIC COMMIT GATEWAY IF QUEUE BECOMES COMPLETELY VALIDATED
+        # ======================================================================
+        if StagingTransaction.objects.filter(user=request.user).exclude(error="").exists():
+            return redirect('bulk_upload_review')
+
+        return redirect('bulk_upload_confirm_commit')
 
 
 class BulkUploadCommitView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        valid_rows = request.session.get('bulk_upload_valid_rows', [])
-        if not valid_rows:
+        # Commit completely validated table rows from the staging area
+        valid_staging_rows = StagingTransaction.objects.filter(user=request.user, error="")
+        
+        if not valid_staging_rows.exists():
             messages.info(request, "No pending valid records to save.")
             return redirect('transaction_list')
 
-        transactions_to_create = []
-        for row in valid_rows:
-            transactions_to_create.append(
-                Transaction(
-                    user=request.user,
-                    date=row['date'],
-                    item_id=row['item_id'],
-                    price=row['price'],
-                    quantity=row['quantity'],
-                    payer_id=row['payer_id'],
-                    comment=row['comment']
-                )
-            )
+        transactions_to_create = [
+            Transaction(
+                user=request.user,
+                date=row.date,
+                item_id=row.item_id,
+                price=row.price,
+                quantity=row.quantity,
+                payer_id=row.payer_id,
+                comment=row.comment
+            ) for row in valid_staging_rows
+        ]
 
         if transactions_to_create:
             Transaction.objects.bulk_create(transactions_to_create)
             messages.success(request, f"Success! Safely committed {len(transactions_to_create)} rows into your ledger.")
 
-        request.session.pop('bulk_upload_valid_rows', None)
-        request.session.pop('bulk_upload_review_rows', None)
+        # Clear staging table completely
+        StagingTransaction.objects.filter(user=request.user).delete()
         return redirect('transaction_list')
+
+
 
 
 class TransactionBulkDeleteView(LoginRequiredMixin, View):
@@ -553,6 +568,9 @@ class TransactionBulkDeleteView(LoginRequiredMixin, View):
             messages.error(request, "Failed to delete transactions. Selected records are protected or could not be found.")
             
         return redirect('transaction_list')
+
+
+
 
 
 class TransactionDeleteStatusView(LoginRequiredMixin, View):

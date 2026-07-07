@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Add Payer Profile{% endblock title %}
+{% block title %}{% if "/update/" in request.path %}Edit Payer Profile{% else %}Add Payer Profile{% endif %}{% endblock title %}
 
 {% block content %}
 <div class="row justify-content-center px-3 mt-5">
@@ -8,7 +8,9 @@
         <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
             
             <div class="text-center mb-4">
-                <h1 class="h3 fw-extrabold text-dark tracking-tight mb-1">Create Payer Profile</h1>
+                <h1 class="h3 fw-extrabold text-dark tracking-tight mb-1">
+                    {% if "/update/" in request.path %}Edit Payer Profile{% else %}Create Payer Profile{% endif %}
+                </h1>
                 <p class="text-muted small">Assign a custom name and a tracking color for this profile.</p>
             </div>
             
@@ -67,8 +69,18 @@
                     <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold fs-6 py-2.5 shadow-sm">
                         Save Payer Profile
                     </button>
-                    <a href="{% url 'create_transaction' %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
-                        Back to Log Transaction
+                    <a href="{% if request.GET.next %}{{ request.GET.next }}{% elif '/update/' in request.path %}{% url 'manage_payers' %}{% else %}{% url 'create_transaction' %}{% endif %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
+                        {% if request.GET.next %}
+                            {% if "manage" in request.GET.next %}
+                                Back to Manage Payers
+                            {% else %}
+                                Back to Log Transaction
+                            {% endif %}
+                        {% elif "/update/" in request.path %}
+                            Back to Manage Payers
+                        {% else %}
+                            Back to Log Transaction
+                        {% endif %}
                     </a>
                 </div>
             </form>
@@ -79,7 +91,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Form field injection styling engine for other standard layout elements
         document.querySelectorAll('input:not([type="hidden"]), select, textarea').forEach(function(el) {
             el.classList.add('form-control', 'rounded-3');
         });
@@ -87,11 +98,9 @@
         const colorInput = document.querySelector('input[name="color"]');
         const dots = document.querySelectorAll('.dot-palette-item');
 
-        // Set default tracking color value if empty
         if (colorInput && !colorInput.value) {
             colorInput.value = "#0d6efd";
         } else if (colorInput) {
-            // Match dots active status with initial editing hex values
             dots.forEach(d => {
                 if(d.getAttribute('data-color') === colorInput.value) {
                     dots.forEach(item => item.classList.remove('active'));
@@ -100,7 +109,6 @@
             });
         }
 
-        // Handle dynamic selection swaps
         dots.forEach(function(dot) {
             dot.addEventListener('click', function() {
                 dots.forEach(item => item.classList.remove('active'));
