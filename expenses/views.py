@@ -3,7 +3,7 @@ from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
-from django.db.models import ProtectedError, Count
+from django.db.models import ProtectedError, Count, Sum
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.contrib import messages
@@ -15,8 +15,100 @@ from .models import Transaction, Item, Payer, Category, StagingTransaction
 from .forms import TransactionForm, ItemForm, PayerForm, ExcelUploadForm
 
 
+# ==============================================================================
+# HOMEPAGE VIEWS
+# ==============================================================================
+
 class HomePageView(TemplateView):
     template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        # 1. Handle Unauthenticated (Logged-Out) State
+        if not user.is_authenticated:
+            return context
+
+        # 2. Establish Current Month Boundaries dynamically
+        now = timezone.now()
+        current_year = now.year
+        current_month = now.month
+
+        # 3. Base Queryset: Filter strictly by the current calendar month
+        tx_queryset = Transaction.objects.filter(
+            date__year=current_year,
+            date__month=current_month
+        )
+
+        # 4. Metric: Total Outflow Summation (Current Month Only)
+        total_outflow = tx_queryset.aggregate(total=Sum('price'))['total'] or 0.00
+        context['total_outflow'] = total_outflow
+
+        # 5. Metric: Recent Activity Stream (All transactions this month)
+        context['recent_transactions'] = tx_queryset.select_related('item').order_by('-date')
+
+        # 6. Metric: True Category Allocation Table Data (Grouping by Master Category Name)
+        category_data = tx_queryset.values('item__category__name').annotate(total=Sum('price')).order_by('-total')
+        context['category_list_data'] = category_data
+
+        # 7. Extract Chart Data Payloads & Top Stats securely
+        if tx_queryset.exists():
+            # Item Weights - Left Chart (Aggregating granular Item expenditures)
+            item_data = tx_queryset.values('item__name').annotate(total=Sum('price')).order_by('-total')[:6]
+            context['category_labels'] = [entry['item__name'] for entry in item_data]
+            context['category_amounts'] = [float(entry['total']) for entry in item_data]
+
+            # Category Weights - Right Chart (Aggregating master classifications)
+            context['master_category_labels'] = [entry['item__category__name'] for entry in category_data[:6]]
+            context['master_category_amounts'] = [float(entry['total']) for entry in category_data[:6]]
+
+            # Identify Top Category metrics safely
+            if category_data:
+                context['top_category_name'] = category_data[0]['item__category__name']
+                context['top_category_amount'] = category_data[0]['total']
+
+            # Calculate Top Frequency based on specific ITEM counts this month
+            frequency_map = tx_queryset.values('item__name').annotate(count=Count('id')).order_by('-count')
+            if frequency_map:
+                context['top_frequency_name'] = frequency_map[0]['item__name']
+                context['top_frequency_count'] = frequency_map[0]['count']
+
+            # Calculate Top Volume metrics based on specific ITEM quantities this month
+            volume_map = tx_queryset.values('item__name', 'item__unit').annotate(volume=Sum('quantity')).order_by('-volume')
+            if volume_map and volume_map[0]['volume']:
+                context['top_volume_name'] = volume_map[0]['item__name']
+                context['top_volume_count'] = volume_map[0]['volume']
+                context['top_volume_unit'] = volume_map[0]['item__unit'] or "Units"
+            else:
+                context['top_volume_name'] = context.get('top_frequency_name', "None")
+                context['top_volume_count'] = context.get('top_frequency_count', 0)
+                context['top_volume_unit'] = "logs"
+
+            # 8. Outflow Velocity Trend (Cumulative progression tracking within this current month)
+            trend_queryset = tx_queryset.values('date').annotate(total=Sum('price')).order_by('date')
+            context['trend_labels'] = [entry['date'].strftime('%d %b') if hasattr(entry['date'], 'strftime') else str(entry['date']) for entry in trend_queryset]
+            
+            # Compute chronological running total
+            running_sum = 0.0
+            cumulative_amounts = []
+            for entry in trend_queryset:
+                running_sum += float(entry['total'])
+                cumulative_amounts.append(running_sum)
+                
+            context['trend_amounts'] = cumulative_amounts
+
+        else:
+            # Fallback arrays to avoid Chart.js runtime errors if no data is logged this month
+            context['category_labels'] = []
+            context['category_amounts'] = []
+            context['master_category_labels'] = []
+            context['master_category_amounts'] = []
+            context['trend_labels'] = []
+            context['trend_amounts'] = []
+
+        return context
+
 
 
 # ==============================================================================

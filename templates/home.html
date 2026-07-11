@@ -1,29 +1,448 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock title %}
+{% block title %}Home - ExpTrac{% endblock title %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center px-3" style="min-height: calc(100vh - 56px);">
-    <div class="col-md-10 col-lg-8 text-center">
-        <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border">
-            {% if user.is_authenticated %}
-                <h1 class="display-5 fw-bold text-dark mb-3">Welcome Back, {{ user.username }}!</h1>
-                <p class="lead text-secondary mb-4">Track your daily budgets, manage expense allocations, and monitor your personal cash flows effortlessly.</p>
-                
-                <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
-                    <a href="{% url 'transaction_list' %}" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">View Expenses</a>
-                    <a href="{% url 'create_transaction' %}" class="btn btn-outline-secondary btn-lg px-4 rounded-3 w-100 w-sm-auto">Add New Transaction</a>
+<div class="container position-relative py-5" style="z-index: 2;">
+    {% if user.is_authenticated %}
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom pb-3 mb-4 gap-3">
+            <div>
+                <h1 class="h2 fw-bold text-dark mb-1">Financial Workspace</h1>
+                <p class="text-secondary small mb-0">Welcome back, <strong>{{ user.username }}</strong>. Review running cash flows and resource allocations.</p>
+            </div>
+            <div>
+                <div class="d-inline-flex align-items-center bg-white border rounded-3 px-3 py-2 shadow-sm text-secondary small">
+                    <i class="bi bi-calendar3 text-primary me-2"></i> {% now "F j, Y" %}
                 </div>
-            {% else %}
-                <h1 class="display-4 fw-bold text-dark mb-3">Master Your Financial Balance</h1>
-                <p class="lead text-secondary mb-4">Welcome to ExpTrac. Clear insight into your personal finances, built simply and securely.</p>
-                
-                <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
-                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">Get Started</a>
-                    <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg px-4 rounded-3 fw-bold w-100 w-sm-auto">Create Account</a>
-                </div>
-            {% endif %}
+            </div>
         </div>
-    </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-sm-3">
+                <a href="{% url 'create_transaction' %}" class="card bg-white border text-decoration-none shadow-sm rounded-3 p-2.5 d-flex flex-row align-items-center gap-2.5 custom-hover-lift">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-2 d-inline-flex">
+                        <i class="bi bi-plus-circle fs-5"></i>
+                    </div>
+                    <span class="fw-semibold text-dark fs-7">Add Expense</span>
+                </a>
+            </div>
+            <div class="col-6 col-sm-3">
+                <a href="{% url 'transaction_list' %}" class="card bg-white border text-decoration-none shadow-sm rounded-3 p-2.5 d-flex flex-row align-items-center gap-2.5 custom-hover-lift">
+                    <div class="bg-dark bg-opacity-10 text-dark rounded-3 p-2 d-inline-flex">
+                        <i class="bi bi-receipt fs-5"></i>
+                    </div>
+                    <span class="fw-semibold text-dark fs-7">View Ledger</span>
+                </a>
+            </div>
+            <div class="col-6 col-sm-3">
+                <a href="{% url 'manage_items' %}" class="card bg-white border text-decoration-none shadow-sm rounded-3 p-2.5 d-flex flex-row align-items-center gap-2.5 custom-hover-lift">
+                    <div class="bg-warning bg-opacity-10 text-warning rounded-3 p-2 d-inline-flex">
+                        <i class="bi bi-tags fs-5"></i>
+                    </div>
+                    <span class="fw-semibold text-dark fs-7">Manage Items</span>
+                </a>
+            </div>
+            <div class="col-6 col-sm-3">
+                <a href="{% url 'manage_payers' %}" class="card bg-white border text-decoration-none shadow-sm rounded-3 p-2.5 d-flex flex-row align-items-center gap-2.5 custom-hover-lift">
+                    <div class="bg-info bg-opacity-10 text-info rounded-3 p-2 d-inline-flex">
+                        <i class="bi bi-people fs-5"></i>
+                    </div>
+                    <span class="fw-semibold text-dark fs-7">Manage Payers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card bg-white border rounded-3 p-3 shadow-sm h-100 custom-hover-lift">
+                    <span class="text-muted text-uppercase tracking-wider fw-bold d-block mb-1" style="font-size: 0.65rem;">Total Outflow</span>
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <h3 class="fw-bold text-dark mb-0">₹{{ total_outflow|default:"0.00"|floatformat:2 }}</h3>
+                        <div class="bg-primary bg-opacity-10 text-primary rounded px-2 py-1 small">
+                            <i class="bi bi-wallet2 fs-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card bg-white border rounded-3 p-3 shadow-sm h-100 custom-hover-lift">
+                    <span class="text-muted text-uppercase tracking-wider fw-bold d-block mb-1" style="font-size: 0.65rem;">Top Category</span>
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 160px;">{{ top_category_name|default:"None" }}</h4>
+                            <span class="text-muted fw-normal small">₹{{ top_category_amount|default:"0.00"|floatformat:2 }} spent</span>
+                        </div>
+                        <div class="bg-success bg-opacity-10 text-success rounded px-2 py-1 small">
+                            <i class="bi bi-fire fs-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card bg-white border rounded-3 p-3 shadow-sm h-100 custom-hover-lift">
+                    <span class="text-muted text-uppercase tracking-wider fw-bold d-block mb-1" style="font-size: 0.65rem;">Top Frequency</span>
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 160px;">{{ top_frequency_name|default:"None" }}</h4>
+                            <span class="text-muted fw-normal small">{{ top_frequency_count|default:"0" }} logs filed</span>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 text-warning rounded px-2 py-1 small">
+                            <i class="bi bi-receipt-cutoff fs-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card bg-white border rounded-3 p-3 shadow-sm h-100 custom-hover-lift">
+                    <span class="text-muted text-uppercase tracking-wider fw-bold d-block mb-1" style="font-size: 0.65rem;">Top Volume</span>
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div>
+                            <h4 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 160px;">{{ top_volume_name|default:"None" }}</h4>
+                            <span class="text-muted fw-normal small">{{ top_volume_count|default:"0.00"|floatformat:2 }} {{ top_volume_unit|default:"Units" }}</span>
+                        </div>
+                        <div class="bg-info bg-opacity-10 text-info rounded px-2 py-1 small">
+                            <i class="bi bi-box-seam fs-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-lg-6">
+                <div class="card bg-white border rounded-4 p-4 h-100 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-clock-history text-secondary fs-5"></i>
+                            <h5 class="fw-bold text-dark mb-0" style="font-size: 1.05rem;">Recent Activity</h5>
+                        </div>
+                        <a href="{% url 'transaction_list' %}" class="btn btn-link btn-sm text-primary text-decoration-none p-0 fw-semibold fs-7">Full Ledger →</a>
+                    </div>
+                    
+                    <div class="custom-ledger-scroll">
+                        <table class="table align-middle mb-0 text-secondary border-0 fs-7" style="table-layout: fixed; width: 100%;">
+                            <thead class="position-sticky top-0 bg-white" style="z-index: 2;">
+                                <tr class="text-uppercase tracking-wider text-muted border-bottom" style="font-size: 0.65rem; background-color: #ffffff;">
+                                    <th class="py-2 px-1" style="width: 35%;">Date</th>
+                                    <th class="py-2" style="width: 40%;">Item</th>
+                                    <th class="py-2 text-end px-1" style="width: 25%;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tx in recent_transactions %}
+                                <tr style="border-bottom: 1px dashed #f1f5f9;">
+                                    <td class="py-3 px-1 text-dark text-nowrap text-truncate">{{ tx.date|date:"d M Y" }}</td>
+                                    <td class="py-3 text-dark fw-semibold text-truncate">{{ tx.item.name }}</td>
+                                    <td class="py-3 text-end text-dark fw-bold px-1">₹{{ tx.price|floatformat:2 }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-5 small">
+                                        <i class="bi bi-inbox d-block fs-3 mb-1 opacity-50"></i>
+                                        No recent activity logs detected.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card bg-white border rounded-4 p-4 h-100 shadow-sm">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-grid-3x3-gap text-secondary fs-5"></i>
+                        <h5 class="fw-bold text-dark mb-0" style="font-size: 1.05rem;">Category Allocation</h5>
+                    </div>
+                    
+                    <div class="custom-category-scroll">
+                        <table class="table align-middle mb-0 text-secondary border-0 fs-7" style="table-layout: fixed; width: 100%;">
+                            <thead class="position-sticky top-0 bg-white" style="z-index: 2;">
+                                <tr class="text-uppercase tracking-wider text-muted border-bottom" style="font-size: 0.65rem; background-color: #ffffff;">
+                                    <th class="py-2 ps-0" style="width: 50%;">Category</th>
+                                    <th class="py-2 text-end pe-3" style="width: 25%;">Total Spent</th>
+                                    <th class="py-2 text-end pe-0" style="width: 25%;">Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in category_list_data %}
+                                    <tr style="border-bottom: 1px dashed #f1f5f9;">
+                                        <td class="py-2 fw-semibold text-dark ps-0 text-truncate">{{ entry.item__category__name }}</td>
+                                        <td class="py-2 text-end text-dark fw-bold pe-3">₹{{ entry.total|floatformat:2 }}</td>
+                                        <td class="py-2 text-end text-secondary pe-0 table-pct-node" data-amount="{{ entry.total }}">
+                                            0.0%
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-5 small ps-0 pe-0">
+                                        <i class="bi bi-folder-x d-block fs-4 mb-1 opacity-50"></i>
+                                        No category data parsed.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-md-6">
+                <div class="card bg-white border rounded-4 p-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-tags text-warning fs-5"></i>
+                        <h5 class="fw-bold text-dark mb-0" style="font-size: 1.05rem;">Item Weights</h5>
+                    </div>
+                    <div style="position: relative; height: 260px; width: 100%;" class="d-flex align-items-center justify-content-center">
+                        <canvas id="categoryDoughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="card bg-white border rounded-4 p-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-diagram-3 text-success fs-5"></i>
+                        <h5 class="fw-bold text-dark mb-0" style="font-size: 1.05rem;">Category Weights</h5>
+                    </div>
+                    <div style="position: relative; height: 260px; width: 100%;" class="d-flex align-items-center justify-content-center">
+                        <canvas id="masterCategoryDoughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="card bg-white border rounded-4 p-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-graph-up text-primary fs-5"></i>
+                        <h5 class="fw-bold text-dark mb-0" style="font-size: 1.05rem;">Outflow Velocity Trend</h5>
+                    </div>
+                    <div style="position: relative; height: 260px; width: 100%;">
+                        <canvas id="trendLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="row justify-content-center align-items-center" style="padding-top: 10vh; padding-bottom: 5vh;">
+            <div class="col-md-9 col-lg-7 text-center">
+                <div class="p-5 bg-white border rounded-4 shadow-sm position-relative overflow-hidden">
+                    <div class="position-absolute top-0 start-50 translate-middle-x w-100" style="height: 4px; background: linear-gradient(90deg, #0d6efd, #198754);"></div>
+                    <h1 class="display-6 fw-bold text-dark mb-3">Master Your Financial Balance</h1>
+                    <p class="text-secondary mb-4">Welcome to ExpTrac. Clear insight into your personal finances, built simply, securely, and completely tracking-free.</p>
+                    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-md px-4 rounded-3 fw-bold w-100 w-sm-auto">Get Started</a>
+                        <a href="{% url 'signup' %}" class="btn btn-outline-secondary btn-md px-4 rounded-3 fw-bold w-100 w-sm-auto">Create Account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Safe contextual injections with fallbacks
+        const categoryLabels = {{ category_labels|safe|default:"[]" }};
+        const categoryAmounts = {{ category_amounts|safe|default:"[]" }};
+        const masterCategoryLabels = {{ master_category_labels|safe|default:"[]" }};
+        const masterCategoryAmounts = {{ master_category_amounts|safe|default:"[]" }};
+        const trendLabels = {{ trend_labels|safe|default:"[]" }};
+        const trendAmounts = {{ trend_amounts|safe|default:"[]" }};
+
+        // Table Percentage Matrix Calculator
+        const aggregateMonthlySum = parseFloat("{{ total_outflow|default:'0' }}");
+        if (aggregateMonthlySum > 0) {
+            document.querySelectorAll('.table-pct-node').forEach(node => {
+                const rowAmount = parseFloat(node.getAttribute('data-amount')) || 0;
+                const evaluatedPct = ((rowAmount / aggregateMonthlySum) * 100).toFixed(1);
+                node.textContent = `${evaluatedPct}%`;
+            });
+        }
+
+        // Outflow Velocity Trend Chart
+        const ctxLine = document.getElementById('trendLineChart');
+        if (ctxLine && trendLabels.length) {
+            const chartContext = ctxLine.getContext('2d');
+            
+            const gradientFill = chartContext.createLinearGradient(0, 0, 0, 260);
+            gradientFill.addColorStop(0, 'rgba(13, 110, 253, 0.25)'); 
+            gradientFill.addColorStop(0.5, 'rgba(13, 110, 253, 0.08)'); 
+            gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0.00)'); 
+            
+            new Chart(chartContext, {
+                type: 'line',
+                data: {
+                    labels: trendLabels,
+                    datasets: [{
+                        label: 'Cumulative Total',
+                        data: trendAmounts,
+                        borderColor: '#0d6efd',
+                        backgroundColor: gradientFill,
+                        borderWidth: 3,
+                        tension: 0.32,
+                        fill: true,
+                        pointBackgroundColor: '#0d6efd',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1.5,
+                        pointRadius: 4,
+                        pointHoverRadius: 7,
+                        pointHoverBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            displayColors: false, 
+                            padding: 10,
+                            callbacks: {
+                                title: function(context) {
+                                    return `Date: ${context[0].label}`;
+                                },
+                                label: function(context) {
+                                    const rawValue = context.raw || 0;
+                                    return `Amount: ₹${rawValue.toLocaleString('en-IN')}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            grid: { color: 'rgba(241, 245, 249, 1)' }, 
+                            ticks: { 
+                                font: { size: 11 },
+                                callback: function(value) { return '₹' + value; }
+                            } 
+                        },
+                        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // Shared Multi-line Tooltip Configuration Callback for Doughnut Charts
+        const multiLineTooltipConfig = {
+            displayColors: false, 
+            callbacks: {
+                title: function(context) {
+                    return context[0].label;
+                },
+                label: function(context) {
+                    const rawValue = context.raw || 0;
+                    const totalSum = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                    const percentage = totalSum > 0 ? ((rawValue / totalSum) * 100).toFixed(1) : 0;
+                    
+                    return [
+                        `Total Cost: ₹${rawValue.toFixed(0)}`,
+                        `Percentage: ${percentage}%`
+                    ];
+                }
+            }
+        };
+
+        // Item Weights Doughnut
+        const ctxDoughnut = document.getElementById('categoryDoughnutChart');
+        if (ctxDoughnut) {
+            new Chart(ctxDoughnut.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: categoryLabels.length ? categoryLabels : ['No Records'],
+                    datasets: [{
+                        data: categoryAmounts.length ? categoryAmounts : [1],
+                        backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#0dcaf0', '#6c757d', '#6610f2'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { boxWidth: 12, font: { size: 11 }, padding: 15 }
+                        },
+                        tooltip: multiLineTooltipConfig
+                    },
+                    cutout: '72%'
+                }
+            });
+        }
+
+        // Category Weights Doughnut
+        const ctxMasterDoughnut = document.getElementById('masterCategoryDoughnutChart');
+        if (ctxMasterDoughnut) {
+            new Chart(ctxMasterDoughnut.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: masterCategoryLabels.length ? masterCategoryLabels : ['No Categories'],
+                    datasets: [{
+                        data: masterCategoryAmounts.length ? masterCategoryAmounts : [1],
+                        backgroundColor: ['#198754', '#20c997', '#0d6efd', '#ffc107', '#0dcaf0', '#6610f2'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { boxWidth: 12, font: { size: 11 }, padding: 15 }
+                        },
+                        tooltip: multiLineTooltipConfig
+                    },
+                    cutout: '72%'
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    /* UI Layout Adjustments */
+    .fs-7 { font-size: 0.85rem !important; }
+    .p-2\.5 { padding: 0.65rem 0.85rem !important; }
+    .gap-2\.5 { gap: 0.65rem !important; }
+    
+    .custom-hover-lift {
+        transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease !important;
+    }
+    .custom-hover-lift:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* Constrained Scrollbars matching Chart heights perfectly */
+    .custom-ledger-scroll,
+    .custom-category-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+    .custom-ledger-scroll::-webkit-scrollbar,
+    .custom-category-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-ledger-scroll::-webkit-scrollbar-track,
+    .custom-category-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-ledger-scroll::-webkit-scrollbar-thumb,
+    .custom-category-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 20px; }
+</style>
 {% endblock content %}
