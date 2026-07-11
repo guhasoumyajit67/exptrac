@@ -13,111 +13,146 @@
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+
+    <style>
+        /* Ensures the footer stays at the bottom */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        /* Footer styling */
+        .custom-dark-footer {
+            background-color: #000000;
+            color: #adb5bd;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .custom-dark-footer-link {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+        .custom-dark-footer-link:hover {
+            color: #ffffff;
+        }
+    </style>
 </head>
+
 <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
+        <div class="container-fluid px-lg-4">
+            <a class="navbar-brand d-flex align-items-center text-white text-decoration-none" href="{% url 'home' %}" style="font-family: system-ui, -apple-system, sans-serif;">
+                <span class="fs-4 fw-black tracking-tight text-white">
+                    Exp<span class="text-primary">Trac</span><span class="text-success ms-1" style="font-size: 1.5rem; line-height: 0;">.</span>
+                </span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                {% if user.is_authenticated %}
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" 
+                            href="{% url 'home' %}" 
+                            {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>
+                                <i class="bi bi-house-door me-1"></i> Home
+                            </a>
+                        </li>
 
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
-    <div class="container-fluid px-lg-4">
-        <a class="navbar-brand d-flex align-items-center text-white text-decoration-none" href="{% url 'home' %}" style="font-family: system-ui, -apple-system, sans-serif;">
-            <span class="fs-4 fw-black tracking-tight text-white">
-                Exp<span class="text-primary">Trac</span><span class="text-success ms-1" style="font-size: 1.5rem; line-height: 0;">.</span>
-            </span>
-        </a>
-        
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            {% if user.is_authenticated %}
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}" 
-                        href="{% url 'home' %}" 
-                        {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>
-                            <i class="bi bi-house-door me-1"></i> Home
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'transaction_list' %}active fw-semibold{% endif %}" 
+                            href="{% url 'transaction_list' %}"
+                            {% if request.resolver_match.url_name == 'transaction_list' %}aria-current="page"{% endif %}>
+                                <i class="bi bi-receipt me-1"></i> Ledger
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'transaction_list' %}active fw-semibold{% endif %}" 
-                        href="{% url 'transaction_list' %}"
-                        {% if request.resolver_match.url_name == 'transaction_list' %}aria-current="page"{% endif %}>
-                            <i class="bi bi-receipt me-1"></i> Ledger
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_analytics' %}active fw-semibold{% endif %}" 
+                            href="{% url 'dashboard_analytics' %}"
+                            {% if request.resolver_match.url_name == 'dashboard_analytics' %}aria-current="page"{% endif %}>
+                                <i class="bi bi-graph-up-arrow me-1"></i> Analytics
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard_analytics' %}active fw-semibold{% endif %}" 
-                        href="{% url 'dashboard_analytics' %}"
-                        {% if request.resolver_match.url_name == 'dashboard_analytics' %}aria-current="page"{% endif %}>
-                            <i class="bi bi-graph-up-arrow me-1"></i> Analytics
-                        </a>
-                    </li>
-
-                    <li class="nav-item me-lg-2">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'create_transaction' %}active fw-semibold{% endif %}" 
-                        href="{% url 'create_transaction' %}"
-                        {% if request.resolver_match.url_name == 'create_transaction' %}aria-current="page"{% endif %}>
-                            <i class="bi bi-plus-circle me-1"></i> Add Expense
-                        </a>
-                    </li>
-                                        
-                    <li class="nav-item dropdown ms-lg-2">
-                        <a class="nav-link dropdown-toggle btn btn-dark btn-sm border-0 text-start text-lg-center px-3 py-1.5 rounded-3 structure-user-badge" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle me-1"></i> {{ user.username }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
-                            <li>
-                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_items' %}active{% endif %}" href="{% url 'manage_items' %}">
-                                    <i class="bi bi-tags me-2 text-success"></i>Items
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_payers' %}active{% endif %}" href="{% url 'manage_payers' %}">
-                                    <i class="bi bi-people me-2 text-info"></i>Payers
-                                </a>
-                            </li>
-                            
-                            <li><hr class="dropdown-divider opacity-10"></li>
-                            
-                            <li>
-                                <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
-                                    <i class="bi bi-key me-2 text-white-50"></i>Change Password
-                                </a>
-                            </li>
-                            
-                            <li><hr class="dropdown-divider opacity-10"></li>
-                            
-                            <li>
-                                <form action="{% url 'logout' %}" method="post" class="px-2 py-1">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-link dropdown-item py-2 text-danger rounded-2 d-flex align-items-center gap-2">
-                                        <i class="bi bi-box-arrow-right"></i> Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            {% else %}
-                <ul class="navbar-nav ms-auto gap-2 py-2 py-lg-0">
-                    <li class="nav-item">
-                        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 w-100 {% if request.resolver_match.url_name == 'login' %}active{% endif %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'signup' %}" class="btn btn-primary btn-sm px-3 rounded-2 w-100 fw-bold {% if request.resolver_match.url_name == 'signup' %}active{% endif %}">Sign Up</a>
-                    </li>
-                </ul>
-            {% endif %}
+                        <li class="nav-item me-lg-2">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'create_transaction' %}active fw-semibold{% endif %}" 
+                            href="{% url 'create_transaction' %}"
+                            {% if request.resolver_match.url_name == 'create_transaction' %}aria-current="page"{% endif %}>
+                                <i class="bi bi-plus-circle me-1"></i> Add Expense
+                            </a>
+                        </li>
+                                            
+                        <li class="nav-item dropdown ms-lg-2">
+                            <a class="nav-link dropdown-toggle btn btn-dark btn-sm border-0 text-start text-lg-center px-3 py-1.5 rounded-3 structure-user-badge" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i> {{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
+                                <li>
+                                    <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_items' %}active{% endif %}" href="{% url 'manage_items' %}">
+                                        <i class="bi bi-tags me-2 text-success"></i>Items
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_payers' %}active{% endif %}" href="{% url 'manage_payers' %}">
+                                        <i class="bi bi-people me-2 text-info"></i>Payers
+                                    </a>
+                                </li>
+                                
+                                <li><hr class="dropdown-divider opacity-10"></li>
+                                
+                                <li>
+                                    <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" href="{% url 'password_change' %}">
+                                        <i class="bi bi-key me-2 text-white-50"></i>Change Password
+                                    </a>
+                                </li>
+                                
+                                <li><hr class="dropdown-divider opacity-10"></li>
+                                
+                                <li>
+                                    <form action="{% url 'logout' %}" method="post" class="px-2 py-1">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link dropdown-item py-2 text-danger rounded-2 d-flex align-items-center gap-2">
+                                            <i class="bi bi-box-arrow-right"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% else %}
+                    <ul class="navbar-nav ms-auto gap-2 py-2 py-lg-0">
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3 rounded-2 w-100 {% if request.resolver_match.url_name == 'login' %}active{% endif %}">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'signup' %}" class="btn btn-primary btn-sm px-3 rounded-2 w-100 fw-bold {% if request.resolver_match.url_name == 'signup' %}active{% endif %}">Sign Up</a>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+    </nav>
+    <main class="container-fluid pb-5 py-4">
+        {% block content %}
+        {% endblock content %}
+    </main>
+    <footer class="custom-dark-footer py-4">
+    <div class="container">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 small">
+            <div><span style="color: #adb5bd;">© {% now "Y" %} <span style="color: #ffffff; font-weight: 600;">ExpTrac</span>. Developed by <strong style="color: #ffffff;">Soumyajit Guha</strong>.</span></div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="https://github.com/guhasoumyajit67" target="_blank" class="custom-dark-footer-link d-flex align-items-center gap-1"><i class="bi bi-github"></i> GitHub</a>
+                <a href="https://linkedin.com/in/guhasoumyajit67" target="_blank" class="custom-dark-footer-link d-flex align-items-center gap-1"><i class="bi bi-linkedin"></i> LinkedIn</a>
+            </div>
         </div>
-</nav>
-
-<div class="container-fluid">
-    {% block content %}
-    {% endblock content %}
-</div>
-
+    </div>
+</footer>
 </body>
 </html>
