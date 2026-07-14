@@ -2,7 +2,6 @@ from django import forms
 from django.db.models import Q
 import os
 from .models import (
-    Category,
     Item,
     Payer,
     Transaction,
@@ -11,7 +10,6 @@ from .models import (
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        # 🚨 UPDATED: Added 'unit' so users can choose a unit type when creating items manually
         fields = ['name', 'category', 'unit']
 
 
@@ -27,7 +25,6 @@ class PayerForm(forms.ModelForm):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        # 🚨 FIXED: Removed 'unit' from this list since it now lives on the Item model
         fields = ["date", "item", "price", "quantity", "payer", "comment"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),

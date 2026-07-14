@@ -14,7 +14,6 @@ class Category(models.Model):
     
 
 class Item(models.Model):
-    # 🚨 Updated to show a dash for the blank option
     UNIT_CHOICES = [
         ('', '-'),
         ('Kg', 'Kg'),
@@ -61,10 +60,7 @@ class Payer(models.Model):
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date = models.DateField(db_index=True)
-    
-    # Solid database foreign key relation. Unit is tracked through this link dynamically.
     item = models.ForeignKey(Item, on_delete=models.PROTECT)
-    
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     payer = models.ForeignKey(Payer, on_delete=models.PROTECT)
@@ -74,11 +70,8 @@ class Transaction(models.Model):
         ordering = ['-date']
 
     def __str__(self):
-        # Traverses the foreign key to inspect the parent item's unit dynamically
         unit_str = self.item.unit if self.item.unit else ""
         qty_label = f" ({self.quantity} {unit_str})".strip() if self.quantity else ""
-        
-        # Clean spacing if qty_label ends up being empty
         qty_display = f" {qty_label}" if qty_label else ""
         return f"{self.date} - {self.item.name}{qty_display} [₹{self.price}] paid by {self.payer.name}"
     

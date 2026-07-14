@@ -14,7 +14,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    # 🚨 REMOVED 'user': The column is gone so your grid stays perfectly clean!
     list_display = ('name', 'category', 'unit')
     list_filter = ('category',)
     ordering = ('name',)
@@ -31,17 +30,11 @@ class ItemAdmin(admin.ModelAdmin):
         return qs.filter(user=request.user)
 
     def has_change_permission(self, request, obj=None):
-        """
-        🔒 Only a Superuser can edit global items (where user is None).
-        """
         if obj is not None and obj.user is None:
             return request.user.is_superuser
         return super().has_change_permission(request, obj)
 
     def has_delete_permission(self, request, obj=None):
-        """
-        🔒 Only a Superuser can delete global items.
-        """
         if obj is not None and obj.user is None:
             return request.user.is_superuser
         return super().has_delete_permission(request, obj)
@@ -52,9 +45,6 @@ class PayerAdmin(admin.ModelAdmin):
     list_display = ["name", "color"]  # Kept concise
     
     def get_queryset(self, request):
-        """
-        🔒 Privacy barrier: Users only see their own payer configurations.
-        """
         qs = super().get_queryset(request)
         return qs.filter(user=request.user)
 
@@ -77,9 +67,5 @@ class TransactionAdmin(admin.ModelAdmin):
     date_hierarchy = "date"
 
     def get_queryset(self, request):
-        """
-        🔒 Absolute privacy wall: Even inside the admin panel, 
-        no user can see another user's financial transactions.
-        """
         qs = super().get_queryset(request)
         return qs.filter(user=request.user)

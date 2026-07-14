@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Deleting Record...{% endblock title %}
 
@@ -41,14 +42,8 @@
         </div>
     </div>
 </div>
-
-<script>
-    // Automatically signs and submits the secure form instance immediately upon DOM attachment
-    document.addEventListener("DOMContentLoaded", function() {
-        const deleteForm = document.getElementById("auto-delete-form");
-        if (deleteForm) {
-            deleteForm.submit();
-        }
-    });
-</script>
 {% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'js/transaction_confirm_delete.js' %}"></script>
+{% endblock extra_js %}

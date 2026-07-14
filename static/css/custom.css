@@ -1,22 +1,66 @@
-/* Global Typography & Font Smoothing rules (Kept from base.html) */
+/* ========================================================================================
+   1. GLOBAL BASE STYLES
+   ======================================================================================== */
 body {
+    /* Layout & Flexbox */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+
+    /* Typography */
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* Global Background */
+    background-image: linear-gradient(rgba(248, 249, 250, 0.94), rgba(248, 249, 250, 0.94)), 
+                      url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
+/* Flexbox container to push footer to bottom */
+main {
+    flex: 1;
+}
+
+/* ========================================================================================
+   2. GLOBAL UI UTILITIES & BRANDING
+   ======================================================================================== */
 .tracking-tight { 
     letter-spacing: -0.025em; 
 }
 
+/* ========================================================================================
+   3. COMPONENT-SPECIFIC STYLES
+   ======================================================================================== */
+
+/* Footer Styling */
+.custom-dark-footer {
+    background-color: #000000;
+    color: #adb5bd;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.custom-dark-footer-link {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.custom-dark-footer-link:hover {
+    color: #ffffff !important;
+}
+
+/* Navbar User Badge */
 @media (min-width: 992px) {
     .structure-user-badge:focus, 
     .structure-user-badge:active {
         background-color: #343a40 !important;
     }
 }
-
-
 
 
 /* ==========================================================================
@@ -469,4 +513,167 @@ body {
     border-radius: 8px !important;
     letter-spacing: -0.01em !important;
     transition: all 0.15s ease-in-out !important;
+}
+
+
+
+
+
+
+
+
+
+/* ============================================
+   HOME PAGE DASHBOARD STYLES
+============================================ */
+
+/* Dashboard Background - Transparent to show body background */
+.custom-dashboard-bg { 
+    background: transparent;
+    min-height: calc(100vh - 120px); 
+}
+
+/* Hero Section - Unauthenticated Users */
+.hero-immersive { 
+    min-height: 80vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    padding: 4rem 1rem; 
+}
+
+/* Gradient Text Effect */
+.gradient-text { 
+    background: linear-gradient(135deg, #0d6efd 0%, #198754 100%); 
+    -webkit-background-clip: text; 
+    background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    font-weight: 900; 
+}
+
+/* Utility Classes */
+.fs-7 { 
+    font-size: 0.85rem !important; 
+}
+
+.p-2\.5 { 
+    padding: 0.65rem 0.85rem !important; 
+}
+
+.gap-2\.5 { 
+    gap: 0.65rem !important; 
+}
+
+/* Hover Lift Effect */
+.custom-hover-lift { 
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease !important; 
+}
+
+.custom-hover-lift:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.05) !important; 
+}
+
+/* Scrollable Containers */
+.custom-ledger-scroll, 
+.custom-category-scroll { 
+    max-height: 300px; 
+    overflow-y: auto; 
+    padding-right: 4px; 
+}
+
+/* Scrollbar Styling - WebKit */
+.custom-ledger-scroll::-webkit-scrollbar, 
+.custom-category-scroll::-webkit-scrollbar { 
+    width: 4px; 
+}
+
+.custom-ledger-scroll::-webkit-scrollbar-thumb, 
+.custom-category-scroll::-webkit-scrollbar-thumb { 
+    background: #e2e8f0; 
+    border-radius: 20px; 
+}
+
+.custom-ledger-scroll::-webkit-scrollbar-thumb:hover,
+.custom-category-scroll::-webkit-scrollbar-thumb:hover {
+    background: #ced4da;
+}
+
+/* Scrollbar Styling - Firefox */
+.custom-ledger-scroll,
+.custom-category-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 transparent;
+}
+
+/* Floating Animation */
+.floating { 
+    animation: float 4s ease-in-out infinite; 
+}
+
+@keyframes float { 
+    0%, 100% { transform: translateY(0px); } 
+    50% { transform: translateY(-15px); } 
+}
+
+
+
+
+
+
+
+/* ============================================
+   DELETE LOADING OVERLAY
+============================================ */
+
+#delete-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#delete-loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+
+
+
+/* ============================================
+   ANALYTICS PAGE STYLES
+============================================ */
+
+/* Toggle View - Hide/Show */
+.view-hidden {
+    display: none !important;
+}
+
+/* Sticky Table Headers */
+.table-responsive {
+    position: relative;
+}
+
+.table-responsive table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #f8f9fa !important;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 }

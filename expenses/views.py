@@ -208,7 +208,6 @@ class ItemManagementListView(LoginRequiredMixin, ListView):
     context_object_name = "items"
 
     def get_queryset(self):
-        # 🚨 FIX: Add select_related for performance and annotate with transaction counts
         return Item.objects.filter(user=self.request.user)\
                            .select_related('category')\
                            .annotate(transaction_count=Count('transaction'))\
@@ -222,7 +221,6 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
     form_class = ItemForm
     template_name = "expenses/item_form.html"
 
-    # 🚨 THE FIX: Dynamically determine where to route on completion
     def get_success_url(self):
         # Checks if 'next' is passed in either the GET query string or POST payload body
         redirect_to = self.request.GET.get('next') or self.request.POST.get('next')
@@ -249,7 +247,6 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return Item.objects.filter(user=self.request.user)
 
-    # 🚨 FIX: Read the 'next' parameter from the URL query string on edit success
     def get_success_url(self):
         redirect_to = self.request.GET.get('next') or self.request.POST.get('next')
         if redirect_to:
@@ -332,7 +329,6 @@ class PayerUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return Payer.objects.filter(user=self.request.user)
 
-    # 🚨 FIX: Read the 'next' parameter from the URL query string on edit success
     def get_success_url(self):
         redirect_to = self.request.GET.get('next') or self.request.POST.get('next')
         if redirect_to:
@@ -357,7 +353,6 @@ class PayerDeleteView(LoginRequiredMixin, DeleteView):
         try:
             self.object.delete()
             messages.success(request, f"Success! Payer '{payer_name}' has been safely removed.")
-            # 🚨 THIS NOW CORRECTLY USES THE FALLBACK_URL ON SUCCESSFUL DELETION TOO
             return redirect(fallback_url)
             
         except ProtectedError:
@@ -455,7 +450,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
     template_name = "expenses/bulk_review.html"
 
     def get(self, request, *args, **kwargs):
-        # 🚨 FIXED: Pull records straight from the Database table, completely avoiding session memory issues
         user_rows = StagingTransaction.objects.filter(user=request.user)
         review_rows = user_rows.exclude(error="")
         valid_rows_count = user_rows.filter(error="").count()
