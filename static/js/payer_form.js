@@ -1,9 +1,3 @@
-// static/js/payer_form.js
-
-// ============================================
-// PAYER FORM - COMPLETE JAVASCRIPT
-// ============================================
-
 document.addEventListener("DOMContentLoaded", function() {
     // ===================================================
     // 1. FORM FIELD STYLING INJECTOR

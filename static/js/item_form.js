@@ -1,9 +1,3 @@
-// static/js/item_form.js
-
-// ============================================
-// ITEM FORM - COMPLETE JAVASCRIPT
-// ============================================
-
 document.addEventListener("DOMContentLoaded", function() {
     // ===================================================
     // 1. FORM FIELD STYLING INJECTOR

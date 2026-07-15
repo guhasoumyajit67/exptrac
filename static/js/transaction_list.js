@@ -1,27 +1,15 @@
-// static/js/transaction_list.js
-
 // ============================================
 // TRANSACTION LEDGER - COMPLETE JAVASCRIPT
 // ============================================
-
-/**
- * Show row action modal for a transaction
- * @param {string} id - Transaction ID
- * @param {string} itemName - Item name
- * @param {string|number} price - Transaction price
- */
 function showRowActions(id, itemName, price) {
     document.getElementById('modalTargetSublabel').textContent = itemName + " (₹" + price + ")";
     
-    // ✅ FIX: Get URLs from window object (set in HTML template)
     const editUrlPattern = window.transactionUrls.update || "{% url 'update_transaction' 0 %}";
     let deleteUrlPattern = window.transactionUrls.delete || "{% url 'delete_transaction' 0 %}";
     
-    // Replace placeholder with actual ID
     const editUrl = editUrlPattern.replace('0', id);
     let deleteUrl = deleteUrlPattern.replace('0', id);
     
-    // Dynamic location calculations mapping context structures dynamically
     const currentPath = encodeURIComponent(window.location.pathname);
     deleteUrl = `${deleteUrl}?next=${currentPath}`;
     
@@ -32,8 +20,9 @@ function showRowActions(id, itemName, price) {
     actionModal.show();
 }
 
-// Make function globally accessible for inline onclick
 window.showRowActions = showRowActions;
+
+
 
 // ============================================
 // MAIN - DOM READY

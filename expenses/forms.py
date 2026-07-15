@@ -35,14 +35,12 @@ class TransactionForm(forms.ModelForm):
         self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
 
-        # 1. APPLY STYLE CLASSES TO EVERY FIELD
         for field_name, field in self.fields.items():
             if isinstance(field.widget, (forms.Select, forms.RadioSelect)):
                 field.widget.attrs["class"] = "form-select form-select-sm"
             else:
                 field.widget.attrs["class"] = "form-control form-control-sm"
 
-        # 2. Keep your user queries locked down safely
         if self.user:
             self.fields["item"].queryset = Item.objects.filter(
                 Q(user__isnull=True) | Q(user=self.user)

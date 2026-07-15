@@ -258,7 +258,6 @@
 
 {% block extra_js %}
     <script>
-        // Make URLs available to JavaScript
         window.transactionUrls = {
             update: "{% url 'update_transaction' 0 %}",
             delete: "{% url 'delete_transaction' 0 %}"

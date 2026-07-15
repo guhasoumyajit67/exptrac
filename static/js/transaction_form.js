@@ -1,9 +1,3 @@
-// static/js/transaction_form.js
-
-// ============================================
-// TRANSACTION FORM - COMPLETE JAVASCRIPT
-// ============================================
-
 document.addEventListener("DOMContentLoaded", function() {
     // ===================================================
     // 1. FORM FIELD STYLING INJECTOR
