@@ -70,10 +70,23 @@ class Transaction(models.Model):
         ordering = ['-date']
 
     def __str__(self):
+        # Get the unit from the item, default to empty string
         unit_str = self.item.unit if self.item.unit else ""
-        qty_label = f" ({self.quantity} {unit_str})".strip() if self.quantity else ""
-        qty_display = f" {qty_label}" if qty_label else ""
-        return f"{self.date} - {self.item.name}{qty_display} [₹{self.price}] paid by {self.payer.name}"
+        
+        # Build the quantity display
+        if self.quantity is not None:
+            if unit_str:
+                qty_display = f" ({self.quantity} {unit_str})"
+            else:
+                qty_display = f" ({self.quantity})"
+        else:
+            qty_display = ""
+        
+        # Format price with 2 decimal places
+        formatted_price = f"{self.price:.2f}"
+        
+        return f"{self.date} - {self.item.name}{qty_display} [₹{formatted_price}] paid by {self.payer.name}"
+    
     
 
 class StagingTransaction(models.Model):

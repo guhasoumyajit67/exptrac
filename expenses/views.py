@@ -37,6 +37,7 @@ class HomePageView(TemplateView):
 
         # 3. Base Queryset: Filter strictly by the current calendar month
         tx_queryset = Transaction.objects.filter(
+            user = user,
             date__year=current_year,
             date__month=current_month
         )

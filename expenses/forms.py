@@ -47,6 +47,12 @@ class TransactionForm(forms.ModelForm):
             )
             self.fields["payer"].queryset = Payer.objects.filter(user=self.user)
 
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price is not None and price <= 0:
+            raise forms.ValidationError("Price must be greater than zero.")
+        return price
+
 
 
 
