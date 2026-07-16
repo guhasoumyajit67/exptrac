@@ -1,0 +1,679 @@
+/* ========================================================================================
+   1. GLOBAL BASE STYLES
+   ======================================================================================== */
+body {
+    /* Layout & Flexbox */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+
+    /* Typography */
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Global Background */
+    background-image: linear-gradient(rgba(248, 249, 250, 0.94), rgba(248, 249, 250, 0.94)), 
+                      url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Flexbox container to push footer to bottom */
+main {
+    flex: 1;
+}
+
+/* ========================================================================================
+   2. GLOBAL UI UTILITIES & BRANDING
+   ======================================================================================== */
+.tracking-tight { 
+    letter-spacing: -0.025em; 
+}
+
+/* ========================================================================================
+   3. COMPONENT-SPECIFIC STYLES
+   ======================================================================================== */
+
+/* Footer Styling */
+.custom-dark-footer {
+    background-color: #000000;
+    color: #adb5bd;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.custom-dark-footer-link {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.custom-dark-footer-link:hover {
+    color: #ffffff !important;
+}
+
+/* Navbar User Badge */
+@media (min-width: 992px) {
+    .structure-user-badge:focus, 
+    .structure-user-badge:active {
+        background-color: #343a40 !important;
+    }
+}
+
+
+/* ==========================================================================
+   TRANSACTION LEDGER SPECIFIC STYLES
+   ========================================================================== */
+
+/* Interactive table row highlighting mechanics */
+.table tbody tr {
+    border-left: 4px solid transparent; /* Changed to 4px to match selected border footprint */
+}
+
+.table tbody tr:hover {
+    background-color: rgba(248, 249, 250, 0.95);
+    border-left: 4px solid #0d6efd; /* Interactive feedback accent marker */
+}
+
+.transition-all {
+    transition: all 0.15s ease-in-out;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Disables text selection highlights on high speed mobile double taps */
+.user-select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Global design utility extensions */
+.fw-extrabold { 
+    font-weight: 800; 
+}
+
+.fs-7 { 
+    font-size: 0.75rem; 
+}
+
+
+
+
+
+/* ==========================================
+   Payer Profile Custom Color Palette Grid
+   ========================================== */
+.dot-palette-item {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid transparent;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.dot-palette-item:hover {
+    transform: scale(1.15);
+}
+
+/* Uniform, crisp high-contrast selector ring indicator mapping standard UI styling */
+.dot-palette-item.active {
+    border-color: #fff !important;
+    outline: 2.5px solid #0d6efd;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.custom-picker-trigger i {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+
+
+
+
+
+/* ==========================================================================
+   Price Input Flex Alignment Override
+   ========================================================================== */
+.input-group > .form-control:not(:first-child) {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    margin-left: -1px !important;
+}
+.input-group > .input-group-text {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+
+
+
+
+
+/* ==========================================================================
+    MULTI-SELECT KEYBOARD WORKFLOW NAVIGATION STYLES
+   ========================================================================== */
+
+.table tbody tr:focus {
+    outline: none !important;
+    background-color: rgba(248, 249, 250, 0.85) !important;
+}
+
+.checkbox-col {
+    width: 0px;
+    opacity: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: hidden;
+    text-align: center;
+}
+
+.checkbox-col input[type="checkbox"] {
+    transform: scale(0.85);
+}
+
+.show-checkboxes .checkbox-col {
+    width: 45px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    padding: 0.75rem 0.5rem !important;
+}
+
+/* 🚨 DETAILED SELECTION CHAINS: Forces red highlight over native hover overrides */
+.table tbody tr.row-selected,
+.table tbody tr.row-selected td,
+.table tbody tr.row-selected:hover,
+.table tbody tr.row-selected:hover td {
+    background-color: #fff5f5 !important;
+    border-left-color: #dc3545 !important;
+}
+
+.table tbody tr.row-selected {
+    box-shadow: inset 0 1px 0 rgba(220, 53, 69, 0.1), 
+                inset 0 -1px 0 rgba(220, 53, 69, 0.1), 
+                inset 8px 0 16px rgba(220, 53, 69, 0.03),
+                0 4px 10px rgba(0, 0, 0, 0.06) !important;
+    transform: scale(0.999);
+}
+
+
+
+
+
+/* ==========================================================================
+    UNIFIED CLEAR & DELETE ACTION BUTTONS (HEIGHT & VISIBILITY LOCK)
+   ========================================================================== */
+
+#clear-selection-btn,
+#bulk-delete-btn {
+    box-sizing: border-box !important;
+    padding: 7px 16px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    border-radius: 8px !important;
+    letter-spacing: -0.01em !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+/* Translucent Minimal Gray Button (Blends into dashboard backdrop elegantly) */
+#clear-selection-btn {
+    background-color: rgba(241, 243, 245, 0.8) !important;
+    color: #495057 !important;
+    border: 1px solid #ced4da !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+#clear-selection-btn:hover {
+    background-color: #e9ecef !important;
+    color: #212529 !important;
+    border-color: #adb5bd !important;
+}
+
+#clear-selection-btn:active,
+#bulk-delete-btn:active {
+    transform: scale(0.98) !important;
+}
+
+#bulk-delete-btn {
+    border: 1px solid transparent !important; /* 1px spacer eliminates horizontal baseline shifts */
+    box-shadow: 0 1px 3px rgba(220, 53, 69, 0.15) !important;
+}
+
+/* Smooth structural drawer slide animation rules */
+#bulk-delete-actions {
+    opacity: 0;
+    transform: translateY(-8px);
+    visibility: hidden;
+    height: 0;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#bulk-delete-actions.show-actions {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    height: auto;
+    margin-bottom: 1rem !important;
+}
+
+
+
+
+
+
+
+/* ==========================================================================
+   Spreadsheet Ingestion Staging Area Components
+   ========================================================================== */
+.staging-alert-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff9db; /* Soft professional amber background */
+    border: 1px solid #fff3bf; /* Match the banner tone seamlessly */
+    border-left: 4px solid #f59f00; /* Distinct amber indicator strip */
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+/* 🚨 THE FIX: Constrain the massive SVG scale */
+.alert-icon {
+    width: 20px;  /* Force standard UI icon size */
+    height: 20px; /* Force standard UI icon size */
+    color: #f59f00; /* Amber color fill */
+    flex-shrink: 0; /* Keep it from squishing on wrap */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.alert-heading {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #d9480f; /* Premium readable contrast dark amber */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.2;
+}
+
+.btn-svg-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: inline-block;
+    /* 🚨 THE ALIGNMENT TWEAK: Prevents the icon from hanging slightly too high */
+    position: relative;
+    top: -0.5px; 
+}
+
+
+
+
+
+/* ==========================================================================
+   Spreadsheet Staging Area - Row Discard & Deletion Actions
+   ========================================================================== */
+.btn-skip-icon-only {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    color: #adb5bd; /* Sleek neutral grey baseline */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Vector geometry boundaries box */
+.bin-svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Turns standard danger-red and presents a soft halo background on mouse over */
+.btn-skip-icon-only:hover {
+    color: #fa5252;
+    background-color: #fff5f5;
+}
+
+.btn-skip-icon-only:active {
+    transform: scale(0.95); /* Tactile shrink down click tracking layer */
+}
+
+
+
+
+
+
+
+/* ==========================================================================
+   EXCEL-STYLE HEADER FILTERING & SORTING OVERLAYS
+   ========================================================================== */
+
+/* Sorting Column Triggers */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.sortable-header:hover {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+.sortable-header i {
+    transition: color 0.15s ease-in-out;
+}
+
+/* Micro sizing for indicator symbols */
+.extra-small {
+    font-size: 0.65rem;
+}
+
+/* Excel Style Dropdown Checkbox Panels */
+.excel-filter-menu {
+    top: 100%;
+    left: 0;
+    font-weight: normal;
+    text-transform: none;
+    background-color: #ffffff;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    min-width: 160px;
+    z-index: 1060;
+}
+
+/* Scrollable dynamic wrapper logic */
+.filter-options-container {
+    max-height: 160px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+}
+
+/* Custom Scrollbar for option panel frames */
+.filter-options-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.filter-options-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.filter-options-container::-webkit-scrollbar-thumb {
+    background: #e9ecef;
+    border-radius: 10px;
+}
+
+.filter-options-container::-webkit-scrollbar-thumb:hover {
+    background: #dee2e6;
+}
+
+/* Checkbox item wrapper mechanics */
+.filter-option-item {
+    transition: background-color 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.filter-option-item:hover {
+    background-color: #f8f9fa;
+}
+
+.filter-option-item input[type="checkbox"] {
+    cursor: pointer;
+    transform: scale(0.9);
+}
+
+.filter-option-item label {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Minimal vector filter toggle trigger icon buttons */
+.excel-filter-icon {
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease-in-out;
+}
+
+.excel-filter-icon:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+    color: #212529 !important;
+}
+
+/* Ensures dropdown menus don't clip under clipped responsive outer wraps */
+#ledger-table-wrapper {
+    overflow: visible !important;
+}
+
+
+
+
+/* ===================================================
+   1. BULK ACTIONS DRAWER ANIMATION ENGINE
+   =================================================== */
+#bulk-delete-actions {
+    opacity: 0;
+    transform: translateX(8px);
+    visibility: hidden;
+    
+    /* Enforces exact vertical flex centering and height metrics layout */
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 31px !important; 
+    margin: 0 !important;
+    
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#bulk-delete-actions.show-actions {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+/* ===================================================
+   2. SELECTION WORKSPACE ACTIONS BUTTON CONTROL BOOT
+   =================================================== */
+#clear-selection-btn,
+#bulk-delete-btn {
+    box-sizing: border-box !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    font-size: 0.8rem !important;
+    
+    /* Formats internal baselines to sit perfectly flat inside the 31px grid height */
+    height: 31px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    
+    border-radius: 8px !important;
+    letter-spacing: -0.01em !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+
+
+
+
+
+
+
+
+/* ============================================
+   HOME PAGE DASHBOARD STYLES
+============================================ */
+
+/* Dashboard Background - Transparent to show body background */
+.custom-dashboard-bg { 
+    background: transparent;
+    min-height: calc(100vh - 120px); 
+}
+
+/* Hero Section - Unauthenticated Users */
+.hero-immersive { 
+    min-height: 80vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    padding: 4rem 1rem; 
+}
+
+/* Gradient Text Effect */
+.gradient-text { 
+    background: linear-gradient(135deg, #0d6efd 0%, #198754 100%); 
+    -webkit-background-clip: text; 
+    background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    font-weight: 900; 
+}
+
+/* Utility Classes */
+.fs-7 { 
+    font-size: 0.85rem !important; 
+}
+
+.p-2\.5 { 
+    padding: 0.65rem 0.85rem !important; 
+}
+
+.gap-2\.5 { 
+    gap: 0.65rem !important; 
+}
+
+/* Hover Lift Effect */
+.custom-hover-lift { 
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease !important; 
+}
+
+.custom-hover-lift:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.05) !important; 
+}
+
+/* Scrollable Containers */
+.custom-ledger-scroll, 
+.custom-category-scroll { 
+    max-height: 300px; 
+    overflow-y: auto; 
+    padding-right: 4px; 
+}
+
+/* Scrollbar Styling - WebKit */
+.custom-ledger-scroll::-webkit-scrollbar, 
+.custom-category-scroll::-webkit-scrollbar { 
+    width: 4px; 
+}
+
+.custom-ledger-scroll::-webkit-scrollbar-thumb, 
+.custom-category-scroll::-webkit-scrollbar-thumb { 
+    background: #e2e8f0; 
+    border-radius: 20px; 
+}
+
+.custom-ledger-scroll::-webkit-scrollbar-thumb:hover,
+.custom-category-scroll::-webkit-scrollbar-thumb:hover {
+    background: #ced4da;
+}
+
+/* Scrollbar Styling - Firefox */
+.custom-ledger-scroll,
+.custom-category-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 transparent;
+}
+
+/* Floating Animation */
+.floating { 
+    animation: float 4s ease-in-out infinite; 
+}
+
+@keyframes float { 
+    0%, 100% { transform: translateY(0px); } 
+    50% { transform: translateY(-15px); } 
+}
+
+
+
+
+
+
+
+/* ============================================
+   DELETE LOADING OVERLAY
+============================================ */
+
+#delete-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#delete-loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+
+
+
+/* ============================================
+   ANALYTICS PAGE STYLES
+============================================ */
+
+/* Toggle View - Hide/Show */
+.view-hidden {
+    display: none !important;
+}
+
+/* Sticky Table Headers */
+.table-responsive {
+    position: relative;
+}
+
+.table-responsive table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #f8f9fa !important;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
