@@ -16,3 +16,5 @@
 
 global_items.csv
 import_items.py
+
+.env
