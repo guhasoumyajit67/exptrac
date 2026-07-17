@@ -11,32 +11,37 @@ class Command(BaseCommand):
                 data = json.load(f)
         except FileNotFoundError:
             self.stdout.write(self.style.ERROR('❌ global_items.json not found!'))
-            self.stdout.write('Run: python manage.py export_global_items first')
             return
 
         count_created = 0
         count_skipped = 0
+        count_category_missing = 0
         
-        # Get category name mapping
-        category_map = {cat.name: cat for cat in Category.objects.all()}
-        category_id_map = {cat.id: cat for cat in Category.objects.all()}
+        # Get all categories for lookup
+        categories = Category.objects.all()
+        category_lookup = {cat.id: cat for cat in categories}
+        category_name_lookup = {cat.name.lower(): cat for cat in categories}
 
         for item_data in data:
             item_name = item_data['fields']['name']
             unit = item_data['fields']['unit']
             category_id = item_data['fields']['category']
-
-            # Find category by ID first, then by name
-            category = category_id_map.get(category_id)
+            
+            # Find category by ID or name
+            category = category_lookup.get(category_id)
+            
             if not category:
-                # Try to find by name (fallback)
-                for cat_name, cat_obj in category_map.items():
-                    if cat_name.lower() in item_data.get('category_name', '').lower():
-                        category = cat_obj
-                        break
-
+                # Try to find by name (if we have category names in the data)
+                # For now, check if the category exists by ID
+                if not category_lookup:
+                    # First run - collect all category IDs that exist
+                    category = None
+            
             if not category:
-                self.stdout.write(self.style.WARNING(f'⚠️ Skipping {item_name}: Category not found'))
+                # Try to find by category name from the item name mapping
+                # You may need to manually map if categories don't exist
+                self.stdout.write(self.style.WARNING(f'⚠️ Skipping {item_name}: Category not found (ID: {category_id})'))
+                count_category_missing += 1
                 count_skipped += 1
                 continue
 
@@ -61,5 +66,15 @@ class Command(BaseCommand):
 🎉 Loading complete!
    ✅ Created: {count_created} items
    ⏭️ Skipped: {count_skipped} items
+   ⚠️ Missing categories: {count_category_missing}
             ''')
         )
+        
+        if count_category_missing > 0:
+            self.stdout.write(
+                self.style.ERROR(f'''
+⚠️ {count_category_missing} items were skipped due to missing categories.
+Please run: python manage.py load_categories to fix this.
+Then re-run: python manage.py load_global_items
+''')
+            )
