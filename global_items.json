@@ -1,0 +1,3082 @@
+[
+  {
+    "model": "expenses.item",
+    "pk": 1227,
+    "fields": {
+      "user": null,
+      "name": "Basmati Rice",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1228,
+    "fields": {
+      "user": null,
+      "name": "Bread",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1229,
+    "fields": {
+      "user": null,
+      "name": "Cornflakes",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1230,
+    "fields": {
+      "user": null,
+      "name": "Flattened Rice",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1231,
+    "fields": {
+      "user": null,
+      "name": "Flour",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1232,
+    "fields": {
+      "user": null,
+      "name": "Grocery",
+      "category": 1,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1233,
+    "fields": {
+      "user": null,
+      "name": "Oats",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1234,
+    "fields": {
+      "user": null,
+      "name": "Pasta",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1235,
+    "fields": {
+      "user": null,
+      "name": "Puffed Rice",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1236,
+    "fields": {
+      "user": null,
+      "name": "Rice",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1237,
+    "fields": {
+      "user": null,
+      "name": "Rice (Puffed Rice)",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1238,
+    "fields": {
+      "user": null,
+      "name": "Sago",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1239,
+    "fields": {
+      "user": null,
+      "name": "Wheat",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1240,
+    "fields": {
+      "user": null,
+      "name": "Whole Wheat Flour",
+      "category": 1,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1241,
+    "fields": {
+      "user": null,
+      "name": "Belt",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1242,
+    "fields": {
+      "user": null,
+      "name": "Blouse",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1243,
+    "fields": {
+      "user": null,
+      "name": "Button",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1244,
+    "fields": {
+      "user": null,
+      "name": "Cap",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1245,
+    "fields": {
+      "user": null,
+      "name": "Chhit",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1246,
+    "fields": {
+      "user": null,
+      "name": "Cloth",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1247,
+    "fields": {
+      "user": null,
+      "name": "Formal Shoe",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1248,
+    "fields": {
+      "user": null,
+      "name": "Gamchha",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1249,
+    "fields": {
+      "user": null,
+      "name": "Nighty",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1250,
+    "fields": {
+      "user": null,
+      "name": "Pajama",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1251,
+    "fields": {
+      "user": null,
+      "name": "Panjabi",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1252,
+    "fields": {
+      "user": null,
+      "name": "Saree",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1253,
+    "fields": {
+      "user": null,
+      "name": "Shirt",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1254,
+    "fields": {
+      "user": null,
+      "name": "Socks",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1255,
+    "fields": {
+      "user": null,
+      "name": "Sweater",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1256,
+    "fields": {
+      "user": null,
+      "name": "Tailor",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1257,
+    "fields": {
+      "user": null,
+      "name": "T-Shirt",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1258,
+    "fields": {
+      "user": null,
+      "name": "Underwear",
+      "category": 2,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1259,
+    "fields": {
+      "user": null,
+      "name": "AI Subscription",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1260,
+    "fields": {
+      "user": null,
+      "name": "Channel File",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1261,
+    "fields": {
+      "user": null,
+      "name": "Envelope",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1262,
+    "fields": {
+      "user": null,
+      "name": "File",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1263,
+    "fields": {
+      "user": null,
+      "name": "Financial Magazine",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1264,
+    "fields": {
+      "user": null,
+      "name": "Form Fill Up",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1265,
+    "fields": {
+      "user": null,
+      "name": "Investment Research",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1266,
+    "fields": {
+      "user": null,
+      "name": "Laptop Bag",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1267,
+    "fields": {
+      "user": null,
+      "name": "Marker",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1268,
+    "fields": {
+      "user": null,
+      "name": "Newspaper",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1269,
+    "fields": {
+      "user": null,
+      "name": "Notebook",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1270,
+    "fields": {
+      "user": null,
+      "name": "Online Course",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1271,
+    "fields": {
+      "user": null,
+      "name": "Paper",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1272,
+    "fields": {
+      "user": null,
+      "name": "Pen",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1273,
+    "fields": {
+      "user": null,
+      "name": "Photocopy",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1274,
+    "fields": {
+      "user": null,
+      "name": "Print Out",
+      "category": 3,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1275,
+    "fields": {
+      "user": null,
+      "name": "Egg",
+      "category": 4,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1276,
+    "fields": {
+      "user": null,
+      "name": "Kito",
+      "category": 5,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1277,
+    "fields": {
+      "user": null,
+      "name": "Sandal",
+      "category": 5,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1278,
+    "fields": {
+      "user": null,
+      "name": "Slipper",
+      "category": 5,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1279,
+    "fields": {
+      "user": null,
+      "name": "Apple",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1280,
+    "fields": {
+      "user": null,
+      "name": "Banana",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1281,
+    "fields": {
+      "user": null,
+      "name": "Blackberry",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1282,
+    "fields": {
+      "user": null,
+      "name": "Cashew",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1283,
+    "fields": {
+      "user": null,
+      "name": "Coconut",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1284,
+    "fields": {
+      "user": null,
+      "name": "Dates",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1285,
+    "fields": {
+      "user": null,
+      "name": "Fruit",
+      "category": 6,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1286,
+    "fields": {
+      "user": null,
+      "name": "Grapes",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1287,
+    "fields": {
+      "user": null,
+      "name": "Guava",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1288,
+    "fields": {
+      "user": null,
+      "name": "Ice Apple",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1289,
+    "fields": {
+      "user": null,
+      "name": "Litchi",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1290,
+    "fields": {
+      "user": null,
+      "name": "Mango",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1291,
+    "fields": {
+      "user": null,
+      "name": "Orange",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1292,
+    "fields": {
+      "user": null,
+      "name": "Papaya",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1293,
+    "fields": {
+      "user": null,
+      "name": "Pear",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1294,
+    "fields": {
+      "user": null,
+      "name": "Pomelo",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1295,
+    "fields": {
+      "user": null,
+      "name": "Sugar Apple",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1296,
+    "fields": {
+      "user": null,
+      "name": "Sweet Lime",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1297,
+    "fields": {
+      "user": null,
+      "name": "Watermelon",
+      "category": 6,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1298,
+    "fields": {
+      "user": null,
+      "name": "Wood Apple",
+      "category": 6,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1299,
+    "fields": {
+      "user": null,
+      "name": "AA Battery",
+      "category": 7,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1300,
+    "fields": {
+      "user": null,
+      "name": "AAA Battery",
+      "category": 7,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1301,
+    "fields": {
+      "user": null,
+      "name": "Battery Tester",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1302,
+    "fields": {
+      "user": null,
+      "name": "Candlestick",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1303,
+    "fields": {
+      "user": null,
+      "name": "Electricity Bill",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1304,
+    "fields": {
+      "user": null,
+      "name": "Extension Board",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1305,
+    "fields": {
+      "user": null,
+      "name": "Gas Bill",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1306,
+    "fields": {
+      "user": null,
+      "name": "Inverter Warranty Extension",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1307,
+    "fields": {
+      "user": null,
+      "name": "Power Bank",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1308,
+    "fields": {
+      "user": null,
+      "name": "Rechargable Battery",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1309,
+    "fields": {
+      "user": null,
+      "name": "Rechargable Battery Charger",
+      "category": 7,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1310,
+    "fields": {
+      "user": null,
+      "name": "Diagnostics",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1311,
+    "fields": {
+      "user": null,
+      "name": "Health Advisory",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1312,
+    "fields": {
+      "user": null,
+      "name": "Ice Pack",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1313,
+    "fields": {
+      "user": null,
+      "name": "OPD Charges",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1314,
+    "fields": {
+      "user": null,
+      "name": "ORS",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1315,
+    "fields": {
+      "user": null,
+      "name": "Pharmacy",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1316,
+    "fields": {
+      "user": null,
+      "name": "Psyllium Husk Powder",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1317,
+    "fields": {
+      "user": null,
+      "name": "Sitz Bath Tub",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1318,
+    "fields": {
+      "user": null,
+      "name": "Spectacles",
+      "category": 8,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1319,
+    "fields": {
+      "user": null,
+      "name": "Bamboo Basket",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1320,
+    "fields": {
+      "user": null,
+      "name": "Blade",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1321,
+    "fields": {
+      "user": null,
+      "name": "Carpenter",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1322,
+    "fields": {
+      "user": null,
+      "name": "Chopper",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1323,
+    "fields": {
+      "user": null,
+      "name": "Combination Plier",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1324,
+    "fields": {
+      "user": null,
+      "name": "Cup",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1325,
+    "fields": {
+      "user": null,
+      "name": "Dishwash Gel",
+      "category": 9,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1326,
+    "fields": {
+      "user": null,
+      "name": "Door Bottom Gap Filler",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1327,
+    "fields": {
+      "user": null,
+      "name": "Egg Slicer",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1328,
+    "fields": {
+      "user": null,
+      "name": "Electrical Instrument",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1329,
+    "fields": {
+      "user": null,
+      "name": "Fevikwik",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1330,
+    "fields": {
+      "user": null,
+      "name": "Garbage Bag",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1331,
+    "fields": {
+      "user": null,
+      "name": "Glue Trap",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1332,
+    "fields": {
+      "user": null,
+      "name": "Jute Bag",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1333,
+    "fields": {
+      "user": null,
+      "name": "Kitchen Tissue",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1334,
+    "fields": {
+      "user": null,
+      "name": "Matic Liquid",
+      "category": 9,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1335,
+    "fields": {
+      "user": null,
+      "name": "Measuring Tape",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1336,
+    "fields": {
+      "user": null,
+      "name": "Mosquito Net",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1337,
+    "fields": {
+      "user": null,
+      "name": "Needle",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1338,
+    "fields": {
+      "user": null,
+      "name": "Packaging Tape",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1339,
+    "fields": {
+      "user": null,
+      "name": "Panchayat Tax",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1340,
+    "fields": {
+      "user": null,
+      "name": "Pedal Bin",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1341,
+    "fields": {
+      "user": null,
+      "name": "Plate",
+      "category": 9,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1342,
+    "fields": {
+      "user": null,
+      "name": "Repairing",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1343,
+    "fields": {
+      "user": null,
+      "name": "Roasting Net",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1344,
+    "fields": {
+      "user": null,
+      "name": "Rolling Board",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1345,
+    "fields": {
+      "user": null,
+      "name": "Rolling Pin",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1346,
+    "fields": {
+      "user": null,
+      "name": "Rope",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1347,
+    "fields": {
+      "user": null,
+      "name": "Scrub Pad",
+      "category": 9,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1348,
+    "fields": {
+      "user": null,
+      "name": "Sewing Frame",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1349,
+    "fields": {
+      "user": null,
+      "name": "Soil",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1350,
+    "fields": {
+      "user": null,
+      "name": "Technician Charge",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1351,
+    "fields": {
+      "user": null,
+      "name": "Thread",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1352,
+    "fields": {
+      "user": null,
+      "name": "Toilet Cleaning Brush",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1353,
+    "fields": {
+      "user": null,
+      "name": "Toy",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1354,
+    "fields": {
+      "user": null,
+      "name": "Water Bottle",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1355,
+    "fields": {
+      "user": null,
+      "name": "Wiper",
+      "category": 9,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1356,
+    "fields": {
+      "user": null,
+      "name": "Chicken",
+      "category": 10,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1357,
+    "fields": {
+      "user": null,
+      "name": "Fish",
+      "category": 10,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1358,
+    "fields": {
+      "user": null,
+      "name": "Curd",
+      "category": 11,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1359,
+    "fields": {
+      "user": null,
+      "name": "Ghee",
+      "category": 11,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1360,
+    "fields": {
+      "user": null,
+      "name": "Ice Cream",
+      "category": 11,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1361,
+    "fields": {
+      "user": null,
+      "name": "Lassi",
+      "category": 11,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1362,
+    "fields": {
+      "user": null,
+      "name": "Milk",
+      "category": 11,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1363,
+    "fields": {
+      "user": null,
+      "name": "Paneer",
+      "category": 11,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1364,
+    "fields": {
+      "user": null,
+      "name": "Sweet Yogurt",
+      "category": 11,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1365,
+    "fields": {
+      "user": null,
+      "name": "Yogurt",
+      "category": 11,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1366,
+    "fields": {
+      "user": null,
+      "name": "Coffee",
+      "category": 12,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1367,
+    "fields": {
+      "user": null,
+      "name": "Cold Drinks",
+      "category": 12,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1368,
+    "fields": {
+      "user": null,
+      "name": "Drink Mix",
+      "category": 12,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1369,
+    "fields": {
+      "user": null,
+      "name": "Tang",
+      "category": 12,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1370,
+    "fields": {
+      "user": null,
+      "name": "Tea",
+      "category": 12,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1371,
+    "fields": {
+      "user": null,
+      "name": "Tea Leaves",
+      "category": 12,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1372,
+    "fields": {
+      "user": null,
+      "name": "Water",
+      "category": 12,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1373,
+    "fields": {
+      "user": null,
+      "name": "Mustard Oil",
+      "category": 13,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1374,
+    "fields": {
+      "user": null,
+      "name": "Rice Oil",
+      "category": 13,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1375,
+    "fields": {
+      "user": null,
+      "name": "Soyabean Oil",
+      "category": 13,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1376,
+    "fields": {
+      "user": null,
+      "name": "Sunflower Oil",
+      "category": 13,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1377,
+    "fields": {
+      "user": null,
+      "name": "Aftershave Lotion",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1378,
+    "fields": {
+      "user": null,
+      "name": "Alam Bar",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1379,
+    "fields": {
+      "user": null,
+      "name": "Bindi",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1380,
+    "fields": {
+      "user": null,
+      "name": "Coconut Oil",
+      "category": 14,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1381,
+    "fields": {
+      "user": null,
+      "name": "Condom",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1382,
+    "fields": {
+      "user": null,
+      "name": "Contribution",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1383,
+    "fields": {
+      "user": null,
+      "name": "Diaper",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1384,
+    "fields": {
+      "user": null,
+      "name": "Donation",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1385,
+    "fields": {
+      "user": null,
+      "name": "Ear Tops",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1386,
+    "fields": {
+      "user": null,
+      "name": "Earrings",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1387,
+    "fields": {
+      "user": null,
+      "name": "Gift",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1388,
+    "fields": {
+      "user": null,
+      "name": "Hair Clip",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1389,
+    "fields": {
+      "user": null,
+      "name": "Hair Colour",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1390,
+    "fields": {
+      "user": null,
+      "name": "Haircut",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1391,
+    "fields": {
+      "user": null,
+      "name": "Handwash Liquid",
+      "category": 14,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1392,
+    "fields": {
+      "user": null,
+      "name": "Immitation Jewellery",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1393,
+    "fields": {
+      "user": null,
+      "name": "Lube",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1394,
+    "fields": {
+      "user": null,
+      "name": "Moisturizer",
+      "category": 14,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1395,
+    "fields": {
+      "user": null,
+      "name": "Mosquito Repellent Cream",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1396,
+    "fields": {
+      "user": null,
+      "name": "Others",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1397,
+    "fields": {
+      "user": null,
+      "name": "Razor Blades",
+      "category": 14,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1398,
+    "fields": {
+      "user": null,
+      "name": "Sex Toy",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1399,
+    "fields": {
+      "user": null,
+      "name": "Shampoo",
+      "category": 14,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1400,
+    "fields": {
+      "user": null,
+      "name": "Shaving Cream",
+      "category": 14,
+      "unit": "Ltr"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1401,
+    "fields": {
+      "user": null,
+      "name": "Shaving Pot",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1402,
+    "fields": {
+      "user": null,
+      "name": "Side Bag",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1403,
+    "fields": {
+      "user": null,
+      "name": "Sling Bag",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1404,
+    "fields": {
+      "user": null,
+      "name": "Soap",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1405,
+    "fields": {
+      "user": null,
+      "name": "Tip",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1406,
+    "fields": {
+      "user": null,
+      "name": "Toothbrush",
+      "category": 14,
+      "unit": "Pcs"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1407,
+    "fields": {
+      "user": null,
+      "name": "Toothpaste",
+      "category": 14,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1408,
+    "fields": {
+      "user": null,
+      "name": "Umbrella",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1409,
+    "fields": {
+      "user": null,
+      "name": "Urinal",
+      "category": 14,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1410,
+    "fields": {
+      "user": null,
+      "name": "Biscuit",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1411,
+    "fields": {
+      "user": null,
+      "name": "Cake",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1412,
+    "fields": {
+      "user": null,
+      "name": "Chicken Biriyani",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1413,
+    "fields": {
+      "user": null,
+      "name": "Chicken Patties",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1414,
+    "fields": {
+      "user": null,
+      "name": "Chips",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1415,
+    "fields": {
+      "user": null,
+      "name": "Chop",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1416,
+    "fields": {
+      "user": null,
+      "name": "Croissant",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1417,
+    "fields": {
+      "user": null,
+      "name": "Dosa",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1418,
+    "fields": {
+      "user": null,
+      "name": "Egg Chop",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1419,
+    "fields": {
+      "user": null,
+      "name": "Egg Toast",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1420,
+    "fields": {
+      "user": null,
+      "name": "Fuchka",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1421,
+    "fields": {
+      "user": null,
+      "name": "Ghugni",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1422,
+    "fields": {
+      "user": null,
+      "name": "Goja",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1423,
+    "fields": {
+      "user": null,
+      "name": "Kochuri",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1424,
+    "fields": {
+      "user": null,
+      "name": "Litti",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1425,
+    "fields": {
+      "user": null,
+      "name": "Meal",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1426,
+    "fields": {
+      "user": null,
+      "name": "Mutton Biriyani",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1427,
+    "fields": {
+      "user": null,
+      "name": "Online Food Order",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1428,
+    "fields": {
+      "user": null,
+      "name": "Popcorn",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1429,
+    "fields": {
+      "user": null,
+      "name": "Restaurant Bill",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1430,
+    "fields": {
+      "user": null,
+      "name": "Rice Papad",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1431,
+    "fields": {
+      "user": null,
+      "name": "Roasted Chickpeas",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1432,
+    "fields": {
+      "user": null,
+      "name": "Roasted Flattened Rice",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1433,
+    "fields": {
+      "user": null,
+      "name": "Roasted Peanuts",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1434,
+    "fields": {
+      "user": null,
+      "name": "Roasted Yellow Lentils",
+      "category": 15,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1435,
+    "fields": {
+      "user": null,
+      "name": "Sandwich",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1436,
+    "fields": {
+      "user": null,
+      "name": "Singara",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1437,
+    "fields": {
+      "user": null,
+      "name": "Snacks",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1438,
+    "fields": {
+      "user": null,
+      "name": "Spicy Puffed Rice Mix",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1439,
+    "fields": {
+      "user": null,
+      "name": "Spicy Snack Mix",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1440,
+    "fields": {
+      "user": null,
+      "name": "Sweets",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1441,
+    "fields": {
+      "user": null,
+      "name": "Tiffin",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1442,
+    "fields": {
+      "user": null,
+      "name": "Veg Patties",
+      "category": 15,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1443,
+    "fields": {
+      "user": null,
+      "name": "Black Gram",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1444,
+    "fields": {
+      "user": null,
+      "name": "Chickpea Flour",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1445,
+    "fields": {
+      "user": null,
+      "name": "Chickpeas",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1446,
+    "fields": {
+      "user": null,
+      "name": "Gram Flour",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1447,
+    "fields": {
+      "user": null,
+      "name": "Green Gram",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1448,
+    "fields": {
+      "user": null,
+      "name": "Kabuli Chickpeas",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1449,
+    "fields": {
+      "user": null,
+      "name": "Papad",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1450,
+    "fields": {
+      "user": null,
+      "name": "Peanuts",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1451,
+    "fields": {
+      "user": null,
+      "name": "Pulses",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1452,
+    "fields": {
+      "user": null,
+      "name": "Red Lentils",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1453,
+    "fields": {
+      "user": null,
+      "name": "Roasted Gram Flour",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1454,
+    "fields": {
+      "user": null,
+      "name": "Soya Chunks",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1455,
+    "fields": {
+      "user": null,
+      "name": "Yellow Peas",
+      "category": 21,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1456,
+    "fields": {
+      "user": null,
+      "name": "Cards",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1457,
+    "fields": {
+      "user": null,
+      "name": "Ludo",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1458,
+    "fields": {
+      "user": null,
+      "name": "Magazine",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1459,
+    "fields": {
+      "user": null,
+      "name": "Movie Ticket",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1460,
+    "fields": {
+      "user": null,
+      "name": "Online Money Game",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1461,
+    "fields": {
+      "user": null,
+      "name": "Picnic",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1462,
+    "fields": {
+      "user": null,
+      "name": "Sexual Website Subscription",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1463,
+    "fields": {
+      "user": null,
+      "name": "Streaming Platform Subscription",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1464,
+    "fields": {
+      "user": null,
+      "name": "Tennis Ball",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1465,
+    "fields": {
+      "user": null,
+      "name": "Ticket",
+      "category": 16,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1466,
+    "fields": {
+      "user": null,
+      "name": "Chaat Masala",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1467,
+    "fields": {
+      "user": null,
+      "name": "Chicken Masala",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1468,
+    "fields": {
+      "user": null,
+      "name": "Coriander Seeds",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1469,
+    "fields": {
+      "user": null,
+      "name": "Cumin Seeds",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1470,
+    "fields": {
+      "user": null,
+      "name": "Dried Red Chili",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1471,
+    "fields": {
+      "user": null,
+      "name": "Fennel Seeds",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1472,
+    "fields": {
+      "user": null,
+      "name": "Garlic",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1473,
+    "fields": {
+      "user": null,
+      "name": "Ginger",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1474,
+    "fields": {
+      "user": null,
+      "name": "Mustard",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1475,
+    "fields": {
+      "user": null,
+      "name": "Poppy Seeds",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1476,
+    "fields": {
+      "user": null,
+      "name": "Safflower Seeds",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1477,
+    "fields": {
+      "user": null,
+      "name": "Salt",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1478,
+    "fields": {
+      "user": null,
+      "name": "Sandwich Masala",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1479,
+    "fields": {
+      "user": null,
+      "name": "Sauce",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1480,
+    "fields": {
+      "user": null,
+      "name": "Spice",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1481,
+    "fields": {
+      "user": null,
+      "name": "Turmeric Powder",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1482,
+    "fields": {
+      "user": null,
+      "name": "White Vinegar",
+      "category": 17,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1483,
+    "fields": {
+      "user": null,
+      "name": "Chocolate",
+      "category": 18,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1484,
+    "fields": {
+      "user": null,
+      "name": "Jaggery",
+      "category": 18,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1485,
+    "fields": {
+      "user": null,
+      "name": "Peanut Bar",
+      "category": 18,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1486,
+    "fields": {
+      "user": null,
+      "name": "Soan Papdi",
+      "category": 18,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1487,
+    "fields": {
+      "user": null,
+      "name": "Sugar",
+      "category": 18,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1488,
+    "fields": {
+      "user": null,
+      "name": "App Bike",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1489,
+    "fields": {
+      "user": null,
+      "name": "App Cab",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1490,
+    "fields": {
+      "user": null,
+      "name": "Auto",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1491,
+    "fields": {
+      "user": null,
+      "name": "Broadband Bill",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1492,
+    "fields": {
+      "user": null,
+      "name": "Bus",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1493,
+    "fields": {
+      "user": null,
+      "name": "Cloud Services",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1494,
+    "fields": {
+      "user": null,
+      "name": "Computer Accessories",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1495,
+    "fields": {
+      "user": null,
+      "name": "Computer Accessory",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1496,
+    "fields": {
+      "user": null,
+      "name": "Internet Pack",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1497,
+    "fields": {
+      "user": null,
+      "name": "Internet Services",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1498,
+    "fields": {
+      "user": null,
+      "name": "Laptop Cleaning Brush",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1499,
+    "fields": {
+      "user": null,
+      "name": "Metro",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1500,
+    "fields": {
+      "user": null,
+      "name": "Microfiber Cleaning Cloth",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1501,
+    "fields": {
+      "user": null,
+      "name": "Mobile Back Cover",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1502,
+    "fields": {
+      "user": null,
+      "name": "Mobile Recharge",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1503,
+    "fields": {
+      "user": null,
+      "name": "Mobile Screen Protector",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1504,
+    "fields": {
+      "user": null,
+      "name": "Mobile Stand",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1505,
+    "fields": {
+      "user": null,
+      "name": "Monitor",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1506,
+    "fields": {
+      "user": null,
+      "name": "Toto",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1507,
+    "fields": {
+      "user": null,
+      "name": "Tracker",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1508,
+    "fields": {
+      "user": null,
+      "name": "Train",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1509,
+    "fields": {
+      "user": null,
+      "name": "Travel",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1510,
+    "fields": {
+      "user": null,
+      "name": "Truecaller Subscription",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1511,
+    "fields": {
+      "user": null,
+      "name": "Type C Cable",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1512,
+    "fields": {
+      "user": null,
+      "name": "USB Converter",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1513,
+    "fields": {
+      "user": null,
+      "name": "Wireless Keyboard",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1514,
+    "fields": {
+      "user": null,
+      "name": "Wireless Mouse",
+      "category": 19,
+      "unit": ""
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1515,
+    "fields": {
+      "user": null,
+      "name": "Beetroot",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1516,
+    "fields": {
+      "user": null,
+      "name": "Bitter Gourd",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1517,
+    "fields": {
+      "user": null,
+      "name": "Brinjal",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1518,
+    "fields": {
+      "user": null,
+      "name": "Cabbage",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1519,
+    "fields": {
+      "user": null,
+      "name": "Capsicum",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1520,
+    "fields": {
+      "user": null,
+      "name": "Cauliflower",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1521,
+    "fields": {
+      "user": null,
+      "name": "Cucumber",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1522,
+    "fields": {
+      "user": null,
+      "name": "Green Coconut",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1523,
+    "fields": {
+      "user": null,
+      "name": "Green Peas",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1524,
+    "fields": {
+      "user": null,
+      "name": "Leaf Vegetables",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1525,
+    "fields": {
+      "user": null,
+      "name": "Lemon",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1526,
+    "fields": {
+      "user": null,
+      "name": "Mushroom",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1527,
+    "fields": {
+      "user": null,
+      "name": "Onion",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1528,
+    "fields": {
+      "user": null,
+      "name": "Pointed Gourd",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1529,
+    "fields": {
+      "user": null,
+      "name": "Potato",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1530,
+    "fields": {
+      "user": null,
+      "name": "Raw Tamarind",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1531,
+    "fields": {
+      "user": null,
+      "name": "Spring Onion",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1532,
+    "fields": {
+      "user": null,
+      "name": "Sweet Corn",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1533,
+    "fields": {
+      "user": null,
+      "name": "Tomato",
+      "category": 20,
+      "unit": "Kg"
+    }
+  },
+  {
+    "model": "expenses.item",
+    "pk": 1534,
+    "fields": {
+      "user": null,
+      "name": "Vegetable",
+      "category": 20,
+      "unit": "Kg"
+    }
+  }
+]
