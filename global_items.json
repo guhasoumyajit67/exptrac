@@ -5,7 +5,7 @@
     "fields": {
       "user": null,
       "name": "Basmati Rice",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -15,7 +15,7 @@
     "fields": {
       "user": null,
       "name": "Bread",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -25,7 +25,7 @@
     "fields": {
       "user": null,
       "name": "Cornflakes",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -35,7 +35,7 @@
     "fields": {
       "user": null,
       "name": "Flattened Rice",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -45,7 +45,7 @@
     "fields": {
       "user": null,
       "name": "Flour",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -55,7 +55,7 @@
     "fields": {
       "user": null,
       "name": "Grocery",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": ""
     }
   },
@@ -65,7 +65,7 @@
     "fields": {
       "user": null,
       "name": "Oats",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -75,7 +75,7 @@
     "fields": {
       "user": null,
       "name": "Pasta",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -85,7 +85,7 @@
     "fields": {
       "user": null,
       "name": "Puffed Rice",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -95,7 +95,7 @@
     "fields": {
       "user": null,
       "name": "Rice",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -105,7 +105,7 @@
     "fields": {
       "user": null,
       "name": "Rice (Puffed Rice)",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -115,7 +115,7 @@
     "fields": {
       "user": null,
       "name": "Sago",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -125,7 +125,7 @@
     "fields": {
       "user": null,
       "name": "Wheat",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -135,7 +135,7 @@
     "fields": {
       "user": null,
       "name": "Whole Wheat Flour",
-      "category": 1,
+      "category_name": "Cereals & Products",
       "unit": "Kg"
     }
   },
@@ -145,7 +145,7 @@
     "fields": {
       "user": null,
       "name": "Belt",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -155,7 +155,7 @@
     "fields": {
       "user": null,
       "name": "Blouse",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -165,7 +165,7 @@
     "fields": {
       "user": null,
       "name": "Button",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -175,7 +175,7 @@
     "fields": {
       "user": null,
       "name": "Cap",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -185,7 +185,7 @@
     "fields": {
       "user": null,
       "name": "Chhit",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -195,7 +195,7 @@
     "fields": {
       "user": null,
       "name": "Cloth",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -205,7 +205,7 @@
     "fields": {
       "user": null,
       "name": "Formal Shoe",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -215,7 +215,7 @@
     "fields": {
       "user": null,
       "name": "Gamchha",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -225,7 +225,7 @@
     "fields": {
       "user": null,
       "name": "Nighty",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -235,7 +235,7 @@
     "fields": {
       "user": null,
       "name": "Pajama",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -245,7 +245,7 @@
     "fields": {
       "user": null,
       "name": "Panjabi",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -255,7 +255,7 @@
     "fields": {
       "user": null,
       "name": "Saree",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -265,7 +265,7 @@
     "fields": {
       "user": null,
       "name": "Shirt",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -275,7 +275,7 @@
     "fields": {
       "user": null,
       "name": "Socks",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -285,7 +285,7 @@
     "fields": {
       "user": null,
       "name": "Sweater",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -295,7 +295,7 @@
     "fields": {
       "user": null,
       "name": "Tailor",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -305,7 +305,7 @@
     "fields": {
       "user": null,
       "name": "T-Shirt",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -315,7 +315,7 @@
     "fields": {
       "user": null,
       "name": "Underwear",
-      "category": 2,
+      "category_name": "Clothing",
       "unit": ""
     }
   },
@@ -325,7 +325,7 @@
     "fields": {
       "user": null,
       "name": "AI Subscription",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -335,7 +335,7 @@
     "fields": {
       "user": null,
       "name": "Channel File",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -345,7 +345,7 @@
     "fields": {
       "user": null,
       "name": "Envelope",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -355,7 +355,7 @@
     "fields": {
       "user": null,
       "name": "File",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -365,7 +365,7 @@
     "fields": {
       "user": null,
       "name": "Financial Magazine",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -375,7 +375,7 @@
     "fields": {
       "user": null,
       "name": "Form Fill Up",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -385,7 +385,7 @@
     "fields": {
       "user": null,
       "name": "Investment Research",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -395,7 +395,7 @@
     "fields": {
       "user": null,
       "name": "Laptop Bag",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -405,7 +405,7 @@
     "fields": {
       "user": null,
       "name": "Marker",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -415,7 +415,7 @@
     "fields": {
       "user": null,
       "name": "Newspaper",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -425,7 +425,7 @@
     "fields": {
       "user": null,
       "name": "Notebook",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -435,7 +435,7 @@
     "fields": {
       "user": null,
       "name": "Online Course",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -445,7 +445,7 @@
     "fields": {
       "user": null,
       "name": "Paper",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -455,7 +455,7 @@
     "fields": {
       "user": null,
       "name": "Pen",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -465,7 +465,7 @@
     "fields": {
       "user": null,
       "name": "Photocopy",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -475,7 +475,7 @@
     "fields": {
       "user": null,
       "name": "Print Out",
-      "category": 3,
+      "category_name": "Education",
       "unit": ""
     }
   },
@@ -485,7 +485,7 @@
     "fields": {
       "user": null,
       "name": "Egg",
-      "category": 4,
+      "category_name": "Eggs",
       "unit": "Pcs"
     }
   },
@@ -495,7 +495,7 @@
     "fields": {
       "user": null,
       "name": "Kito",
-      "category": 5,
+      "category_name": "Footwear",
       "unit": ""
     }
   },
@@ -505,7 +505,7 @@
     "fields": {
       "user": null,
       "name": "Sandal",
-      "category": 5,
+      "category_name": "Footwear",
       "unit": ""
     }
   },
@@ -515,7 +515,7 @@
     "fields": {
       "user": null,
       "name": "Slipper",
-      "category": 5,
+      "category_name": "Footwear",
       "unit": ""
     }
   },
@@ -525,7 +525,7 @@
     "fields": {
       "user": null,
       "name": "Apple",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -535,7 +535,7 @@
     "fields": {
       "user": null,
       "name": "Banana",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -545,7 +545,7 @@
     "fields": {
       "user": null,
       "name": "Blackberry",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -555,7 +555,7 @@
     "fields": {
       "user": null,
       "name": "Cashew",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -565,7 +565,7 @@
     "fields": {
       "user": null,
       "name": "Coconut",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -575,7 +575,7 @@
     "fields": {
       "user": null,
       "name": "Dates",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -585,7 +585,7 @@
     "fields": {
       "user": null,
       "name": "Fruit",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": ""
     }
   },
@@ -595,7 +595,7 @@
     "fields": {
       "user": null,
       "name": "Grapes",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -605,7 +605,7 @@
     "fields": {
       "user": null,
       "name": "Guava",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -615,7 +615,7 @@
     "fields": {
       "user": null,
       "name": "Ice Apple",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -625,7 +625,7 @@
     "fields": {
       "user": null,
       "name": "Litchi",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -635,7 +635,7 @@
     "fields": {
       "user": null,
       "name": "Mango",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -645,7 +645,7 @@
     "fields": {
       "user": null,
       "name": "Orange",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -655,7 +655,7 @@
     "fields": {
       "user": null,
       "name": "Papaya",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -665,7 +665,7 @@
     "fields": {
       "user": null,
       "name": "Pear",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -675,7 +675,7 @@
     "fields": {
       "user": null,
       "name": "Pomelo",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -685,7 +685,7 @@
     "fields": {
       "user": null,
       "name": "Sugar Apple",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -695,7 +695,7 @@
     "fields": {
       "user": null,
       "name": "Sweet Lime",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -705,7 +705,7 @@
     "fields": {
       "user": null,
       "name": "Watermelon",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Kg"
     }
   },
@@ -715,7 +715,7 @@
     "fields": {
       "user": null,
       "name": "Wood Apple",
-      "category": 6,
+      "category_name": "Fruits",
       "unit": "Pcs"
     }
   },
@@ -725,7 +725,7 @@
     "fields": {
       "user": null,
       "name": "AA Battery",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": "Pcs"
     }
   },
@@ -735,7 +735,7 @@
     "fields": {
       "user": null,
       "name": "AAA Battery",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": "Pcs"
     }
   },
@@ -745,7 +745,7 @@
     "fields": {
       "user": null,
       "name": "Battery Tester",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -755,7 +755,7 @@
     "fields": {
       "user": null,
       "name": "Candlestick",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -765,7 +765,7 @@
     "fields": {
       "user": null,
       "name": "Electricity Bill",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -775,7 +775,7 @@
     "fields": {
       "user": null,
       "name": "Extension Board",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -785,7 +785,7 @@
     "fields": {
       "user": null,
       "name": "Gas Bill",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -795,7 +795,7 @@
     "fields": {
       "user": null,
       "name": "Inverter Warranty Extension",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -805,7 +805,7 @@
     "fields": {
       "user": null,
       "name": "Power Bank",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -815,7 +815,7 @@
     "fields": {
       "user": null,
       "name": "Rechargable Battery",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -825,7 +825,7 @@
     "fields": {
       "user": null,
       "name": "Rechargable Battery Charger",
-      "category": 7,
+      "category_name": "Fuel & Light",
       "unit": ""
     }
   },
@@ -835,7 +835,7 @@
     "fields": {
       "user": null,
       "name": "Diagnostics",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -845,7 +845,7 @@
     "fields": {
       "user": null,
       "name": "Health Advisory",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -855,7 +855,7 @@
     "fields": {
       "user": null,
       "name": "Ice Pack",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -865,7 +865,7 @@
     "fields": {
       "user": null,
       "name": "OPD Charges",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -875,7 +875,7 @@
     "fields": {
       "user": null,
       "name": "ORS",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -885,7 +885,7 @@
     "fields": {
       "user": null,
       "name": "Pharmacy",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -895,7 +895,7 @@
     "fields": {
       "user": null,
       "name": "Psyllium Husk Powder",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -905,7 +905,7 @@
     "fields": {
       "user": null,
       "name": "Sitz Bath Tub",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -915,7 +915,7 @@
     "fields": {
       "user": null,
       "name": "Spectacles",
-      "category": 8,
+      "category_name": "Health",
       "unit": ""
     }
   },
@@ -925,7 +925,7 @@
     "fields": {
       "user": null,
       "name": "Bamboo Basket",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -935,7 +935,7 @@
     "fields": {
       "user": null,
       "name": "Blade",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -945,7 +945,7 @@
     "fields": {
       "user": null,
       "name": "Carpenter",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -955,7 +955,7 @@
     "fields": {
       "user": null,
       "name": "Chopper",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -965,7 +965,7 @@
     "fields": {
       "user": null,
       "name": "Combination Plier",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -975,7 +975,7 @@
     "fields": {
       "user": null,
       "name": "Cup",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -985,7 +985,7 @@
     "fields": {
       "user": null,
       "name": "Dishwash Gel",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": "Ltr"
     }
   },
@@ -995,7 +995,7 @@
     "fields": {
       "user": null,
       "name": "Door Bottom Gap Filler",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1005,7 +1005,7 @@
     "fields": {
       "user": null,
       "name": "Egg Slicer",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1015,7 +1015,7 @@
     "fields": {
       "user": null,
       "name": "Electrical Instrument",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1025,7 +1025,7 @@
     "fields": {
       "user": null,
       "name": "Fevikwik",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1035,7 +1035,7 @@
     "fields": {
       "user": null,
       "name": "Garbage Bag",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1045,7 +1045,7 @@
     "fields": {
       "user": null,
       "name": "Glue Trap",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1055,7 +1055,7 @@
     "fields": {
       "user": null,
       "name": "Jute Bag",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1065,7 +1065,7 @@
     "fields": {
       "user": null,
       "name": "Kitchen Tissue",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1075,7 +1075,7 @@
     "fields": {
       "user": null,
       "name": "Matic Liquid",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": "Ltr"
     }
   },
@@ -1085,7 +1085,7 @@
     "fields": {
       "user": null,
       "name": "Measuring Tape",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1095,7 +1095,7 @@
     "fields": {
       "user": null,
       "name": "Mosquito Net",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1105,7 +1105,7 @@
     "fields": {
       "user": null,
       "name": "Needle",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1115,7 +1115,7 @@
     "fields": {
       "user": null,
       "name": "Packaging Tape",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1125,7 +1125,7 @@
     "fields": {
       "user": null,
       "name": "Panchayat Tax",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1135,7 +1135,7 @@
     "fields": {
       "user": null,
       "name": "Pedal Bin",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1145,7 +1145,7 @@
     "fields": {
       "user": null,
       "name": "Plate",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": "Pcs"
     }
   },
@@ -1155,7 +1155,7 @@
     "fields": {
       "user": null,
       "name": "Repairing",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1165,7 +1165,7 @@
     "fields": {
       "user": null,
       "name": "Roasting Net",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1175,7 +1175,7 @@
     "fields": {
       "user": null,
       "name": "Rolling Board",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1185,7 +1185,7 @@
     "fields": {
       "user": null,
       "name": "Rolling Pin",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1195,7 +1195,7 @@
     "fields": {
       "user": null,
       "name": "Rope",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1205,7 +1205,7 @@
     "fields": {
       "user": null,
       "name": "Scrub Pad",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": "Pcs"
     }
   },
@@ -1215,7 +1215,7 @@
     "fields": {
       "user": null,
       "name": "Sewing Frame",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1225,7 +1225,7 @@
     "fields": {
       "user": null,
       "name": "Soil",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1235,7 +1235,7 @@
     "fields": {
       "user": null,
       "name": "Technician Charge",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1245,7 +1245,7 @@
     "fields": {
       "user": null,
       "name": "Thread",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1255,7 +1255,7 @@
     "fields": {
       "user": null,
       "name": "Toilet Cleaning Brush",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1265,7 +1265,7 @@
     "fields": {
       "user": null,
       "name": "Toy",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1275,7 +1275,7 @@
     "fields": {
       "user": null,
       "name": "Water Bottle",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1285,7 +1285,7 @@
     "fields": {
       "user": null,
       "name": "Wiper",
-      "category": 9,
+      "category_name": "Household Goods & Services",
       "unit": ""
     }
   },
@@ -1295,7 +1295,7 @@
     "fields": {
       "user": null,
       "name": "Chicken",
-      "category": 10,
+      "category_name": "Meat & Fish",
       "unit": "Kg"
     }
   },
@@ -1305,7 +1305,7 @@
     "fields": {
       "user": null,
       "name": "Fish",
-      "category": 10,
+      "category_name": "Meat & Fish",
       "unit": "Kg"
     }
   },
@@ -1315,7 +1315,7 @@
     "fields": {
       "user": null,
       "name": "Curd",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Kg"
     }
   },
@@ -1325,7 +1325,7 @@
     "fields": {
       "user": null,
       "name": "Ghee",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Ltr"
     }
   },
@@ -1335,7 +1335,7 @@
     "fields": {
       "user": null,
       "name": "Ice Cream",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Ltr"
     }
   },
@@ -1345,7 +1345,7 @@
     "fields": {
       "user": null,
       "name": "Lassi",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Ltr"
     }
   },
@@ -1355,7 +1355,7 @@
     "fields": {
       "user": null,
       "name": "Milk",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Ltr"
     }
   },
@@ -1365,7 +1365,7 @@
     "fields": {
       "user": null,
       "name": "Paneer",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Kg"
     }
   },
@@ -1375,7 +1375,7 @@
     "fields": {
       "user": null,
       "name": "Sweet Yogurt",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Kg"
     }
   },
@@ -1385,7 +1385,7 @@
     "fields": {
       "user": null,
       "name": "Yogurt",
-      "category": 11,
+      "category_name": "Milk & Products",
       "unit": "Kg"
     }
   },
@@ -1395,7 +1395,7 @@
     "fields": {
       "user": null,
       "name": "Coffee",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": "Kg"
     }
   },
@@ -1405,7 +1405,7 @@
     "fields": {
       "user": null,
       "name": "Cold Drinks",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": "Ltr"
     }
   },
@@ -1415,7 +1415,7 @@
     "fields": {
       "user": null,
       "name": "Drink Mix",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": "Kg"
     }
   },
@@ -1425,7 +1425,7 @@
     "fields": {
       "user": null,
       "name": "Tang",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": "Kg"
     }
   },
@@ -1435,7 +1435,7 @@
     "fields": {
       "user": null,
       "name": "Tea",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": ""
     }
   },
@@ -1445,7 +1445,7 @@
     "fields": {
       "user": null,
       "name": "Tea Leaves",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": "Kg"
     }
   },
@@ -1455,7 +1455,7 @@
     "fields": {
       "user": null,
       "name": "Water",
-      "category": 12,
+      "category_name": "Non-Alcoholic Beverages",
       "unit": "Ltr"
     }
   },
@@ -1465,7 +1465,7 @@
     "fields": {
       "user": null,
       "name": "Mustard Oil",
-      "category": 13,
+      "category_name": "Oils & Fats",
       "unit": "Ltr"
     }
   },
@@ -1475,7 +1475,7 @@
     "fields": {
       "user": null,
       "name": "Rice Oil",
-      "category": 13,
+      "category_name": "Oils & Fats",
       "unit": "Ltr"
     }
   },
@@ -1485,7 +1485,7 @@
     "fields": {
       "user": null,
       "name": "Soyabean Oil",
-      "category": 13,
+      "category_name": "Oils & Fats",
       "unit": "Ltr"
     }
   },
@@ -1495,7 +1495,7 @@
     "fields": {
       "user": null,
       "name": "Sunflower Oil",
-      "category": 13,
+      "category_name": "Oils & Fats",
       "unit": "Ltr"
     }
   },
@@ -1505,7 +1505,7 @@
     "fields": {
       "user": null,
       "name": "Aftershave Lotion",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1515,7 +1515,7 @@
     "fields": {
       "user": null,
       "name": "Alam Bar",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1525,7 +1525,7 @@
     "fields": {
       "user": null,
       "name": "Bindi",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1535,7 +1535,7 @@
     "fields": {
       "user": null,
       "name": "Coconut Oil",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Ltr"
     }
   },
@@ -1545,7 +1545,7 @@
     "fields": {
       "user": null,
       "name": "Condom",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1555,7 +1555,7 @@
     "fields": {
       "user": null,
       "name": "Contribution",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1565,7 +1565,7 @@
     "fields": {
       "user": null,
       "name": "Diaper",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1575,7 +1575,7 @@
     "fields": {
       "user": null,
       "name": "Donation",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1585,7 +1585,7 @@
     "fields": {
       "user": null,
       "name": "Ear Tops",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1595,7 +1595,7 @@
     "fields": {
       "user": null,
       "name": "Earrings",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1605,7 +1605,7 @@
     "fields": {
       "user": null,
       "name": "Gift",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1615,7 +1615,7 @@
     "fields": {
       "user": null,
       "name": "Hair Clip",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1625,7 +1625,7 @@
     "fields": {
       "user": null,
       "name": "Hair Colour",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1635,7 +1635,7 @@
     "fields": {
       "user": null,
       "name": "Haircut",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1645,7 +1645,7 @@
     "fields": {
       "user": null,
       "name": "Handwash Liquid",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Ltr"
     }
   },
@@ -1655,7 +1655,7 @@
     "fields": {
       "user": null,
       "name": "Immitation Jewellery",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1665,7 +1665,7 @@
     "fields": {
       "user": null,
       "name": "Lube",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1675,7 +1675,7 @@
     "fields": {
       "user": null,
       "name": "Moisturizer",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Ltr"
     }
   },
@@ -1685,7 +1685,7 @@
     "fields": {
       "user": null,
       "name": "Mosquito Repellent Cream",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1695,7 +1695,7 @@
     "fields": {
       "user": null,
       "name": "Others",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1705,7 +1705,7 @@
     "fields": {
       "user": null,
       "name": "Razor Blades",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Pcs"
     }
   },
@@ -1715,7 +1715,7 @@
     "fields": {
       "user": null,
       "name": "Sex Toy",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1725,7 +1725,7 @@
     "fields": {
       "user": null,
       "name": "Shampoo",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Ltr"
     }
   },
@@ -1735,7 +1735,7 @@
     "fields": {
       "user": null,
       "name": "Shaving Cream",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Ltr"
     }
   },
@@ -1745,7 +1745,7 @@
     "fields": {
       "user": null,
       "name": "Shaving Pot",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1755,7 +1755,7 @@
     "fields": {
       "user": null,
       "name": "Side Bag",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1765,7 +1765,7 @@
     "fields": {
       "user": null,
       "name": "Sling Bag",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1775,7 +1775,7 @@
     "fields": {
       "user": null,
       "name": "Soap",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1785,7 +1785,7 @@
     "fields": {
       "user": null,
       "name": "Tip",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1795,7 +1795,7 @@
     "fields": {
       "user": null,
       "name": "Toothbrush",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Pcs"
     }
   },
@@ -1805,7 +1805,7 @@
     "fields": {
       "user": null,
       "name": "Toothpaste",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": "Kg"
     }
   },
@@ -1815,7 +1815,7 @@
     "fields": {
       "user": null,
       "name": "Umbrella",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1825,7 +1825,7 @@
     "fields": {
       "user": null,
       "name": "Urinal",
-      "category": 14,
+      "category_name": "Personal Care & Effects",
       "unit": ""
     }
   },
@@ -1835,7 +1835,7 @@
     "fields": {
       "user": null,
       "name": "Biscuit",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -1845,7 +1845,7 @@
     "fields": {
       "user": null,
       "name": "Cake",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1855,7 +1855,7 @@
     "fields": {
       "user": null,
       "name": "Chicken Biriyani",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1865,7 +1865,7 @@
     "fields": {
       "user": null,
       "name": "Chicken Patties",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1875,7 +1875,7 @@
     "fields": {
       "user": null,
       "name": "Chips",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -1885,7 +1885,7 @@
     "fields": {
       "user": null,
       "name": "Chop",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1895,7 +1895,7 @@
     "fields": {
       "user": null,
       "name": "Croissant",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -1905,7 +1905,7 @@
     "fields": {
       "user": null,
       "name": "Dosa",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1915,7 +1915,7 @@
     "fields": {
       "user": null,
       "name": "Egg Chop",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1925,7 +1925,7 @@
     "fields": {
       "user": null,
       "name": "Egg Toast",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1935,7 +1935,7 @@
     "fields": {
       "user": null,
       "name": "Fuchka",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1945,7 +1945,7 @@
     "fields": {
       "user": null,
       "name": "Ghugni",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1955,7 +1955,7 @@
     "fields": {
       "user": null,
       "name": "Goja",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1965,7 +1965,7 @@
     "fields": {
       "user": null,
       "name": "Kochuri",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1975,7 +1975,7 @@
     "fields": {
       "user": null,
       "name": "Litti",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1985,7 +1985,7 @@
     "fields": {
       "user": null,
       "name": "Meal",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -1995,7 +1995,7 @@
     "fields": {
       "user": null,
       "name": "Mutton Biriyani",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2005,7 +2005,7 @@
     "fields": {
       "user": null,
       "name": "Online Food Order",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2015,7 +2015,7 @@
     "fields": {
       "user": null,
       "name": "Popcorn",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -2025,7 +2025,7 @@
     "fields": {
       "user": null,
       "name": "Restaurant Bill",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2035,7 +2035,7 @@
     "fields": {
       "user": null,
       "name": "Rice Papad",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2045,7 +2045,7 @@
     "fields": {
       "user": null,
       "name": "Roasted Chickpeas",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -2055,7 +2055,7 @@
     "fields": {
       "user": null,
       "name": "Roasted Flattened Rice",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -2065,7 +2065,7 @@
     "fields": {
       "user": null,
       "name": "Roasted Peanuts",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -2075,7 +2075,7 @@
     "fields": {
       "user": null,
       "name": "Roasted Yellow Lentils",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": "Kg"
     }
   },
@@ -2085,7 +2085,7 @@
     "fields": {
       "user": null,
       "name": "Sandwich",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2095,7 +2095,7 @@
     "fields": {
       "user": null,
       "name": "Singara",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2105,7 +2105,7 @@
     "fields": {
       "user": null,
       "name": "Snacks",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2115,7 +2115,7 @@
     "fields": {
       "user": null,
       "name": "Spicy Puffed Rice Mix",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2125,7 +2125,7 @@
     "fields": {
       "user": null,
       "name": "Spicy Snack Mix",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2135,7 +2135,7 @@
     "fields": {
       "user": null,
       "name": "Sweets",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2145,7 +2145,7 @@
     "fields": {
       "user": null,
       "name": "Tiffin",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2155,7 +2155,7 @@
     "fields": {
       "user": null,
       "name": "Veg Patties",
-      "category": 15,
+      "category_name": "Prepared Meals, Snacks, Sweets etc.",
       "unit": ""
     }
   },
@@ -2165,7 +2165,7 @@
     "fields": {
       "user": null,
       "name": "Black Gram",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2175,7 +2175,7 @@
     "fields": {
       "user": null,
       "name": "Chickpea Flour",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2185,7 +2185,7 @@
     "fields": {
       "user": null,
       "name": "Chickpeas",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2195,7 +2195,7 @@
     "fields": {
       "user": null,
       "name": "Gram Flour",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2205,7 +2205,7 @@
     "fields": {
       "user": null,
       "name": "Green Gram",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2215,7 +2215,7 @@
     "fields": {
       "user": null,
       "name": "Kabuli Chickpeas",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2225,7 +2225,7 @@
     "fields": {
       "user": null,
       "name": "Papad",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2235,7 +2235,7 @@
     "fields": {
       "user": null,
       "name": "Peanuts",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2245,7 +2245,7 @@
     "fields": {
       "user": null,
       "name": "Pulses",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2255,7 +2255,7 @@
     "fields": {
       "user": null,
       "name": "Red Lentils",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2265,7 +2265,7 @@
     "fields": {
       "user": null,
       "name": "Roasted Gram Flour",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2275,7 +2275,7 @@
     "fields": {
       "user": null,
       "name": "Soya Chunks",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2285,7 +2285,7 @@
     "fields": {
       "user": null,
       "name": "Yellow Peas",
-      "category": 21,
+      "category_name": "Pulses & Products",
       "unit": "Kg"
     }
   },
@@ -2295,7 +2295,7 @@
     "fields": {
       "user": null,
       "name": "Cards",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2305,7 +2305,7 @@
     "fields": {
       "user": null,
       "name": "Ludo",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2315,7 +2315,7 @@
     "fields": {
       "user": null,
       "name": "Magazine",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2325,7 +2325,7 @@
     "fields": {
       "user": null,
       "name": "Movie Ticket",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2335,7 +2335,7 @@
     "fields": {
       "user": null,
       "name": "Online Money Game",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2345,7 +2345,7 @@
     "fields": {
       "user": null,
       "name": "Picnic",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2355,7 +2355,7 @@
     "fields": {
       "user": null,
       "name": "Sexual Website Subscription",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2365,7 +2365,7 @@
     "fields": {
       "user": null,
       "name": "Streaming Platform Subscription",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2375,7 +2375,7 @@
     "fields": {
       "user": null,
       "name": "Tennis Ball",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2385,7 +2385,7 @@
     "fields": {
       "user": null,
       "name": "Ticket",
-      "category": 16,
+      "category_name": "Recreation & Amusement",
       "unit": ""
     }
   },
@@ -2395,7 +2395,7 @@
     "fields": {
       "user": null,
       "name": "Chaat Masala",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2405,7 +2405,7 @@
     "fields": {
       "user": null,
       "name": "Chicken Masala",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2415,7 +2415,7 @@
     "fields": {
       "user": null,
       "name": "Coriander Seeds",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2425,7 +2425,7 @@
     "fields": {
       "user": null,
       "name": "Cumin Seeds",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2435,7 +2435,7 @@
     "fields": {
       "user": null,
       "name": "Dried Red Chili",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2445,7 +2445,7 @@
     "fields": {
       "user": null,
       "name": "Fennel Seeds",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2455,7 +2455,7 @@
     "fields": {
       "user": null,
       "name": "Garlic",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2465,7 +2465,7 @@
     "fields": {
       "user": null,
       "name": "Ginger",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2475,7 +2475,7 @@
     "fields": {
       "user": null,
       "name": "Mustard",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2485,7 +2485,7 @@
     "fields": {
       "user": null,
       "name": "Poppy Seeds",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2495,7 +2495,7 @@
     "fields": {
       "user": null,
       "name": "Safflower Seeds",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2505,7 +2505,7 @@
     "fields": {
       "user": null,
       "name": "Salt",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2515,7 +2515,7 @@
     "fields": {
       "user": null,
       "name": "Sandwich Masala",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2525,7 +2525,7 @@
     "fields": {
       "user": null,
       "name": "Sauce",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2535,7 +2535,7 @@
     "fields": {
       "user": null,
       "name": "Spice",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2545,7 +2545,7 @@
     "fields": {
       "user": null,
       "name": "Turmeric Powder",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2555,7 +2555,7 @@
     "fields": {
       "user": null,
       "name": "White Vinegar",
-      "category": 17,
+      "category_name": "Spices",
       "unit": "Kg"
     }
   },
@@ -2565,7 +2565,7 @@
     "fields": {
       "user": null,
       "name": "Chocolate",
-      "category": 18,
+      "category_name": "Sugar & Confectionery",
       "unit": "Kg"
     }
   },
@@ -2575,7 +2575,7 @@
     "fields": {
       "user": null,
       "name": "Jaggery",
-      "category": 18,
+      "category_name": "Sugar & Confectionery",
       "unit": "Kg"
     }
   },
@@ -2585,7 +2585,7 @@
     "fields": {
       "user": null,
       "name": "Peanut Bar",
-      "category": 18,
+      "category_name": "Sugar & Confectionery",
       "unit": "Kg"
     }
   },
@@ -2595,7 +2595,7 @@
     "fields": {
       "user": null,
       "name": "Soan Papdi",
-      "category": 18,
+      "category_name": "Sugar & Confectionery",
       "unit": "Kg"
     }
   },
@@ -2605,7 +2605,7 @@
     "fields": {
       "user": null,
       "name": "Sugar",
-      "category": 18,
+      "category_name": "Sugar & Confectionery",
       "unit": "Kg"
     }
   },
@@ -2615,7 +2615,7 @@
     "fields": {
       "user": null,
       "name": "App Bike",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2625,7 +2625,7 @@
     "fields": {
       "user": null,
       "name": "App Cab",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2635,7 +2635,7 @@
     "fields": {
       "user": null,
       "name": "Auto",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2645,7 +2645,7 @@
     "fields": {
       "user": null,
       "name": "Broadband Bill",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2655,7 +2655,7 @@
     "fields": {
       "user": null,
       "name": "Bus",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2665,7 +2665,7 @@
     "fields": {
       "user": null,
       "name": "Cloud Services",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2675,7 +2675,7 @@
     "fields": {
       "user": null,
       "name": "Computer Accessories",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2685,7 +2685,7 @@
     "fields": {
       "user": null,
       "name": "Computer Accessory",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2695,7 +2695,7 @@
     "fields": {
       "user": null,
       "name": "Internet Pack",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2705,7 +2705,7 @@
     "fields": {
       "user": null,
       "name": "Internet Services",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2715,7 +2715,7 @@
     "fields": {
       "user": null,
       "name": "Laptop Cleaning Brush",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2725,7 +2725,7 @@
     "fields": {
       "user": null,
       "name": "Metro",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2735,7 +2735,7 @@
     "fields": {
       "user": null,
       "name": "Microfiber Cleaning Cloth",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2745,7 +2745,7 @@
     "fields": {
       "user": null,
       "name": "Mobile Back Cover",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2755,7 +2755,7 @@
     "fields": {
       "user": null,
       "name": "Mobile Recharge",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2765,7 +2765,7 @@
     "fields": {
       "user": null,
       "name": "Mobile Screen Protector",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2775,7 +2775,7 @@
     "fields": {
       "user": null,
       "name": "Mobile Stand",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2785,7 +2785,7 @@
     "fields": {
       "user": null,
       "name": "Monitor",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2795,7 +2795,7 @@
     "fields": {
       "user": null,
       "name": "Toto",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2805,7 +2805,7 @@
     "fields": {
       "user": null,
       "name": "Tracker",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2815,7 +2815,7 @@
     "fields": {
       "user": null,
       "name": "Train",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2825,7 +2825,7 @@
     "fields": {
       "user": null,
       "name": "Travel",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2835,7 +2835,7 @@
     "fields": {
       "user": null,
       "name": "Truecaller Subscription",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2845,7 +2845,7 @@
     "fields": {
       "user": null,
       "name": "Type C Cable",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2855,7 +2855,7 @@
     "fields": {
       "user": null,
       "name": "USB Converter",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2865,7 +2865,7 @@
     "fields": {
       "user": null,
       "name": "Wireless Keyboard",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2875,7 +2875,7 @@
     "fields": {
       "user": null,
       "name": "Wireless Mouse",
-      "category": 19,
+      "category_name": "Transport & Communication",
       "unit": ""
     }
   },
@@ -2885,7 +2885,7 @@
     "fields": {
       "user": null,
       "name": "Beetroot",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2895,7 +2895,7 @@
     "fields": {
       "user": null,
       "name": "Bitter Gourd",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2905,7 +2905,7 @@
     "fields": {
       "user": null,
       "name": "Brinjal",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2915,7 +2915,7 @@
     "fields": {
       "user": null,
       "name": "Cabbage",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2925,7 +2925,7 @@
     "fields": {
       "user": null,
       "name": "Capsicum",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2935,7 +2935,7 @@
     "fields": {
       "user": null,
       "name": "Cauliflower",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2945,7 +2945,7 @@
     "fields": {
       "user": null,
       "name": "Cucumber",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2955,7 +2955,7 @@
     "fields": {
       "user": null,
       "name": "Green Coconut",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2965,7 +2965,7 @@
     "fields": {
       "user": null,
       "name": "Green Peas",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2975,7 +2975,7 @@
     "fields": {
       "user": null,
       "name": "Leaf Vegetables",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2985,7 +2985,7 @@
     "fields": {
       "user": null,
       "name": "Lemon",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -2995,7 +2995,7 @@
     "fields": {
       "user": null,
       "name": "Mushroom",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3005,7 +3005,7 @@
     "fields": {
       "user": null,
       "name": "Onion",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3015,7 +3015,7 @@
     "fields": {
       "user": null,
       "name": "Pointed Gourd",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3025,7 +3025,7 @@
     "fields": {
       "user": null,
       "name": "Potato",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3035,7 +3035,7 @@
     "fields": {
       "user": null,
       "name": "Raw Tamarind",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3045,7 +3045,7 @@
     "fields": {
       "user": null,
       "name": "Spring Onion",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3055,7 +3055,7 @@
     "fields": {
       "user": null,
       "name": "Sweet Corn",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3065,7 +3065,7 @@
     "fields": {
       "user": null,
       "name": "Tomato",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   },
@@ -3075,7 +3075,7 @@
     "fields": {
       "user": null,
       "name": "Vegetable",
-      "category": 20,
+      "category_name": "Vegetables",
       "unit": "Kg"
     }
   }

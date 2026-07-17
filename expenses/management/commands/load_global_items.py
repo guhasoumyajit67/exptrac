@@ -3,7 +3,7 @@ from expenses.models import Item, Category
 import json
 
 class Command(BaseCommand):
-    help = 'Load global items from JSON file'
+    help = 'Load global items from JSON file using category names'
 
     def handle(self, *args, **options):
         try:
@@ -13,34 +13,28 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR('❌ global_items.json not found!'))
             return
 
+        # Create category name lookup
+        category_lookup = {cat.name: cat for cat in Category.objects.all()}
+
         count_created = 0
         count_skipped = 0
         count_category_missing = 0
-        
-        # Get all categories for lookup
-        categories = Category.objects.all()
-        category_lookup = {cat.id: cat for cat in categories}
-        category_name_lookup = {cat.name.lower(): cat for cat in categories}
 
         for item_data in data:
             item_name = item_data['fields']['name']
             unit = item_data['fields']['unit']
-            category_id = item_data['fields']['category']
+            category_name = item_data['fields'].get('category_name')
             
-            # Find category by ID or name
-            category = category_lookup.get(category_id)
-            
-            if not category:
-                # Try to find by name (if we have category names in the data)
-                # For now, check if the category exists by ID
-                if not category_lookup:
-                    # First run - collect all category IDs that exist
-                    category = None
+            if not category_name:
+                self.stdout.write(self.style.ERROR(f'❌ No category_name for: {item_name}'))
+                count_skipped += 1
+                continue
+
+            # Find category by name
+            category = category_lookup.get(category_name)
             
             if not category:
-                # Try to find by category name from the item name mapping
-                # You may need to manually map if categories don't exist
-                self.stdout.write(self.style.WARNING(f'⚠️ Skipping {item_name}: Category not found (ID: {category_id})'))
+                self.stdout.write(self.style.WARNING(f'⚠️ Skipping {item_name}: Category "{category_name}" not found'))
                 count_category_missing += 1
                 count_skipped += 1
                 continue
@@ -69,12 +63,3 @@ class Command(BaseCommand):
    ⚠️ Missing categories: {count_category_missing}
             ''')
         )
-        
-        if count_category_missing > 0:
-            self.stdout.write(
-                self.style.ERROR(f'''
-⚠️ {count_category_missing} items were skipped due to missing categories.
-Please run: python manage.py load_categories to fix this.
-Then re-run: python manage.py load_global_items
-''')
-            )
