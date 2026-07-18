@@ -184,13 +184,14 @@ main {
 }
 
 .show-checkboxes .checkbox-col {
-    width: 45px !important;
+    width: auto !important;
+    max-width: 35px !important;
+    min-width: 30px !important;
     opacity: 1 !important;
     visibility: visible !important;
-    padding: 0.75rem 0.5rem !important;
+    padding: 0.5rem 0.3rem !important;
 }
 
-/* 🚨 DETAILED SELECTION CHAINS: Forces red highlight over native hover overrides */
 .table tbody tr.row-selected,
 .table tbody tr.row-selected td,
 .table tbody tr.row-selected:hover,
@@ -290,7 +291,6 @@ main {
     margin-bottom: 20px;
 }
 
-/* 🚨 THE FIX: Constrain the massive SVG scale */
 .alert-icon {
     width: 20px;  /* Force standard UI icon size */
     height: 20px; /* Force standard UI icon size */
@@ -676,4 +676,48 @@ main {
     z-index: 10;
     background-color: #f8f9fa !important;
     box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+
+
+
+
+
+
+/* ============================================
+   MOBILE FIX - CHECKBOX COLUMN OVERRIDE
+   ============================================ */
+
+@media (max-width: 576px) {
+    .show-checkboxes .checkbox-col {
+        max-width: 25px !important;
+        min-width: 20px !important;
+        padding: 0 2px !important;
+    }
+    
+    .show-checkboxes .checkbox-col input[type="checkbox"] {
+        transform: scale(0.6) !important;
+    }
+    
+    #ledgerTable td,
+    #ledgerTable th {
+        font-size: 0.6rem !important;
+        padding: 0.25rem 0.2rem !important;
+    }
+    
+    #ledgerTable td:nth-child(3) { /* Item column */
+        max-width: 60px !important;
+        font-size: 0.55rem !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+    
+    #ledgerTable td:last-child { /* Price column */
+        font-size: 0.6rem !important;
+        padding-left: 0.1rem !important;
+    }
 }

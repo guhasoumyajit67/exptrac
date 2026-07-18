@@ -76,22 +76,21 @@
                             <span id="delete-btn-text">Delete Selected</span>
                         </button>
                     </div>
-
                 </div>
 
                 <div id="ledger-table-wrapper" class="table-responsive rounded-3 border">
                     <table class="table table-hover align-middle mb-0 text-start" id="ledgerTable">
                         <thead class="bg-light border-bottom">
                             <tr>
-                                <th class="checkbox-col" style="width: 4%;">
-                                    <input type="checkbox" id="select-all-checkbox" class="form-check-input">
+                                <th class="checkbox-col" style="width: 4%; min-width: 25px; max-width: 30px; font-size: clamp(0.5rem, 1.5vw, 0.8rem);">
+                                    <input type="checkbox" id="select-all-checkbox" class="form-check-input" style="transform: scale(0.8);">
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header" data-column="1" style="width: 12%; position: relative;">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header" data-column="1" style="width: 12%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
                                     <div class="d-flex align-items-center gap-1">
                                         Date <i class="bi bi-arrow-down-up text-muted extra-small"></i>
                                     </div>
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 filterable-header d-none d-sm-table-cell" style="width: 17%; position: relative;">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header d-none d-sm-table-cell" data-column="2" style="width: 17%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
                                     <div class="d-inline-flex align-items-center gap-1">
                                         <span>Category</span>
                                         <i class="bi bi-filter text-muted excel-filter-icon" onclick="toggleExcelFilter(event, 'categoryFilterMenu')"></i>
@@ -115,18 +114,18 @@
                                         <div class="filter-options-container" style="max-height: 160px; overflow-y: auto;"></div>
                                     </div>
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 sortable-header" data-column="3" style="width: 22%; position: relative;">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 sortable-header" data-column="3" style="width: 22%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
                                     <div class="d-flex align-items-center gap-1">
                                         Item <i class="bi bi-arrow-down-up text-muted extra-small"></i>
                                     </div>
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 text-end sortable-header" data-column="4" style="width: 13%; position: relative;">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 text-end sortable-header" data-column="4" style="width: 13%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
                                     <div class="d-flex align-items-center justify-content-end gap-1">
                                         Price <i class="bi bi-arrow-down-up text-muted extra-small"></i>
                                     </div>
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 ps-4 d-none d-sm-table-cell" style="width: 13%;">Quantity</th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 filterable-header text-nowrap d-none d-sm-table-cell" style="width: 15%; position: relative;">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-4 d-none d-sm-table-cell" style="width: 13%; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Quantity</th>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header text-nowrap d-none d-sm-table-cell" style="width: 15%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
                                     <div class="d-inline-flex align-items-center gap-1">
                                         <span>Paid By</span>
                                         <i class="bi bi-filter text-muted excel-filter-icon" onclick="toggleExcelFilter(event, 'payerFilterMenu')"></i>
@@ -150,32 +149,34 @@
                                         <div class="filter-options-container" style="max-height: 160px; overflow-y: auto;"></div>
                                     </div>
                                 </th>
-                                <th class="text-secondary small fw-bold text-uppercase tracking-wider py-3 d-none d-sm-table-cell" style="width: 10%;">Comment</th>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 d-none d-sm-table-cell" style="width: 10%; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Comment</th>
                             </tr>
                         </thead>
                         <tbody class="border-top-0">
                             {% for transaction in transactions %}
                                 <tr class="transition-all cursor-pointer user-select-none ledger-row" 
                                     ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
-                                    <td class="checkbox-col" onclick="event.stopPropagation();">
-                                        <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" class="transaction-checkbox">
+                                    <td class="checkbox-col" onclick="event.stopPropagation();" 
+                                        style="min-width: 20px; max-width: 25px; width: 20px; padding: 0 2px; font-size: clamp(0.4rem, 1.2vw, 0.7rem);">
+                                        <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" 
+                                            class="transaction-checkbox" style="transform: scale(0.6); margin: 0;">
                                     </td>
-                                    <td class="ps-3 text-nowrap text-dark fw-semibold small" data-sort-val="{{ transaction.date|date:'Ymd' }}">
+                                    <td class="ps-3 text-nowrap text-dark fw-semibold" data-sort-val="{{ transaction.date|date:'Ymd' }}" style="font-size: clamp(0.5rem, 1.5vw, 0.8rem);">
                                         {{ transaction.date|date:"j M Y" }}
                                     </td>
-                                    <td class="excel-cat-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.item.category.name }}">
+                                    <td class="excel-cat-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.item.category.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
-                                              style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
+                                            style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
                                             ● {{ transaction.item.category.name }}
                                         </span>
                                     </td>
-                                    <td class="text-dark fw-medium fs-6 excel-item-cell">
+                                    <td class="text-dark fw-medium excel-item-cell text-truncate" style="max-width: 80px; font-size: clamp(0.55rem, 1.8vw, 0.85rem);">
                                         {{ transaction.item.name }}
                                     </td>
-                                    <td class="text-end fw-extrabold text-dark fs-5" data-sort-val="{{ transaction.price }}">
+                                    <td class="text-end fw-extrabold text-dark" data-sort-val="{{ transaction.price }}" style="font-size: clamp(0.6rem, 2vw, 0.9rem);">
                                         ₹{{ transaction.price }}
                                     </td>
-                                    <td class="text-secondary small font-monospace ps-4 text-nowrap d-none d-sm-table-cell">
+                                    <td class="text-secondary small font-monospace ps-4 text-nowrap d-none d-sm-table-cell" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         {% if transaction.quantity %}
                                             {{ transaction.quantity|floatformat:"-2" }}
                                             {% if transaction.item.unit and transaction.item.unit != "None" %}
@@ -187,7 +188,7 @@
                                             <span class="text-muted">-</span>
                                         {% endif %}
                                     </td>
-                                    <td class="excel-payer-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.payer.name }}">
+                                    <td class="excel-payer-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.payer.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
                                             style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -196,7 +197,7 @@
                                             {{ transaction.payer.name }}
                                         </span>
                                     </td>
-                                    <td class="text-muted small text-truncate d-none d-sm-table-cell" style="max-width: 200px;" title="{{ transaction.comment }}">
+                                    <td class="text-muted small text-truncate d-none d-sm-table-cell" style="max-width: 200px; font-size: clamp(0.6rem, 1.5vw, 0.85rem);" title="{{ transaction.comment }}">
                                         {{ transaction.comment|default:"" }}
                                     </td>
                                 </tr>
