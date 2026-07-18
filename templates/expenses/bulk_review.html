@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <div class="card p-3 mb-4 bg-light text-start border border-danger">
+                {% comment %} <div class="card p-3 mb-4 bg-light text-start border border-danger">
                     <h6 class="text-danger fw-bold border-bottom pb-2">🔍 STAGING AREA LIVE DEBUG LOGS</h6>
                     <p class="small text-muted mb-2"><strong>Total Row Count:</strong> {{ review_rows_count }}</p>
                     <p class="small text-muted mb-2"><strong>Unique Missing Items List:</strong> {{ missing_items|yesno:"Has Data,Empty []" }} (Length: {{ missing_items|length }})</p>
@@ -52,7 +52,7 @@
                     
                     <label class="small fw-bold text-dark d-block mb-1">Raw Review Rows Session Payload Matrix:</label>
                     <pre class="bg-dark text-warning p-3 rounded-3 small m-0" style="max-height: 250px; overflow-y: auto;">{{ request.session.bulk_upload_review_rows|truncatechars:3000 }}</pre>
-                </div>
+                </div> {% endcomment %}
                 
                 {% if missing_items %}
                     {% for item_name in missing_items %}
