@@ -11,7 +11,7 @@
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center border-bottom pb-3 mb-4 gap-3">
                 <div>
                     <h1 class="h2 fw-bold text-dark mb-1">Financial Workspace</h1>
-                    <p class="text-secondary small mb-0">Welcome back, <strong>{{ user.username }}</strong>. Review running cash flows and resource allocations.</p>
+                    <p class="text-secondary small mb-0">Welcome back, <strong>{{ user.get_full_name|default:user.username }}</strong>. Review running cash flows and resource allocations.</p>
                 </div>
                 <div>
                     <div class="d-inline-flex align-items-center bg-white border rounded-3 px-3 py-2 shadow-sm text-secondary small">

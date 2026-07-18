@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - ExpTrac{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                
+                <!-- Header - Clean & Light -->
+                <div class="bg-white p-4 text-center border-bottom" style="border-bottom: 1px solid #e9ecef !important;">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; border-radius: 50%; background: #eef2ff; border: 2px solid #4f46e5; font-size: 2rem; font-weight: 700; color: #4f46e5;">
+                        {{ user.username|first|upper }}
+                    </div>
+                    
+                    <h4 class="fw-bold mb-0 text-dark">{{ user.get_full_name|default:user.username }}</h4>
+                    
+                    <p class="small mb-0 text-secondary">
+                        <i class="bi bi-calendar3 me-1"></i>Member since {{ user.date_joined|date:"M Y" }}
+                    </p>
+                </div>
+                
+                <!-- Body - Account Details -->
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3 text-dark">Account Details</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="bg-light p-3 rounded-3">
+                                <small class="d-block fw-bold text-uppercase text-secondary" style="font-size: 0.65rem; letter-spacing: 0.5px;">Username</small>
+                                <span class="fw-semibold text-dark">{{ user.username }}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="bg-light p-3 rounded-3">
+                                <small class="d-block fw-bold text-uppercase text-secondary" style="font-size: 0.65rem; letter-spacing: 0.5px;">Email</small>
+                                <span class="fw-semibold text-dark">{{ user.email }}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="bg-light p-3 rounded-3">
+                                <small class="d-block fw-bold text-uppercase text-secondary" style="font-size: 0.65rem; letter-spacing: 0.5px;">First Name</small>
+                                <span class="fw-semibold text-dark">{{ user.first_name|default:"Not set" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="bg-light p-3 rounded-3">
+                                <small class="d-block fw-bold text-uppercase text-secondary" style="font-size: 0.65rem; letter-spacing: 0.5px;">Last Name</small>
+                                <span class="fw-semibold text-dark">{{ user.last_name|default:"Not set" }}</span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="bg-light p-3 rounded-3">
+                                <small class="d-block fw-bold text-uppercase text-secondary" style="font-size: 0.65rem; letter-spacing: 0.5px;">Account Status</small>
+                                <span class="fw-semibold">
+                                    {% if user.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Inactive</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{% url 'profile_edit' %}" class="btn btn-primary rounded-3 py-2 fw-bold">
+                            <i class="bi bi-pencil me-2"></i>Edit Profile
+                        </a>
+                        <a href="{% url 'password_change' %}" class="btn btn-outline-secondary rounded-3 py-2">
+                            <i class="bi bi-key me-2"></i>Change Password
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

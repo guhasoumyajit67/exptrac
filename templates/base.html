@@ -62,9 +62,14 @@
                                             
                         <li class="nav-item dropdown ms-lg-2">
                             <a class="nav-link dropdown-toggle btn btn-dark btn-sm border-0 text-start text-lg-center px-3 py-1.5 rounded-3 structure-user-badge" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle me-1"></i> {{ user.username }}
+                                <i class="bi bi-person-circle me-1"></i>Account
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg rounded-3 border-0 mt-2">
+                                <li>
+                                    <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">
+                                        <i class="bi bi-person me-2 text-primary"></i>Profile
+                                    </a>
+                                </li>
                                 <li>
                                     <a class="dropdown-item py-2 {% if request.resolver_match.url_name == 'manage_items' %}active{% endif %}" href="{% url 'manage_items' %}">
                                         <i class="bi bi-tags me-2 text-success"></i>Items
