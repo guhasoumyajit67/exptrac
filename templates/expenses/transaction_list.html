@@ -163,7 +163,7 @@
                                     <td class="ps-3 text-nowrap text-dark fw-semibold small" data-sort-val="{{ transaction.date|date:'Ymd' }}">
                                         {{ transaction.date|date:"j M Y" }}
                                     </td>
-                                    <td class="excel-cat-cell" data-filter-val="{{ transaction.item.category.name }}">
+                                    <td class="excel-cat-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.item.category.name }}">
                                         <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
                                               style="background-color: {{ transaction.item.category.color|default:'#6c757d' }}18; color: {{ transaction.item.category.color|default:'#6c757d' }}; border: 1px solid {{ transaction.item.category.color|default:'#6c757d' }}30;">
                                             ● {{ transaction.item.category.name }}
@@ -175,7 +175,7 @@
                                     <td class="text-end fw-extrabold text-dark fs-5" data-sort-val="{{ transaction.price }}">
                                         ₹{{ transaction.price }}
                                     </td>
-                                    <td class="text-secondary small font-monospace ps-4 text-nowrap">
+                                    <td class="text-secondary small font-monospace ps-4 text-nowrap d-none d-sm-table-cell">
                                         {% if transaction.quantity %}
                                             {{ transaction.quantity|floatformat:"-2" }}
                                             {% if transaction.item.unit and transaction.item.unit != "None" %}
@@ -187,7 +187,7 @@
                                             <span class="text-muted">-</span>
                                         {% endif %}
                                     </td>
-                                    <td class="excel-payer-cell" data-filter-val="{{ transaction.payer.name }}">
+                                    <td class="excel-payer-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.payer.name }}">
                                         <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
                                             style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -196,7 +196,7 @@
                                             {{ transaction.payer.name }}
                                         </span>
                                     </td>
-                                    <td class="text-muted small text-truncate" style="max-width: 200px;" title="{{ transaction.comment }}">
+                                    <td class="text-muted small text-truncate d-none d-sm-table-cell" style="max-width: 200px;" title="{{ transaction.comment }}">
                                         {{ transaction.comment|default:"" }}
                                     </td>
                                 </tr>
