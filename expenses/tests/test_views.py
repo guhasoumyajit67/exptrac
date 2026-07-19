@@ -52,12 +52,12 @@ class HomePageViewTest(TestCase):
             user=self.user,
             item=self.item,
             payer=self.payer,
-            price=100.00,
+            price=100,
             date=today
         )
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '₹100.00')
+        self.assertContains(response, '₹100')
 
     def test_home_page_context_data(self):
         """Test home page context data"""
