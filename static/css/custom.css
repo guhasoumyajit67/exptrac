@@ -750,3 +750,43 @@ main {
         padding: 0.2rem 0.5rem !important;
     }
 }
+
+
+
+
+
+
+
+
+@media (max-width: 576px) {
+    .pagination {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .pagination .page-link {
+        padding: 2px 6px;
+        font-size: 10px;
+        min-width: 24px;
+        height: 24px;
+        border-radius: 4px;
+    }
+    
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+        padding: 2px 4px;
+        min-width: 22px;
+        height: 22px;
+        font-size: 8px;
+    }
+    
+    .pagination .page-link i,
+    .pagination .page-link .bi {
+        font-size: 7px;
+    }
+    
+    nav[aria-label="Page navigation"] {
+        margin-top: 0.5rem !important;
+    }
+}

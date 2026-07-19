@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.contrib import messages
 from django.views import View
+from django.core.paginator import Paginator
 import openpyxl
 import re
 
@@ -26,56 +27,44 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
-        # 1. Handle Unauthenticated (Logged-Out) State
         if not user.is_authenticated:
             return context
 
-        # 2. Establish Current Month Boundaries dynamically
         now = timezone.now()
         current_year = now.year
         current_month = now.month
 
-        # 3. Base Queryset: Filter strictly by the current calendar month
         tx_queryset = Transaction.objects.filter(
-            user = user,
+            user=user,
             date__year=current_year,
             date__month=current_month
-        )
+        ).select_related('item', 'item__category', 'payer')
 
-        # 4. Metric: Total Outflow Summation (Current Month Only)
         total_outflow = tx_queryset.aggregate(total=Sum('price'))['total'] or 0.00
         context['total_outflow'] = total_outflow
 
-        # 5. Metric: Recent Activity Stream (All transactions this month)
-        context['recent_transactions'] = tx_queryset.select_related('item').order_by('-date')
+        context['recent_transactions'] = tx_queryset.order_by('-date')
 
-        # 6. Metric: True Category Allocation Table Data (Grouping by Master Category Name)
         category_data = tx_queryset.values('item__category__name').annotate(total=Sum('price')).order_by('-total')
         context['category_list_data'] = category_data
 
-        # 7. Extract Chart Data Payloads & Top Stats securely
         if tx_queryset.exists():
-            # Item Weights - Left Chart (Aggregating granular Item expenditures)
             item_data = tx_queryset.values('item__name').annotate(total=Sum('price')).order_by('-total')[:6]
             context['category_labels'] = [entry['item__name'] for entry in item_data]
             context['category_amounts'] = [float(entry['total']) for entry in item_data]
 
-            # Category Weights - Right Chart (Aggregating master classifications)
             context['master_category_labels'] = [entry['item__category__name'] for entry in category_data[:6]]
             context['master_category_amounts'] = [float(entry['total']) for entry in category_data[:6]]
 
-            # Identify Top Category metrics safely
             if category_data:
                 context['top_category_name'] = category_data[0]['item__category__name']
                 context['top_category_amount'] = category_data[0]['total']
 
-            # Calculate Top Frequency based on specific ITEM counts this month
             frequency_map = tx_queryset.values('item__name').annotate(count=Count('id')).order_by('-count')
             if frequency_map:
                 context['top_frequency_name'] = frequency_map[0]['item__name']
                 context['top_frequency_count'] = frequency_map[0]['count']
 
-            # Calculate Top Volume metrics based on specific ITEM quantities this month
             volume_map = tx_queryset.values('item__name', 'item__unit').annotate(volume=Sum('quantity')).order_by('-volume')
             if volume_map and volume_map[0]['volume']:
                 context['top_volume_name'] = volume_map[0]['item__name']
@@ -86,11 +75,9 @@ class HomePageView(TemplateView):
                 context['top_volume_count'] = context.get('top_frequency_count', 0)
                 context['top_volume_unit'] = "logs"
 
-            # 8. Outflow Velocity Trend (Cumulative progression tracking within this current month)
             trend_queryset = tx_queryset.values('date').annotate(total=Sum('price')).order_by('date')
-            context['trend_labels'] = [entry['date'].strftime('%d %b') if hasattr(entry['date'], 'strftime') else str(entry['date']) for entry in trend_queryset]
+            context['trend_labels'] = [entry['date'].strftime('%d %b') for entry in trend_queryset]
             
-            # Compute chronological running total
             running_sum = 0.0
             cumulative_amounts = []
             for entry in trend_queryset:
@@ -100,7 +87,6 @@ class HomePageView(TemplateView):
             context['trend_amounts'] = cumulative_amounts
 
         else:
-            # Fallback arrays to avoid Chart.js runtime errors if no data is logged this month
             context['category_labels'] = []
             context['category_amounts'] = []
             context['master_category_labels'] = []
@@ -109,7 +95,6 @@ class HomePageView(TemplateView):
             context['trend_amounts'] = []
 
         return context
-
 
 
 # ==============================================================================
@@ -184,6 +169,7 @@ class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
     template_name = "expenses/transaction_list.html"
     context_object_name = "transactions"
+    paginate_by = 50
 
     def get_queryset(self):
         return (
@@ -191,12 +177,6 @@ class TransactionListView(LoginRequiredMixin, ListView):
             .select_related("item__category", "payer")
             .order_by("-date", "-id")
         )
-
-
-
-
-
-
 
 
 # ==============================================================================
@@ -215,19 +195,15 @@ class ItemManagementListView(LoginRequiredMixin, ListView):
                            .order_by('name')
 
 
-
-
 class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
     form_class = ItemForm
     template_name = "expenses/item_form.html"
 
     def get_success_url(self):
-        # Checks if 'next' is passed in either the GET query string or POST payload body
         redirect_to = self.request.GET.get('next') or self.request.POST.get('next')
         if redirect_to:
             return redirect_to
-        # Fallback to transaction form if no 'next' is declared
         return reverse_lazy("create_transaction")
 
     def form_valid(self, form):
@@ -278,12 +254,6 @@ class ItemDeleteView(LoginRequiredMixin, DeleteView):
                 f"Cannot delete item '{item_name}' because it is currently tracked inside active ledger logs!"
             )
             return redirect(fallback_url)
-
-
-
-
-
-
 
 
 # ==============================================================================
@@ -364,14 +334,6 @@ class PayerDeleteView(LoginRequiredMixin, DeleteView):
             return redirect(fallback_url)
 
 
-
-
-
-
-
-
-
-
 # ==============================================================================
 # BULK OPERATIONS VIEWS
 # ==============================================================================
@@ -389,7 +351,6 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
         item_cache = {item.name.strip().lower(): item for item in Item.objects.all()}
         payer_cache = {payer.name.strip().lower(): payer for payer in Payer.objects.filter(user=self.request.user)}
         
-        # Clear out any previous unfinished staging rows for this user
         StagingTransaction.objects.filter(user=self.request.user).delete()
         
         staging_pool = []
@@ -440,7 +401,6 @@ class TransactionBulkUploadView(LoginRequiredMixin, FormView):
                 )
             )
 
-        # Bulk save into the database staging table instantly
         if staging_pool:
             StagingTransaction.objects.bulk_create(staging_pool)
 
@@ -464,13 +424,11 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
         has_blank_payers = False  
 
         for row in review_rows:
-            # 1. Check for Missing Items
             if row.item_name and not row.item_id:
                 cleaned_item = row.item_name.strip()
                 if cleaned_item not in missing_items:
                     missing_items.append(cleaned_item)
             
-            # 2. Check for Unmapped or Blank Payers
             if not row.payer_id:
                 if not row.payer_name or not str(row.payer_name).strip():
                     has_blank_payers = True
@@ -496,9 +454,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
         target_item_name = request.POST.get('target_item_name', '').strip()
         target_payer_name = request.POST.get('target_payer_name', '').strip()
 
-        # ======================================================================
-        # ACTION 1: RESOLVE BLANK PAYERS IN BULK via Database Table
-        # ======================================================================
         if action == "resolve_blank_payers":
             existing_payer_id = request.POST.get('existing_payer_id')
             existing_payer = Payer.objects.get(id=existing_payer_id, user=request.user)
@@ -508,16 +463,12 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
                 if not row.payer_name or not str(row.payer_name).strip():
                     row.payer_id = existing_payer.id
                     row.payer_name = existing_payer.name
-                    # Re-evaluate row error state
                     row.error = "Missing Item" if not row.item_id else ""
                     row.save()
             
             messages.success(request, f"Assigned payer profile '{existing_payer.name}' to all unassigned rows.")
             return redirect('bulk_upload_review')
 
-        # ======================================================================
-        # ACTION 2: CREATE CUSTOM ITEM
-        # ======================================================================
         elif action == "create_custom":
             category_obj = Category.objects.get(id=request.POST.get('category_id'))
             new_item = Item.objects.create(name=target_item_name, user=request.user, category=category_obj, unit=request.POST.get('unit'))
@@ -531,9 +482,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             messages.success(request, f"Created Custom Item '{target_item_name}'.")
             return redirect('bulk_upload_review')
 
-        # ======================================================================
-        # ACTION 3: MAP EXISTING ITEM
-        # ======================================================================
         elif action == "map_existing":
             existing_item = Item.objects.get(id=request.POST.get('existing_item_id'))
             
@@ -547,9 +495,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             messages.success(request, f"Mapped lines to tracking item '{existing_item.name}'.")
             return redirect('bulk_upload_review')
 
-        # ======================================================================
-        # ACTION 4: CREATE CUSTOM PAYER
-        # ======================================================================
         elif action == "create_custom_payer":
             new_payer = Payer.objects.create(name=target_payer_name, user=request.user)
             
@@ -562,9 +507,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             messages.success(request, f"Created Payer profile '{target_payer_name}'.")
             return redirect('bulk_upload_review')
 
-        # ======================================================================
-        # ACTION 5: MAP EXISTING PAYER
-        # ======================================================================
         elif action == "map_existing_payer":
             existing_payer = Payer.objects.get(id=request.POST.get('existing_payer_id'), user=request.user)
             
@@ -578,17 +520,11 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
             messages.success(request, f"Mapped lines to payer '{existing_payer.name}'.")
             return redirect('bulk_upload_review')
 
-        # ======================================================================
-        # ACTION 6: SKIP ITEM (DELETE FROM STAGING)
-        # ======================================================================
         elif action == "skip_item":
             StagingTransaction.objects.filter(user=request.user, item_name__iexact=target_item_name).delete()
             messages.info(request, f"Discarded spreadsheet lines containing '{target_item_name}'.")
             return redirect('bulk_upload_review')
 
-        # ======================================================================
-        # AUTOMATIC COMMIT GATEWAY IF QUEUE BECOMES COMPLETELY VALIDATED
-        # ======================================================================
         if StagingTransaction.objects.filter(user=request.user).exclude(error="").exists():
             return redirect('bulk_upload_review')
 
@@ -597,7 +533,6 @@ class TransactionBulkReviewView(LoginRequiredMixin, View):
 
 class BulkUploadCommitView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        # Commit completely validated table rows from the staging area
         valid_staging_rows = StagingTransaction.objects.filter(user=request.user, error="")
         
         if not valid_staging_rows.exists():
@@ -620,11 +555,8 @@ class BulkUploadCommitView(LoginRequiredMixin, View):
             Transaction.objects.bulk_create(transactions_to_create)
             messages.success(request, f"Success! Safely committed {len(transactions_to_create)} rows into your ledger.")
 
-        # Clear staging table completely
         StagingTransaction.objects.filter(user=request.user).delete()
         return redirect('transaction_list')
-
-
 
 
 class TransactionBulkDeleteView(LoginRequiredMixin, View):
@@ -655,9 +587,6 @@ class TransactionBulkDeleteView(LoginRequiredMixin, View):
             messages.error(request, "Failed to delete transactions. Selected records are protected or could not be found.")
             
         return redirect('transaction_list')
-
-
-
 
 
 class TransactionDeleteStatusView(LoginRequiredMixin, View):

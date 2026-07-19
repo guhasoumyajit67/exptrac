@@ -35,6 +35,10 @@ class Item(models.Model):
 
     class Meta:
         unique_together = ("user", "name")
+        indexes = [
+            models.Index(fields=['user', 'name']),      # For item lookups by user
+            models.Index(fields=['category']),          # For category filtering
+        ]
     
     def __str__(self):
         if self.user is None:
@@ -50,6 +54,9 @@ class Payer(models.Model):
 
     class Meta:
         unique_together = ("user", "name")
+        indexes = [
+            models.Index(fields=['user', 'name']),      # For payer lookups by user
+        ]
 
     def __str__(self):
         return self.name
@@ -68,6 +75,11 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ['-date']
+        indexes = [
+            models.Index(fields=['user', 'date']),      # For dashboard/analytics queries
+            models.Index(fields=['user', 'item']),      # For item-based filtering
+            models.Index(fields=['user', 'payer']),     # For payer-based filtering
+        ]
 
     def __str__(self):
         # Get the unit from the item, default to empty string
