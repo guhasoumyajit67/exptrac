@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Sum, Count  # 🚨 Added Count aggregation function
+from django.db.models import Sum, Count
 from django.db.models.functions import ExtractDay, TruncMonth
 from django.utils import timezone
 import json
@@ -96,7 +96,7 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
             .annotate(
                 total_cost=Sum('price'),
                 total_qty=Sum('quantity'),
-                purchase_count=Count('id')  # 🚨 NEW: Counts instances of transactions for this item grouping
+                purchase_count=Count('id')
             )
             .order_by()
         )
@@ -121,7 +121,7 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
                 'cost': float(entry['total_cost']),
                 'qty': qty_val,
                 'unit': unit_label,
-                'times': entry['purchase_count']  # 🚨 NEW: Appended properties straight to the dynamic object payload
+                'times': entry['purchase_count']
             })
 
         # Sort the final dictionary structure cleanly by total monthly item cost descending
