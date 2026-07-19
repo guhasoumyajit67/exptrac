@@ -46,34 +46,67 @@
 
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3 text-start">
                     
-                    <div class="d-flex flex-wrap align-items-center gap-2 text-secondary small fw-medium">
-                        <div class="d-flex align-items-center gap-1">
-                            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">From:</span>
-                            <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
-                        </div>
-                        <div class="d-flex align-items-center gap-1">
-                            <span class="text-uppercase tracking-wider fw-bold text-muted" style="font-size: 0.75rem;">To:</span>
-                            <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 border-secondary-subtle px-2 py-1" style="max-width: 140px; font-size: 0.8rem; height: 31px;">
-                        </div>
-                        <button type="button" id="clearDateRangeBtn" class="btn btn-sm btn-light border small fw-bold text-secondary rounded-2 px-2.5" style="font-size: 0.78rem; height: 31px; display: inline-flex; align-items: center;">
-                            Clear Range
-                        </button>
+                <div class="d-flex flex-wrap align-items-center gap-2 p-2 rounded-3" style="background: #fafbfc; border: 1px solid #eef0f2;">
+                    
+                    <!-- From Date -->
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0;">From</span>
+                        <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 px-2" 
+                            style="max-width: 118px; font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02); transition: border-color 0.2s ease;"
+                            onfocus="this.style.borderColor='#6c7a8d';"
+                            onblur="this.style.borderColor='#e4e7ec';">
                     </div>
-
-                    <div id="bulk-delete-actions" class="d-flex justify-content-end align-items-center gap-2 m-0" style="height: 31px;">
-                        <button type="button" id="clear-selection-btn" class="btn btn-sm fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    
+                    <!-- Separator -->
+                    <span class="text-muted px-1" style="font-size: 0.7rem; color: #d0d8e0 !important;">|</span>
+                    
+                    <!-- To Date -->
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0;">To</span>
+                        <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 px-2" 
+                            style="max-width: 118px; font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02); transition: border-color 0.2s ease;"
+                            onfocus="this.style.borderColor='#6c7a8d';"
+                            onblur="this.style.borderColor='#e4e7ec';">
+                    </div>
+                    
+                    <!-- Clear Button -->
+                    <button type="button" id="clearDateRangeBtn" class="btn btn-sm rounded-2 px-2.5 d-inline-flex align-items-center gap-1" 
+                            style="font-size: 0.68rem; height: 30px; font-weight: 500; background: transparent; border: 1px solid #e4e7ec; color: #8b9cb0; transition: all 0.2s ease;"
+                            onmouseover="this.style.background='#f2f4f7'; this.style.borderColor='#ccd4de'; this.style.color='#5a6b7c';"
+                            onmouseout="this.style.background='transparent'; this.style.borderColor='#e4e7ec'; this.style.color='#8b9cb0';">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        </svg>
+                    </button>
+                </div>
+                    <div id="bulk-delete-actions" class="d-flex flex-wrap justify-content-end align-items-center gap-1 m-0" style="min-height: 34px;">
+                        
+                        <!-- SELECT ALL -->
+                        <button type="button" id="select-all-btn" class="btn btn-sm btn-primary rounded-3 d-inline-flex align-items-center justify-content-center" 
+                                style="height: 34px; width: 34px; padding: 0;" 
+                                title="Select All">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/>
                             </svg>
-                            Clear Selection
                         </button>
 
-                        <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger fw-bold d-inline-flex align-items-center justify-content-center gap-2" style="height: 31px; font-size: 0.8rem;" onclick="event.stopPropagation();">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                        <!-- CLEAR SELECTION -->
+                        <button type="button" id="clear-selection-btn" class="btn btn-sm btn-warning rounded-3 d-inline-flex align-items-center justify-content-center" 
+                                style="height: 34px; width: 34px; padding: 0; color: #212529;" 
+                                title="Clear Selection">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                             </svg>
-                            <span id="delete-btn-text">Delete Selected</span>
+                        </button>
+
+                        <!-- DELETE SELECTED -->
+                        <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger rounded-3 d-inline-flex align-items-center justify-content-center" 
+                                style="height: 34px; width: 34px; padding: 0;" 
+                                title="Delete Selected">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3V2h11v1z"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -82,85 +115,35 @@
                     <table class="table table-hover align-middle mb-0 text-start" id="ledgerTable">
                         <thead class="bg-light border-bottom">
                             <tr>
-                                <th class="checkbox-col" style="width: 4%; min-width: 25px; max-width: 30px; font-size: clamp(0.5rem, 1.5vw, 0.8rem);">
-                                    <input type="checkbox" id="select-all-checkbox" class="form-check-input" style="transform: scale(0.8);">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header sticky-top" data-column="1" style="width: 12%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Date
                                 </th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header" data-column="1" style="width: 12%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
-                                    <div class="d-flex align-items-center gap-1">
-                                        Date <i class="bi bi-arrow-down-up text-muted extra-small"></i>
-                                    </div>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header d-none d-sm-table-cell sticky-top" data-column="2" style="width: 17%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Category
                                 </th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header d-none d-sm-table-cell" data-column="2" style="width: 17%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
-                                    <div class="d-inline-flex align-items-center gap-1">
-                                        <span>Category</span>
-                                        <i class="bi bi-filter text-muted excel-filter-icon" onclick="toggleExcelFilter(event, 'categoryFilterMenu')"></i>
-                                    </div>
-                                    
-                                    <div id="categoryFilterMenu" class="excel-filter-menu d-none shadow border rounded-4 position-absolute bg-white p-2 mt-1 text-start" style="z-index: 1060; min-width: 200px;">
-                                        <div class="d-flex flex-column gap-1 pb-2 mb-2 border-bottom">
-                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="2" data-order="asc">
-                                                <i class="bi bi-sort-alpha-down text-secondary"></i> Sort A to Z
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="2" data-order="desc">
-                                                <i class="bi bi-sort-alpha-up-alt text-secondary"></i> Sort Z to A
-                                            </button>
-                                        </div>
-
-                                        <div class="form-check py-1 px-2 mb-2 rounded-2 bg-light d-flex align-items-center border-bottom border-top border-light">
-                                            <input class="form-check-input ms-0 me-2 master-filter-checkbox" type="checkbox" checked id="master_chk_category" data-target="category">
-                                            <label class="form-check-label text-dark fw-bold cursor-pointer small w-100 ps-1" for="master_chk_category">(Select All)</label>
-                                        </div>
-
-                                        <div class="filter-options-container" style="max-height: 160px; overflow-y: auto;"></div>
-                                    </div>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 sortable-header sticky-top" data-column="3" style="width: 22%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Item
                                 </th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 sortable-header" data-column="3" style="width: 22%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
-                                    <div class="d-flex align-items-center gap-1">
-                                        Item <i class="bi bi-arrow-down-up text-muted extra-small"></i>
-                                    </div>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 text-end sortable-header sticky-top" data-column="4" style="width: 13%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Price
                                 </th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 text-end sortable-header" data-column="4" style="width: 13%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
-                                    <div class="d-flex align-items-center justify-content-end gap-1">
-                                        Price <i class="bi bi-arrow-down-up text-muted extra-small"></i>
-                                    </div>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-4 d-none d-sm-table-cell sticky-top" style="width: 13%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Quantity
                                 </th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-4 d-none d-sm-table-cell" style="width: 13%; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Quantity</th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header text-nowrap d-none d-sm-table-cell" style="width: 15%; position: relative; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
-                                    <div class="d-inline-flex align-items-center gap-1">
-                                        <span>Paid By</span>
-                                        <i class="bi bi-filter text-muted excel-filter-icon" onclick="toggleExcelFilter(event, 'payerFilterMenu')"></i>
-                                    </div>
-                                    
-                                    <div id="payerFilterMenu" class="excel-filter-menu d-none shadow border rounded-4 position-absolute bg-white p-2 mt-1 text-start" style="z-index: 1060; min-width: 180px;">
-                                        <div class="d-flex flex-column gap-1 pb-2 mb-2 border-bottom">
-                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="6" data-order="asc">
-                                                <i class="bi bi-sort-alpha-down text-secondary"></i> Sort A to Z
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-link text-dark text-decoration-none text-start p-1 small fw-semibold d-flex align-items-center gap-2 menu-sort-trigger" data-column="6" data-order="desc">
-                                                <i class="bi bi-sort-alpha-up-alt text-secondary"></i> Sort Z to A
-                                            </button>
-                                        </div>
-
-                                        <div class="form-check py-1 px-2 mb-2 rounded-2 bg-light d-flex align-items-center border-bottom border-top border-light">
-                                            <input class="form-check-input ms-0 me-2 master-filter-checkbox" type="checkbox" checked id="master_chk_payer" data-target="payer">
-                                            <label class="form-check-label text-dark fw-bold cursor-pointer small w-100 ps-1" for="master_chk_payer">(Select All)</label>
-                                        </div>
-
-                                        <div class="filter-options-container" style="max-height: 160px; overflow-y: auto;"></div>
-                                    </div>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header text-nowrap sticky-top" style="width: 15%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Paid By
                                 </th>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 d-none d-sm-table-cell" style="width: 10%; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Comment</th>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 d-none d-sm-table-cell sticky-top" style="width: 10%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                    Comment
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="border-top-0">
                             {% for transaction in transactions %}
                                 <tr class="transition-all cursor-pointer user-select-none ledger-row" 
+                                    data-transaction-id="{{ transaction.id }}"
                                     ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
-                                    <td class="checkbox-col" onclick="event.stopPropagation();" 
-                                        style="min-width: 20px; max-width: 25px; width: 20px; padding: 0 2px; font-size: clamp(0.4rem, 1.2vw, 0.7rem);">
-                                        <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" 
-                                            class="transaction-checkbox" style="transform: scale(0.6); margin: 0;">
-                                    </td>
+                                    <!-- CHECKBOX COLUMN REMOVED -->
                                     <td class="ps-3 text-nowrap text-dark fw-semibold" data-sort-val="{{ transaction.date|date:'Ymd' }}" style="font-size: clamp(0.5rem, 1.5vw, 0.8rem);">
                                         {{ transaction.date|date:"j M Y" }}
                                     </td>
@@ -188,7 +171,7 @@
                                             <span class="text-muted">-</span>
                                         {% endif %}
                                     </td>
-                                    <td class="excel-payer-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.payer.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
+                                    <td class="excel-payer-cell" data-filter-val="{{ transaction.payer.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
                                             style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -203,14 +186,14 @@
                                 </tr>
                             {% empty %}
                                 <tr class="empty-row">
-                                    <td colspan="8" class="text-center py-5 text-muted">
+                                    <td colspan="7" class="text-center py-5 text-muted">
                                         No records available. Click "+ Add New Expense" to get started.
                                     </td>
                                 </tr>
                             {% endfor %}
                             
                             <tr id="excelNoMatchesRow" class="d-none empty-row">
-                                <td colspan="8" class="text-center py-5 text-muted small fw-medium">
+                                <td colspan="7" class="text-center py-5 text-muted small fw-medium">
                                     No records match the active filter criteria configuration.
                                 </td>
                             </tr>

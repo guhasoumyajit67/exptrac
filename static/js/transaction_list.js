@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const tableBody = document.querySelector('tbody');
     const tableWrapper = document.getElementById('ledger-table-wrapper');
     const actionsBar = document.getElementById('bulk-delete-actions');
-    const selectAllBox = document.getElementById('select-all-checkbox');
     const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
     const clearSelectionBtn = document.getElementById('clear-selection-btn');
     const table = document.getElementById("ledgerTable");
@@ -173,8 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (blockCat || blockPayer || blockDate) {
                 row.style.display = "none";
-                const cb = row.querySelector('.transaction-checkbox');
-                if (cb) cb.checked = false;
+                row.classList.remove('row-selected');
             } else {
                 row.style.display = "";
                 visibleRows++;
@@ -283,85 +281,82 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function resetAllSelections() {
         rows.forEach(row => {
-            const cb = row.querySelector('.transaction-checkbox');
-            if (cb) cb.checked = false;
+            row.classList.remove('row-selected');
         });
-        if (selectAllBox) selectAllBox.checked = false;
         lastFocusedRow = null;
         updateUIState();
     }
 
     function updateUIState() {
-        let checkedCount = 0;
-
-        rows.forEach(row => {
-            const cb = row.querySelector('.transaction-checkbox');
-            
-            if (row.style.display === "none") {
-                if (cb) cb.checked = false;
-                row.classList.remove('row-selected');
-            } else if (cb && cb.checked) {
-                row.classList.add('row-selected');
-                checkedCount++;
-            } else {
-                row.classList.remove('row-selected');
-            }
-        });
+        const selectedRows = document.querySelectorAll('.row-selected');
+        const checkedCount = selectedRows.length;
 
         const deleteBtnText = document.getElementById('delete-btn-text');
         if (deleteBtnText) {
-            deleteBtnText.textContent = checkedCount >= 2 ? `Delete Selected (${checkedCount})` : "Delete Selected";
+            deleteBtnText.textContent = checkedCount >= 2 ? `${checkedCount}` : "";
         }
 
         if (checkedCount >= 1) {
-            tableWrapper.classList.add('show-checkboxes');
             actionsBar.classList.add('show-actions');
         } else {
-            tableWrapper.classList.remove('show-checkboxes');
             actionsBar.classList.remove('show-actions');
-            if (checkedCount === 0 && selectAllBox) selectAllBox.checked = false;
         }
     }
 
+    // ===================================================
+    // ROW CLICK SELECTION (NEW)
+    // ===================================================
     rows.forEach(row => {
         row.setAttribute('tabindex', '0');
         row.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.type === 'checkbox' || e.target.closest('.excel-filter-menu') || e.target.classList.contains('excel-filter-icon')) {
+            // Ignore clicks on buttons, filters, etc.
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button') || 
+                e.target.closest('.excel-filter-menu') || e.target.classList.contains('excel-filter-icon')) {
                 e.stopPropagation();
-                updateUIState();
                 return;
             }
 
-            const checkbox = this.querySelector('.transaction-checkbox');
-            if (!checkbox || this.style.display === "none") return;
-
-            if (e.shiftKey && lastFocusedRow) {
-                e.preventDefault();
-                toggleRange(lastFocusedRow, this, true);
-            } else {
-                checkbox.checked = !checkbox.checked;
+            // Toggle selection on row click
+            this.classList.toggle('row-selected');
+            
+            // Update last focused row for shift+click
+            if (this.classList.contains('row-selected')) {
                 lastFocusedRow = this;
             }
+            
             updateUIState();
         });
     });
 
-    function toggleRange(startRow, endRow, checkState) {
+    // Shift+Click for range selection
+    rows.forEach(row => {
+        row.addEventListener('click', function(e) {
+            if (e.shiftKey && lastFocusedRow) {
+                e.preventDefault();
+                toggleRange(lastFocusedRow, this);
+            }
+        });
+    });
+
+    function toggleRange(startRow, endRow) {
         const visibleRows = rows.filter(r => r.style.display !== "none");
         const startIndex = visibleRows.indexOf(startRow);
         const endIndex = visibleRows.indexOf(endRow);
         
-        if(startIndex === -1 || endIndex === -1) return;
+        if (startIndex === -1 || endIndex === -1) return;
         const low = Math.min(startIndex, endIndex);
         const high = Math.max(startIndex, endIndex);
         
         visibleRows.forEach((row, index) => {
-            const cb = row.querySelector('.transaction-checkbox');
-            if (cb) cb.checked = (index >= low && index <= high) ? checkState : false;
+            if (index >= low && index <= high) {
+                row.classList.add('row-selected');
+            }
         });
+        lastFocusedRow = endRow;
         updateUIState();
     }
 
+    // Keyboard shortcuts
     tableBody.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
@@ -382,46 +377,64 @@ document.addEventListener("DOMContentLoaded", function() {
             if (currentIndex > 0) targetRow = visibleRows[currentIndex - 1];
         } else if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            const cb = activeRow.querySelector('.transaction-checkbox');
-            if (cb) {
-                cb.checked = !cb.checked;
-                if (cb.checked) lastFocusedRow = activeRow;
-                updateUIState();
+            activeRow.classList.toggle('row-selected');
+            if (activeRow.classList.contains('row-selected')) {
+                lastFocusedRow = activeRow;
             }
+            updateUIState();
             return;
         }
 
         if (targetRow) {
             e.preventDefault();
-            if (e.shiftKey && !lastFocusedRow) lastFocusedRow = activeRow;
-            targetRow.focus();
-
             if (e.shiftKey && lastFocusedRow) {
-                toggleRange(lastFocusedRow, targetRow, true);
+                toggleRange(lastFocusedRow, targetRow);
             } else {
                 lastFocusedRow = targetRow;
-                updateUIState();
             }
+            targetRow.focus();
+            updateUIState();
         }
     });
 
-    if (selectAllBox) {
-        selectAllBox.addEventListener('change', function() {
-            rows.forEach(row => {
-                if (row.style.display !== "none") {
-                    const cb = row.querySelector('.transaction-checkbox');
-                    if (cb) cb.checked = this.checked;
-                }
+    populateFilterMenus();
+
+    // ===================================================
+    // SELECT ALL BUTTON
+    // ===================================================
+    setTimeout(function() {
+        const selectAllBtn = document.getElementById('select-all-btn');
+        if (selectAllBtn) {
+            const newBtn = selectAllBtn.cloneNode(true);
+            selectAllBtn.parentNode.replaceChild(newBtn, selectAllBtn);
+            
+            newBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                rows.forEach(function(row) {
+                    if (row.style.display !== "none") {
+                        row.classList.add('row-selected');
+                    }
+                });
+                updateUIState();
             });
-            updateUIState();
+        }
+    }, 100);
+
+    // Clear Selection button
+    const clearSelectionBtnElement = document.getElementById('clear-selection-btn');
+    if (clearSelectionBtnElement) {
+        clearSelectionBtnElement.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            resetAllSelections();
         });
     }
-
-    populateFilterMenus();
 });
 
 // ===================================================
-// 4. BATCH DELETION LOADER ENGINE INTERCEPTOR
+// BATCH DELETION LOADER ENGINE INTERCEPTOR
 // ===================================================
 document.addEventListener("DOMContentLoaded", function() {
     const bulkDeleteForm = document.getElementById("bulk-delete-form");
@@ -429,9 +442,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (bulkDeleteForm && processingLoader) {
         bulkDeleteForm.addEventListener("submit", function (event) {
-            const userConfirmed = confirm("Are you sure you want to permanently delete all selected transactions?");
+            // Get all selected row IDs
+            const selectedRows = document.querySelectorAll('.row-selected');
+            if (selectedRows.length === 0) {
+                event.preventDefault();
+                alert('Please select at least one row to delete.');
+                return;
+            }
+            
+            const userConfirmed = confirm(`Are you sure you want to permanently delete ${selectedRows.length} selected transaction(s)?`);
             if (userConfirmed) {
-                processingLoader.classList.add("active");
+                // Add selected IDs to form
+                selectedRows.forEach(row => {
+                    const id = row.dataset.transactionId;
+                    if (id) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'transaction_ids';
+                        input.value = id;
+                        document.getElementById('bulk-delete-form').appendChild(input);
+                    }
+                });
+                processingLoader.classList.add('active');
             } else {
                 event.preventDefault();
             }
