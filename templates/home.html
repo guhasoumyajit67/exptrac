@@ -138,7 +138,7 @@
                                     <tr style="border-bottom: 1px dashed #f1f5f9;">
                                         <td class="py-3 px-1 text-dark text-nowrap text-truncate">{{ tx.date|date:"d M Y" }}</td>
                                         <td class="py-3 text-dark fw-semibold text-truncate">{{ tx.item.name }}</td>
-                                        <td class="py-3 text-end text-dark fw-bold px-1">₹{{ tx.price|floatformat:2 }}</td>
+                                        <td class="py-3 text-end text-dark fw-bold px-1">₹{{ tx.price|floatformat:0 }}</td>
                                     </tr>
                                     {% empty %}
                                     <tr>
