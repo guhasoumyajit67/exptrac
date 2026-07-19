@@ -60,7 +60,7 @@
                     <div class="card bg-white border rounded-3 p-3 shadow-sm h-100 custom-hover-lift">
                         <span class="text-muted text-uppercase tracking-wider fw-bold d-block mb-1" style="font-size: 0.65rem;">Total Outflow</span>
                         <div class="d-flex align-items-center justify-content-between mt-2">
-                            <h3 class="fw-bold text-dark mb-0">₹{{ total_outflow|default:"0.00"|floatformat:2 }}</h3>
+                            <h3 class="fw-bold text-dark mb-0">₹{{ total_outflow|default:"0"|floatformat:0 }}</h3>
                             <div class="bg-primary bg-opacity-10 text-primary rounded px-2 py-1 small">
                                 <i class="bi bi-wallet2 fs-5"></i>
                             </div>
@@ -74,7 +74,7 @@
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <div>
                                 <h4 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 160px;">{{ top_category_name|default:"None" }}</h4>
-                                <span class="text-muted fw-normal small">₹{{ top_category_amount|default:"0.00"|floatformat:2 }} spent</span>
+                                <span class="text-muted fw-normal small">₹{{ top_category_amount|default:"0"|floatformat:0 }} spent</span>
                             </div>
                             <div class="bg-success bg-opacity-10 text-success rounded px-2 py-1 small">
                                 <i class="bi bi-fire fs-5"></i>
@@ -104,7 +104,7 @@
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <div>
                                 <h4 class="fw-bold text-dark mb-0 text-truncate" style="max-width: 160px;">{{ top_volume_name|default:"None" }}</h4>
-                                <span class="text-muted fw-normal small">{{ top_volume_count|default:"0.00"|floatformat:2 }} {{ top_volume_unit|default:"Units" }}</span>
+                                <span class="text-muted fw-normal small">{{ top_volume_count|default:"0"|floatformat:0 }} {{ top_volume_unit|default:"Units" }}</span>
                             </div>
                             <div class="bg-info bg-opacity-10 text-info rounded px-2 py-1 small">
                                 <i class="bi bi-box-seam fs-5"></i>
@@ -174,7 +174,7 @@
                                     {% for entry in category_list_data %}
                                         <tr style="border-bottom: 1px dashed #f1f5f9;">
                                             <td class="py-2 fw-semibold text-dark ps-0 text-truncate">{{ entry.item__category__name }}</td>
-                                            <td class="py-2 text-end text-dark fw-bold pe-3">₹{{ entry.total|floatformat:2 }}</td>
+                                            <td class="py-2 text-end text-dark fw-bold pe-3">₹{{ entry.total|floatformat:0 }}</td>
                                             <td class="py-2 text-end text-secondary pe-0 table-pct-node" data-amount="{{ entry.total }}">
                                                 0.0%
                                             </td>
