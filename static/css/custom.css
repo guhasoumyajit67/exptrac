@@ -69,12 +69,12 @@ main {
 
 /* Interactive table row highlighting mechanics */
 .table tbody tr {
-    border-left: 4px solid transparent; /* Changed to 4px to match selected border footprint */
+    border-left: 4px solid transparent;
 }
 
 .table tbody tr:hover {
     background-color: rgba(248, 249, 250, 0.95);
-    border-left: 4px solid #0d6efd; /* Interactive feedback accent marker */
+    border-left: 4px solid #0d6efd;
 }
 
 .transition-all {
@@ -85,7 +85,6 @@ main {
     cursor: pointer;
 }
 
-/* Disables text selection highlights on high speed mobile double taps */
 .user-select-none {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -93,7 +92,6 @@ main {
     user-select: none;
 }
 
-/* Global design utility extensions */
 .fw-extrabold { 
     font-weight: 800; 
 }
@@ -101,9 +99,6 @@ main {
 .fs-7 { 
     font-size: 0.75rem; 
 }
-
-
-
 
 
 /* ==========================================
@@ -124,7 +119,6 @@ main {
     transform: scale(1.15);
 }
 
-/* Uniform, crisp high-contrast selector ring indicator mapping standard UI styling */
 .dot-palette-item.active {
     border-color: #fff !important;
     outline: 2.5px solid #0d6efd;
@@ -135,10 +129,6 @@ main {
 .custom-picker-trigger i {
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
-
-
-
-
 
 
 /* ==========================================================================
@@ -155,14 +145,9 @@ main {
 }
 
 
-
-
-
-
 /* ==========================================================================
     MULTI-SELECT KEYBOARD WORKFLOW NAVIGATION STYLES
    ========================================================================== */
-
 .table tbody tr:focus {
     outline: none !important;
     background-color: rgba(248, 249, 250, 0.85) !important;
@@ -193,12 +178,9 @@ main {
 }
 
 
-
-
 /* ============================================
    SELECTED ROW HIGHLIGHT - ELEGANT GRAY
    ============================================ */
-
 .table tbody tr.row-selected,
 .table tbody tr.row-selected td,
 .table tbody tr.row-selected:hover,
@@ -212,9 +194,8 @@ main {
 
 
 /* ==========================================================================
-    UNIFIED CLEAR & DELETE ACTION BUTTONS (HEIGHT & VISIBILITY LOCK)
+    UNIFIED CLEAR & DELETE ACTION BUTTONS
    ========================================================================== */
-
 #clear-selection-btn,
 #bulk-delete-btn {
     box-sizing: border-box !important;
@@ -226,7 +207,6 @@ main {
     transition: all 0.15s ease-in-out !important;
 }
 
-/* Translucent Minimal Gray Button (Blends into dashboard backdrop elegantly) */
 #clear-selection-btn {
     background-color: rgba(241, 243, 245, 0.8) !important;
     color: #495057 !important;
@@ -246,11 +226,10 @@ main {
 }
 
 #bulk-delete-btn {
-    border: 1px solid transparent !important; /* 1px spacer eliminates horizontal baseline shifts */
+    border: 1px solid transparent !important;
     box-shadow: 0 1px 3px rgba(220, 53, 69, 0.15) !important;
 }
 
-/* Smooth structural drawer slide animation rules */
 #bulk-delete-actions {
     opacity: 0;
     transform: translateY(-8px);
@@ -270,11 +249,6 @@ main {
 }
 
 
-
-
-
-
-
 /* ==========================================================================
    Spreadsheet Ingestion Staging Area Components
    ========================================================================== */
@@ -282,19 +256,19 @@ main {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background-color: #fff9db; /* Soft professional amber background */
-    border: 1px solid #fff3bf; /* Match the banner tone seamlessly */
-    border-left: 4px solid #f59f00; /* Distinct amber indicator strip */
+    background-color: #fff9db;
+    border: 1px solid #fff3bf;
+    border-left: 4px solid #f59f00;
     padding: 10px 16px;
     border-radius: 6px;
     margin-bottom: 20px;
 }
 
 .alert-icon {
-    width: 20px;  /* Force standard UI icon size */
-    height: 20px; /* Force standard UI icon size */
-    color: #f59f00; /* Amber color fill */
-    flex-shrink: 0; /* Keep it from squishing on wrap */
+    width: 20px;
+    height: 20px;
+    color: #f59f00;
+    flex-shrink: 0;
     display: inline-block;
     vertical-align: middle;
 }
@@ -305,7 +279,7 @@ main {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: #d9480f; /* Premium readable contrast dark amber */
+    color: #d9480f;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.2;
 }
@@ -315,13 +289,9 @@ main {
     height: 14px;
     flex-shrink: 0;
     display: inline-block;
-    /* 🚨 THE ALIGNMENT TWEAK: Prevents the icon from hanging slightly too high */
     position: relative;
     top: -0.5px; 
 }
-
-
-
 
 
 /* ==========================================================================
@@ -332,7 +302,7 @@ main {
     border: none;
     padding: 6px;
     border-radius: 6px;
-    color: #adb5bd; /* Sleek neutral grey baseline */
+    color: #adb5bd;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -340,33 +310,24 @@ main {
     transition: all 0.2s ease-in-out;
 }
 
-/* Vector geometry boundaries box */
 .bin-svg {
     width: 18px;
     height: 18px;
 }
 
-/* Turns standard danger-red and presents a soft halo background on mouse over */
 .btn-skip-icon-only:hover {
     color: #fa5252;
     background-color: #fff5f5;
 }
 
 .btn-skip-icon-only:active {
-    transform: scale(0.95); /* Tactile shrink down click tracking layer */
+    transform: scale(0.95);
 }
-
-
-
-
-
 
 
 /* ==========================================================================
    EXCEL-STYLE HEADER FILTERING & SORTING OVERLAYS
    ========================================================================== */
-
-/* Sorting Column Triggers */
 .sortable-header {
     cursor: pointer;
     user-select: none;
@@ -381,12 +342,10 @@ main {
     transition: color 0.15s ease-in-out;
 }
 
-/* Micro sizing for indicator symbols */
 .extra-small {
     font-size: 0.65rem;
 }
 
-/* Excel Style Dropdown Checkbox Panels */
 .excel-filter-menu {
     top: 100%;
     left: 0;
@@ -399,7 +358,6 @@ main {
     z-index: 1060;
 }
 
-/* Scrollable dynamic wrapper logic */
 .filter-options-container {
     max-height: 160px;
     overflow-y: auto;
@@ -407,7 +365,6 @@ main {
     padding-right: 4px;
 }
 
-/* Custom Scrollbar for option panel frames */
 .filter-options-container::-webkit-scrollbar {
     width: 5px;
 }
@@ -425,7 +382,6 @@ main {
     background: #dee2e6;
 }
 
-/* Checkbox item wrapper mechanics */
 .filter-option-item {
     transition: background-color 0.1s ease-in-out;
     cursor: pointer;
@@ -445,7 +401,6 @@ main {
     user-select: none;
 }
 
-/* Minimal vector filter toggle trigger icon buttons */
 .excel-filter-icon {
     cursor: pointer;
     padding: 3px 6px;
@@ -461,28 +416,22 @@ main {
     color: #212529 !important;
 }
 
-/* Ensures dropdown menus don't clip under clipped responsive outer wraps */
 #ledger-table-wrapper {
     overflow: visible !important;
 }
 
 
-
-
 /* ===================================================
-   1. BULK ACTIONS DRAWER ANIMATION ENGINE
+   BULK ACTIONS DRAWER ANIMATION ENGINE
    =================================================== */
 #bulk-delete-actions {
     opacity: 0;
     transform: translateX(8px);
     visibility: hidden;
-    
-    /* Enforces exact vertical flex centering and height metrics layout */
     display: inline-flex !important;
     align-items: center !important;
     height: 31px !important; 
     margin: 0 !important;
-    
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -492,47 +441,31 @@ main {
     visibility: visible;
 }
 
-/* ===================================================
-   2. SELECTION WORKSPACE ACTIONS BUTTON CONTROL BOOT
-   =================================================== */
 #clear-selection-btn,
 #bulk-delete-btn {
     box-sizing: border-box !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
     font-size: 0.8rem !important;
-    
-    /* Formats internal baselines to sit perfectly flat inside the 31px grid height */
     height: 31px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     line-height: 1 !important;
-    
     border-radius: 8px !important;
     letter-spacing: -0.01em !important;
     transition: all 0.15s ease-in-out !important;
 }
 
 
-
-
-
-
-
-
-
 /* ============================================
    HOME PAGE DASHBOARD STYLES
 ============================================ */
-
-/* Dashboard Background - Transparent to show body background */
 .custom-dashboard-bg { 
     background: transparent;
     min-height: calc(100vh - 120px); 
 }
 
-/* Hero Section - Unauthenticated Users */
 .hero-immersive { 
     min-height: 80vh; 
     display: flex; 
@@ -543,7 +476,6 @@ main {
     padding: 4rem 1rem; 
 }
 
-/* Gradient Text Effect */
 .gradient-text { 
     background: linear-gradient(135deg, #0d6efd 0%, #198754 100%); 
     -webkit-background-clip: text; 
@@ -552,7 +484,6 @@ main {
     font-weight: 900; 
 }
 
-/* Utility Classes */
 .fs-7 { 
     font-size: 0.85rem !important; 
 }
@@ -565,7 +496,6 @@ main {
     gap: 0.65rem !important; 
 }
 
-/* Hover Lift Effect */
 .custom-hover-lift { 
     transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease !important; 
 }
@@ -575,7 +505,6 @@ main {
     box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.05) !important; 
 }
 
-/* Scrollable Containers */
 .custom-ledger-scroll, 
 .custom-category-scroll { 
     max-height: 300px; 
@@ -583,7 +512,6 @@ main {
     padding-right: 4px; 
 }
 
-/* Scrollbar Styling - WebKit */
 .custom-ledger-scroll::-webkit-scrollbar, 
 .custom-category-scroll::-webkit-scrollbar { 
     width: 4px; 
@@ -600,14 +528,12 @@ main {
     background: #ced4da;
 }
 
-/* Scrollbar Styling - Firefox */
 .custom-ledger-scroll,
 .custom-category-scroll {
     scrollbar-width: thin;
     scrollbar-color: #e2e8f0 transparent;
 }
 
-/* Floating Animation */
 .floating { 
     animation: float 4s ease-in-out infinite; 
 }
@@ -618,15 +544,9 @@ main {
 }
 
 
-
-
-
-
-
 /* ============================================
    DELETE LOADING OVERLAY
 ============================================ */
-
 #delete-loading-overlay {
     position: fixed;
     top: 0;
@@ -651,20 +571,13 @@ main {
 }
 
 
-
-
-
-
 /* ============================================
    ANALYTICS PAGE STYLES
 ============================================ */
-
-/* Toggle View - Hide/Show */
 .view-hidden {
     display: none !important;
 }
 
-/* Sticky Table Headers */
 .table-responsive {
     position: relative;
 }
@@ -678,18 +591,9 @@ main {
 }
 
 
-
-
-
-
-
-
-
-
 /* ============================================
    MOBILE FIX - CHECKBOX COLUMN OVERRIDE
    ============================================ */
-
 @media (max-width: 576px) {
     .show-checkboxes .checkbox-col {
         max-width: 25px !important;
@@ -707,7 +611,7 @@ main {
         padding: 0.25rem 0.2rem !important;
     }
     
-    #ledgerTable td:nth-child(3) { /* Item column */
+    #ledgerTable td:nth-child(3) {
         max-width: 60px !important;
         font-size: 0.55rem !important;
         overflow: hidden !important;
@@ -715,16 +619,134 @@ main {
         white-space: nowrap !important;
     }
     
-    #ledgerTable td:last-child { /* Price column */
+    #ledgerTable td:last-child {
         font-size: 0.6rem !important;
         padding-left: 0.1rem !important;
     }
 }
 
 
+/* ============================================
+   MANAGE ITEMS PAGE - MOBILE RESPONSIVE
+   ============================================ */
+@media (max-width: 576px) {
+    .manage-items-table td,
+    .manage-items-table th {
+        padding: 0.3rem 0.2rem !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .manage-items-table .badge {
+        font-size: 0.55rem !important;
+        padding: 0.15rem 0.4rem !important;
+    }
+    
+    .manage-items-table .btn-sm {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .manage-items-table .btn-sm i {
+        font-size: 0.6rem !important;
+    }
+    
+    .manage-items-title {
+        font-size: 1rem !important;
+    }
+}
+
+
+/* ============================================
+   MANAGE PAYERS PAGE - MOBILE RESPONSIVE
+   ============================================ */
+@media (max-width: 576px) {
+    .manage-payers-table td,
+    .manage-payers-table th {
+        padding: 0.3rem 0.2rem !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .manage-payers-table .badge {
+        font-size: 0.55rem !important;
+        padding: 0.15rem 0.4rem !important;
+    }
+    
+    .manage-payers-table .btn-sm {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .manage-payers-table .btn-sm i {
+        font-size: 0.6rem !important;
+    }
+    
+    .manage-payers-title {
+        font-size: 1rem !important;
+    }
+}
+
+
+/* ============================================
+   BULK UPLOAD PAGE - MOBILE RESPONSIVE
+   ============================================ */
+@media (max-width: 576px) {
+    .bulk-upload-title {
+        font-size: 1.1rem !important;
+    }
+    
+    .bulk-upload-table td,
+    .bulk-upload-table th {
+        padding: 0.2rem 0.15rem !important;
+        font-size: 0.55rem !important;
+    }
+    
+    .bulk-upload-table td .text-muted {
+        font-size: 0.5rem !important;
+    }
+    
+    .bulk-upload-btn {
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0.8rem !important;
+    }
+    
+    .bulk-upload-instructions {
+        padding: 0.5rem !important;
+    }
+}
+
+
+/* ============================================
+   GLOBAL MOBILE FIXES - ALL PAGES
+   ============================================ */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+}
 
 
 
+/* ============================================
+   BULK REVIEW PAGE - MOBILE RESPONSIVE
+   ============================================ */
 
-
-
+@media (max-width: 576px) {
+    .bulk-review-title {
+        font-size: 1rem !important;
+    }
+    
+    .bulk-review-card {
+        padding: 0.75rem !important;
+    }
+    
+    .bulk-review-badge {
+        font-size: 0.7rem !important;
+        padding: 0.3rem 0.6rem !important;
+    }
+    
+    .bulk-review-btn {
+        font-size: 0.7rem !important;
+        padding: 0.2rem 0.5rem !important;
+    }
+}

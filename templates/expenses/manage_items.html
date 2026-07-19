@@ -3,16 +3,17 @@
 {% block title %}Manage Items{% endblock title %}
 
 {% block content %}
-<div class="container mt-5 px-3">
+<div class="container mt-3 mt-sm-5 px-2 px-sm-3">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-12">
             
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 border-bottom pb-3 mb-4">
                 <div>
-                    <h1 class="h3 fw-extrabold text-dark mb-1">Item Configuration Dashboard</h1>
-                    <p class="text-muted small mb-0">Review, add, or delete specific expense item variables in your ledger ecosystem.</p>
+                    <h1 class="h4 h-sm-3 fw-extrabold text-dark mb-1">Item Configuration Dashboard</h1>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Review, add, or delete specific expense item variables in your ledger ecosystem.</p>
+                    <p class="text-muted small mb-0 d-block d-sm-none">Manage your expense items.</p>
                 </div>
-                <a href="{% url 'create_item' %}?next={{ request.path }}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm">
+                <a href="{% url 'create_item' %}?next={{ request.path }}" class="btn btn-primary px-3 px-sm-4 py-2 rounded-3 fw-bold shadow-sm flex-shrink-0">
                     + Add New Item
                 </a>
             </div>
@@ -26,50 +27,56 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="table-responsive rounded-3 border bg-white shadow-sm">
-                <table class="table table-hover align-middle mb-0 text-start">
-                    <thead class="bg-light border-bottom text-uppercase tracking-wider fw-bold text-muted small" style="font-size: 0.75rem;">
+            <div class="table-responsive rounded-3 border bg-white shadow-sm" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover align-middle mb-0 text-start" id="itemsTable">
+                    <thead class="bg-light border-bottom text-uppercase tracking-wider fw-bold text-muted small sticky-top" style="top: 0; z-index: 10; font-size: 0.65rem;">
                         <tr>
-                            <th class="py-3 ps-4" style="width: 30%;">Item Name</th>
-                            <th class="py-3" style="width: 25%;">Category</th>
-                            <th class="py-3" style="width: 15%;">Unit</th>
-                            <th class="py-3" style="width: 15%;">Usage Count</th>
-                            <th class="py-3 text-end pe-4" style="width: 15%;">Actions</th>
+                            <th class="py-2 py-sm-3 ps-3 ps-sm-4" style="width: 30%;">Item Name</th>
+                            <th class="py-2 py-sm-3 d-none d-sm-table-cell" style="width: 25%;">Category</th>
+                            <th class="py-2 py-sm-3 text-center" style="width: 15%;">Unit</th>
+                            <th class="py-2 py-sm-3 text-center d-none d-md-table-cell" style="width: 15%;">Usage</th>
+                            <th class="py-2 py-sm-3 text-end pe-3 pe-sm-4" style="width: 15%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in items %}
                             <tr>
-                                <td class="ps-4 fw-bold text-dark">{{ item.name }}</td>
-                                <td>
-                                    <span class="badge rounded-pill px-3 py-1.5 fw-bold text-uppercase tracking-wide small" 
-                                          style="background-color: {{ item.category.color|default:'#6c757d' }}15; color: {{ item.category.color|default:'#6c757d' }};">
+                                <td class="ps-3 ps-sm-4 fw-bold text-dark" style="font-size: 0.85rem;">
+                                    {{ item.name }}
+                                </td>
+                                <td class="d-none d-sm-table-cell">
+                                    <span class="badge rounded-pill px-2 px-sm-3 py-1 py-sm-1.5 fw-bold text-uppercase tracking-wide" 
+                                          style="background-color: {{ item.category.color|default:'#6c757d' }}15; color: {{ item.category.color|default:'#6c757d' }}; font-size: 0.6rem;">
                                         ● {{ item.category.name }}
                                     </span>
                                 </td>
-                                <td class="font-monospace text-secondary small">{{ item.unit|default:"-" }}</td>
+                                <td class="text-center font-monospace text-secondary" style="font-size: 0.8rem;">
+                                    {{ item.unit|default:"-" }}
+                                </td>
                                 
-                                <td>
+                                <td class="text-center d-none d-md-table-cell">
                                     {% if item.transaction_count > 0 %}
-                                        <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2.5 py-1.5 border border-secondary-subtle">
-                                            {{ item.transaction_count }} Record{% if item.transaction_count > 1 %}s{% endif %}
+                                        <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2 py-1 border border-secondary-subtle" style="font-size: 0.65rem;">
+                                            {{ item.transaction_count }}
                                         </span>
                                     {% else %}
-                                        <span class="text-muted small fw-normal">Unused</span>
+                                        <span class="text-muted" style="font-size: 0.65rem;">—</span>
                                     {% endif %}
                                 </td>
 
-                                <td class="text-end pe-4">
-                                    <div class="d-inline-flex gap-2">
-                                        <a href="{% url 'update_item' item.pk %}?next={{ request.path }}" class="btn btn-sm btn-outline-secondary px-2.5 py-1 fw-semibold small" style="font-size: 0.8rem;">
-                                            Edit
+                                <td class="text-end pe-3 pe-sm-4">
+                                    <div class="d-flex justify-content-end gap-1 gap-sm-2">
+                                        <a href="{% url 'update_item' item.pk %}?next={{ request.path }}" class="btn btn-sm btn-outline-secondary rounded-2 d-inline-flex align-items-center justify-content-center" 
+                                           style="height: 28px; width: 28px; padding: 0;" title="Edit">
+                                            <i class="bi bi-pencil" style="font-size: 0.7rem;"></i>
                                         </a>
                                         
                                         <form method="post" action="{% url 'delete_managed_item' item.pk %}" onsubmit="return confirm('Are you sure you want to permanently delete this item?');" class="d-inline">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger px-2.5 py-1 fw-semibold small" style="font-size: 0.8rem;">
-                                                Delete
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-2 d-inline-flex align-items-center justify-content-center" 
+                                                    style="height: 28px; width: 28px; padding: 0;" title="Delete">
+                                                <i class="bi bi-trash3" style="font-size: 0.7rem;"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -78,6 +85,7 @@
                         {% empty %}
                             <tr>
                                 <td colspan="5" class="text-center py-5 text-muted small fw-medium">
+                                    <i class="bi bi-inbox d-block fs-2 mb-2 opacity-50"></i>
                                     No custom configuration items found. Click "+ Add New Item" to populate this register grid.
                                 </td>
                             </tr>
@@ -86,7 +94,13 @@
                 </table>
             </div>
 
+            <!-- Footer Count -->
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                <span class="text-muted small">{{ items|length }} item{{ items|pluralize }}</span>
+                <span class="text-muted small">Showing all</span>
+            </div>
+
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

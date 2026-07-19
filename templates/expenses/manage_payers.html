@@ -3,16 +3,17 @@
 {% block title %}Manage Payers{% endblock title %}
 
 {% block content %}
-<div class="container mt-5 px-3">
+<div class="container mt-3 mt-sm-5 px-2 px-sm-3">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-12">
             
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 border-bottom pb-3 mb-4">
                 <div>
-                    <h1 class="h3 fw-extrabold text-dark mb-1">Payer Configuration Dashboard</h1>
-                    <p class="text-muted small mb-0">Review, add, or remove specific payer configurations associated with your ledger ecosystem.</p>
+                    <h1 class="h4 h-sm-3 fw-extrabold text-dark mb-1 manage-payers-title">Payer Configuration Dashboard</h1>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Review, add, or remove specific payer configurations associated with your ledger ecosystem.</p>
+                    <p class="text-muted small mb-0 d-block d-sm-none">Manage your payers.</p>
                 </div>
-                <a href="{% url 'create_payer' %}?next={{ request.path }}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm">
+                <a href="{% url 'create_payer' %}?next={{ request.path }}" class="btn btn-primary px-3 px-sm-4 py-2 rounded-3 fw-bold shadow-sm flex-shrink-0">
                     + Add New Payer
                 </a>
             </div>
@@ -26,44 +27,46 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="table-responsive rounded-3 border bg-white shadow-sm">
-                <table class="table table-hover align-middle mb-0 text-start">
-                    <thead class="bg-light border-bottom text-uppercase tracking-wider fw-bold text-muted small" style="font-size: 0.75rem;">
+            <div class="table-responsive rounded-3 border bg-white shadow-sm" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover align-middle mb-0 text-start manage-payers-table" id="payersTable">
+                    <thead class="bg-light border-bottom text-uppercase tracking-wider fw-bold text-muted small sticky-top" style="top: 0; z-index: 10; font-size: 0.65rem;">
                         <tr>
-                            <th class="py-3 ps-4" style="width: 50%;">Payer Name</th>
-                            <th class="py-3" style="width: 25%;">Usage Count</th>
-                            <th class="py-3 text-end pe-4" style="width: 25%;">Actions</th>
+                            <th class="py-2 py-sm-3 ps-3 ps-sm-4" style="width: 30%;">Payer Name</th>
+                            <th class="py-2 py-sm-3 text-center d-none d-sm-table-cell" style="width: 25%;">Usage Count</th>
+                            <th class="py-2 py-sm-3 text-end pe-3 pe-sm-4" style="width: 15%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for payer in payers %}
                             <tr>
-                                <td class="ps-4 fw-bold text-dark">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <i class="bi bi-person text-secondary"></i>
-                                        <span>{{ payer.name }}</span>
-                                    </div>
+                                <td class="ps-3 ps-sm-4 fw-bold text-dark" style="font-size: 0.85rem;">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="d-inline-block rounded-circle" style="width: 12px; height: 12px; background-color: {{ payer.color|default:'#6c757d' }};"></span>
+                                        {{ payer.name }}
+                                    </span>
                                 </td>
-                                <td>
+                                <td class="text-center d-none d-sm-table-cell">
                                     {% if payer.transaction_count > 0 %}
-                                        <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2.5 py-1.5 border border-secondary-subtle">
-                                            {{ payer.transaction_count }} Transaction{% if payer.transaction_count > 1 %}s{% endif %}
+                                        <span class="badge bg-secondary-subtle text-secondary fw-semibold px-2 py-1 border border-secondary-subtle" style="font-size: 0.65rem;">
+                                            {{ payer.transaction_count }} Transaction{{ payer.transaction_count|pluralize }}
                                         </span>
                                     {% else %}
-                                        <span class="text-muted small fw-normal">Unused</span>
+                                        <span class="text-muted" style="font-size: 0.65rem;">—</span>
                                     {% endif %}
                                 </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-inline-flex gap-2">
-                                        <a href="{% url 'update_payer' payer.pk %}" class="btn btn-sm btn-outline-secondary px-2.5 py-1 fw-semibold small" style="font-size: 0.8rem;">
-                                            Edit
+                                <td class="text-end pe-3 pe-sm-4">
+                                    <div class="d-flex justify-content-end gap-1 gap-sm-2">
+                                        <a href="{% url 'update_payer' payer.pk %}?next={{ request.path }}" class="btn btn-sm btn-outline-secondary rounded-2 d-inline-flex align-items-center justify-content-center" 
+                                           style="height: 28px; width: 28px; padding: 0;" title="Edit">
+                                            <i class="bi bi-pencil" style="font-size: 0.7rem;"></i>
                                         </a>
-
-                                        <form method="post" action="{% url 'delete_managed_payer' payer.pk %}" onsubmit="return confirm('Are you sure you want to permanently delete this payer config?');" class="d-inline">
+                                        
+                                        <form method="post" action="{% url 'delete_managed_payer' payer.pk %}" onsubmit="return confirm('Are you sure you want to permanently delete this payer?');" class="d-inline">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{{ request.path }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger px-2.5 py-1 fw-semibold small" style="font-size: 0.8rem;">
-                                                Delete
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-2 d-inline-flex align-items-center justify-content-center" 
+                                                    style="height: 28px; width: 28px; padding: 0;" title="Delete">
+                                                <i class="bi bi-trash3" style="font-size: 0.7rem;"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -72,14 +75,22 @@
                         {% empty %}
                             <tr>
                                 <td colspan="3" class="text-center py-5 text-muted small fw-medium">
-                                    No custom configuration payers found. Click "+ Add New Payer" to populate this register grid.
+                                    <i class="bi bi-inbox d-block fs-2 mb-2 opacity-50"></i>
+                                    No payer configurations found. Click "+ Add New Payer" to populate this register grid.
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+
+            <!-- Footer Count -->
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                <span class="text-muted small">{{ payers|length }} payer{{ payers|pluralize }}</span>
+                <span class="text-muted small">Showing all</span>
+            </div>
+
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

@@ -3,38 +3,38 @@
 {% block title %}Bulk Upload Ledger{% endblock title %}
 
 {% block content %}
-<div class="container mt-5 px-3">
+<div class="container mt-3 mt-sm-5 px-2 px-sm-3">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="p-4 p-sm-5 bg-white rounded-4 shadow-sm border" style="border-radius: 16px;">
+        <div class="col-md-8 col-lg-6 col-12">
+            <div class="p-3 p-sm-5 bg-white rounded-4 shadow-sm border">
                 
                 <div class="text-center mb-4">
-                    <h1 class="h3 fw-extrabold text-dark mb-1" style="font-weight: 800;">Upload Spreadsheet</h1>
-                    <p class="text-muted small">Import multiple expenditures into your transaction ledger at once using an Excel sheet.</p>
+                    <h1 class="h4 h-sm-3 fw-extrabold text-dark mb-1 bulk-upload-title" style="font-weight: 800;">Upload Spreadsheet</h1>
+                    <p class="text-muted small mb-0">Import multiple expenditures into your transaction ledger at once using an Excel sheet.</p>
                 </div>
                 
-                <div class="card bg-light border-0 p-3 mb-4 text-start" style="background-color: #f8f9fa; border-radius: 8px;">
-                    <h6 class="fw-bold text-secondary small text-uppercase mb-2" style="font-size: 0.75rem; letter-spacing: 0.5px;">Expected Column Setup Structure:</h6>
+                <div class="card bg-light border-0 p-2 p-sm-3 mb-4 text-start bulk-upload-instructions">
+                    <h6 class="fw-bold text-secondary small text-uppercase mb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">Expected Column Setup Structure:</h6>
                     <div class="table-responsive">
-                        <table class="table table-sm table-bordered text-center small mb-0" style="font-size: 0.75rem; background-color: #ffffff;">
+                        <table class="table table-sm table-bordered text-center mb-0 bulk-upload-table" style="font-size: 0.7rem; background-color: #ffffff;">
                             <thead style="background-color: #212529 !important;">
                                 <tr>
-                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 8px;">Date</th>
-                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 8px;">Item</th>
-                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 8px;">Price</th>
-                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 8px;">Quantity</th>
-                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 8px;">Paid By</th>
-                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 8px;">Comment</th>
+                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 6px 4px; font-size: 0.6rem;">Date</th>
+                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 6px 4px; font-size: 0.6rem;">Item</th>
+                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 6px 4px; font-size: 0.6rem;">Price</th>
+                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 6px 4px; font-size: 0.6rem;">Quantity</th>
+                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 6px 4px; font-size: 0.6rem;">Paid By</th>
+                                    <th style="background-color: #212529 !important; color: #ffffff !important; padding: 6px 4px; font-size: 0.6rem;">Comment</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="text-muted">YYYY-MM-DD</td>
-                                    <td>Tomato</td>
-                                    <td>40.00</td>
-                                    <td>1</td>
-                                    <td>Somi</td>
-                                    <td class="text-muted">Weekly bazaar</td>
+                                    <td class="text-muted" style="font-size: 0.6rem;">YYYY-MM-DD</td>
+                                    <td style="font-size: 0.6rem;">Tomato</td>
+                                    <td style="font-size: 0.6rem;">40.00</td>
+                                    <td style="font-size: 0.6rem;">1</td>
+                                    <td style="font-size: 0.6rem;">Somi</td>
+                                    <td class="text-muted" style="font-size: 0.6rem;">Weekly bazaar</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -45,7 +45,7 @@
                     {% csrf_token %}
                     
                     <div class="mb-4 text-start">
-                        <label for="{{ form.excel_file.id_for_label }}" class="form-label small fw-bold text-secondary text-uppercase mb-2" style="font-size: 0.75rem;">
+                        <label for="{{ form.excel_file.id_for_label }}" class="form-label small fw-bold text-secondary text-uppercase mb-2" style="font-size: 0.7rem;">
                             {{ form.excel_file.label }}
                         </label>
                         {{ form.excel_file }}
@@ -59,10 +59,10 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg rounded-3 fw-bold fs-6 py-2.5 shadow-sm" style="border-radius: 8px;">
-                            Process Spreadsheet Upload
+                        <button type="submit" class="btn btn-primary rounded-3 fw-bold shadow-sm bulk-upload-btn" style="padding: 0.6rem 1rem; font-size: 0.95rem;">
+                            <i class="bi bi-upload me-1"></i> Process Spreadsheet Upload
                         </button>
-                        <a href="{% url 'transaction_list' %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium" style="border-radius: 8px;">
+                        <a href="{% url 'transaction_list' %}" class="btn btn-light border btn-sm text-secondary py-2 rounded-3 fw-medium">
                             Cancel and Back to Ledger
                         </a>
                     </div>
@@ -72,4 +72,4 @@
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

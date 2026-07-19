@@ -3,19 +3,20 @@
 {% block title %}Review Pending Uploads{% endblock title %}
 
 {% block content %}
-<div class="container mt-5 px-3">
+<div class="container mt-3 mt-sm-5 px-2 px-sm-3">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-12">
             
-            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 border-bottom pb-3 mb-4">
                 <div>
-                    <h1 class="h3 fw-extrabold text-dark mb-1">Spreadsheet Staging Area</h1>
-                    <p class="text-muted small mb-0">Classify new items or map variations before saving data into your ledger.</p>
+                    <h1 class="h4 h-sm-3 fw-extrabold text-dark mb-1 bulk-review-title">Spreadsheet Staging Area</h1>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Classify new items or map variations before saving data into your ledger.</p>
+                    <p class="text-muted small mb-0 d-block d-sm-none">Review and classify your uploaded data.</p>
                 </div>
-                <div class="text-end">
-                    <span class="badge bg-success py-2 px-3 rounded-3 fs-6">{{ valid_rows_count }} Rows Ready</span>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-success py-2 px-3 rounded-3 fs-6 bulk-review-badge">{{ valid_rows_count }} Rows Ready</span>
                     {% if review_rows_count %}
-                        <span class="badge bg-warning text-dark py-2 px-3 rounded-3 fs-6">{{ review_rows_count }} Require Attention</span>
+                        <span class="badge bg-warning text-dark py-2 px-3 rounded-3 fs-6 bulk-review-badge">{{ review_rows_count }} Require Attention</span>
                     {% endif %}
                 </div>
             </div>
@@ -33,8 +34,8 @@
 
             {% if review_rows_count > 0 %}
                 
-                <div class="alert alert-warning border-0 shadow-sm rounded-4 mb-4 py-3 text-start d-flex align-items-center gap-3" style="background-color: #fff3cd; color: #856404;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 28px; height: 28px; flex-shrink: 0; color: #e6a23c;">
+                <div class="alert alert-warning border-0 shadow-sm rounded-4 mb-4 py-3 text-start d-flex align-items-start gap-3" style="background-color: #fff3cd; color: #856404;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px; flex-shrink: 0; color: #e6a23c; margin-top: 2px;">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                     </svg>
                     <div>
@@ -43,74 +44,66 @@
                     </div>
                 </div>
 
-                {% comment %} <div class="card p-3 mb-4 bg-light text-start border border-danger">
-                    <h6 class="text-danger fw-bold border-bottom pb-2">🔍 STAGING AREA LIVE DEBUG LOGS</h6>
-                    <p class="small text-muted mb-2"><strong>Total Row Count:</strong> {{ review_rows_count }}</p>
-                    <p class="small text-muted mb-2"><strong>Unique Missing Items List:</strong> {{ missing_items|yesno:"Has Data,Empty []" }} (Length: {{ missing_items|length }})</p>
-                    <p class="small text-muted mb-2"><strong>Unique Missing Payers List:</strong> {{ missing_payers|yesno:"Has Data,Empty []" }} (Length: {{ missing_payers|length }})</p>
-                    <p class="small text-muted mb-3"><strong>Has Blank Payers:</strong> {{ has_blank_payers|yesno:"True,False" }}</p>
-                    
-                    <label class="small fw-bold text-dark d-block mb-1">Raw Review Rows Session Payload Matrix:</label>
-                    <pre class="bg-dark text-warning p-3 rounded-3 small m-0" style="max-height: 250px; overflow-y: auto;">{{ request.session.bulk_upload_review_rows|truncatechars:3000 }}</pre>
-                </div> {% endcomment %}
-                
                 {% if missing_items %}
                     {% for item_name in missing_items %}
-                        <div class="card p-4 rounded-4 shadow-sm border mb-3 bg-white position-relative">
-                            <div class="row align-items-center pb-4">
-                                <div class="col-md-4 text-start">
-                                    <span class="small text-uppercase text-muted d-block fw-bold tracking-tight">Spreadsheet Value</span>
-                                    <h4 class="h5 fw-bold text-dark mt-1 text-break">"{{ item_name }}"</h4>
+                        <div class="card p-3 p-sm-4 rounded-4 shadow-sm border mb-3 bg-white position-relative bulk-review-card">
+                            <div class="row align-items-center">
+                                <div class="col-12 col-md-4 mb-2 mb-md-0">
+                                    <span class="small text-uppercase text-muted d-block fw-bold tracking-tight" style="font-size: 0.65rem;">Spreadsheet Value</span>
+                                    <h5 class="fw-bold text-dark mt-1 text-break" style="font-size: 0.95rem;">"{{ item_name }}"</h5>
                                 </div>
                                 
-                                <div class="col-md-8">
-                                    <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+                                <div class="col-12 col-md-8">
+                                    <div class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end">
                                         
-                                        <form method="post" class="d-inline-flex gap-1 align-items-center border p-2 rounded-3 bg-light">
+                                        <form method="post" class="d-flex flex-wrap gap-1 align-items-center border p-2 rounded-3 bg-light w-100 w-sm-auto">
                                             {% csrf_token %}
                                             <input type="hidden" name="target_item_name" value="{{ item_name }}">
                                             <input type="hidden" name="action" value="create_custom">
                                             
-                                            <select name="category_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="width: 145px;">
-                                                <option value="" disabled selected>Select Category...</option>
+                                            <select name="category_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="flex: 1 1 120px; min-width: 100px;">
+                                                <option value="" disabled selected>Select Category</option>
                                                 {% for cat in all_categories %}
                                                     <option value="{{ cat.id }}">{{ cat.name }}</option>
                                                 {% endfor %}
                                             </select>
 
-                                            <select name="unit" class="form-select form-select-sm rounded-2 border-secondary-subtle" style="width: 85px;">
-                                                <option value="" selected>Unit...</option>
+                                            <select name="unit" class="form-select form-select-sm rounded-2 border-secondary-subtle" style="flex: 0 1 80px; min-width: 70px;">
+                                                <option value="">Unit</option>
                                                 <option value="Kg">Kg</option>
                                                 <option value="Pcs">Pcs</option>
                                                 <option value="Pkt">Pkt</option>
                                                 <option value="Ltr">Ltr</option>
                                             </select>
                                             
-                                            <button type="submit" class="btn btn-sm btn-success fw-bold px-3 rounded-2 d-inline-flex align-items-center gap-2">
+                                            <button type="submit" class="btn btn-sm btn-success fw-bold px-2 px-sm-3 rounded-2 d-inline-flex align-items-center gap-1 bulk-review-btn">
                                                 <svg class="btn-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px;">
                                                     <line x1="12" y1="5" x2="12" y2="19"></line>
                                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                                 </svg>
-                                                <span>Create Item</span>
+                                                <span class="d-none d-sm-inline">Create Item</span>
+                                                <span class="d-inline d-sm-none">Create</span>
                                             </button>
                                         </form>
 
-                                        <form method="post" class="d-inline-flex gap-1 align-items-center border p-2 rounded-3 bg-light">
+                                        <form method="post" class="d-flex flex-wrap gap-1 align-items-center border p-2 rounded-3 bg-light w-100 w-sm-auto">
                                             {% csrf_token %}
                                             <input type="hidden" name="target_item_name" value="{{ item_name }}">
                                             <input type="hidden" name="action" value="map_existing">
                                             
-                                            <select name="existing_item_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="width: 170px;">
-                                                <option value="" disabled selected>Map to Existing...</option>
+                                            <select name="existing_item_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="flex: 1 1 140px; min-width: 120px;">
+                                                <option value="" disabled selected>Map to Existing</option>
                                                 {% for item in all_items %}
                                                     <option value="{{ item.id }}">{{ item.name }}{% if item.unit %} ({{ item.unit }}){% endif %}</option>
                                                 {% endfor %}
                                             </select>
-                                            <button type="submit" class="btn btn-sm btn-primary fw-bold px-3 rounded-2 d-inline-flex align-items-center gap-2">
+                                            
+                                            <button type="submit" class="btn btn-sm btn-primary fw-bold px-2 px-sm-3 rounded-2 d-inline-flex align-items-center gap-1 bulk-review-btn">
                                                 <svg class="btn-svg-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px;">
                                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
                                                 </svg>
-                                                <span>Map Line</span>
+                                                <span class="d-none d-sm-inline">Map Line</span>
+                                                <span class="d-inline d-sm-none">Map</span>
                                             </button>
                                         </form>
 
@@ -118,13 +111,13 @@
                                 </div>
                             </div>
 
-                            <form method="post" class="position-absolute bottom-0 start-0 m-3">
+                            <form method="post" class="position-absolute bottom-0 start-0 m-2 m-sm-3">
                                 {% csrf_token %}
                                 <input type="hidden" name="target_item_name" value="{{ item_name }}">
                                 <input type="hidden" name="action" value="skip_item">
                                 
-                                <button type="submit" class="btn-skip-icon-only" title="Discard this spreadsheet item variant" style="background: none; border: none; color: #dc3545;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bin-svg" style="width: 18px; height: 18px;">
+                                <button type="submit" class="btn-skip-icon-only" title="Discard this spreadsheet item variant" style="background: none; border: none; color: #dc3545; padding: 4px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bin-svg" style="width: 16px; height: 16px;">
                                         <polyline points="3 6 5 6 21 6"></polyline>
                                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                                         <line x1="10" y1="11" x2="10" y2="17"></line>
@@ -137,11 +130,11 @@
                 {% endif %}
 
                 {% if has_blank_payers %}
-                    <div class="card p-4 rounded-4 border border-warning shadow-sm text-start mb-4 bg-white">
+                    <div class="card p-3 p-sm-4 rounded-4 border border-warning shadow-sm text-start mb-4 bg-white">
                         <div class="d-flex align-items-center gap-2 pb-2 mb-3 border-bottom">
                             <span class="fs-4">👤</span>
                             <div>
-                                <h5 class="h6 fw-bold text-dark mb-0 text-uppercase tracking-wide" style="font-size: 0.85rem; font-weight: 800;">Unassigned Spreadsheet Payers Found</h5>
+                                <h5 class="h6 fw-bold text-dark mb-0 text-uppercase tracking-wide" style="font-size: 0.75rem; font-weight: 800;">Unassigned Spreadsheet Payers Found</h5>
                                 <p class="text-muted small mb-0">Some staging lines contain completely blank values inside the transaction Payer column row parameters.</p>
                             </div>
                         </div>
@@ -150,15 +143,15 @@
                             {% csrf_token %}
                             <input type="hidden" name="action" value="resolve_blank_payers">
                             
-                            <label class="small fw-bold text-secondary mb-0">Assign Staging Rows to Payer Profile:</label>
-                            <select name="existing_payer_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="width: 220px;">
+                            <label class="small fw-bold text-secondary mb-0">Assign Staging Rows to Payer:</label>
+                            <select name="existing_payer_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="flex: 1 1 180px; min-width: 140px;">
                                 <option value="" disabled selected>Choose Payer...</option>
                                 {% for payer in all_payers %}
                                     <option value="{{ payer.id }}">{{ payer.name }}</option>
                                 {% endfor %}
                             </select>
                             
-                            <button type="submit" class="btn btn-sm btn-warning fw-bold px-4 rounded-2 text-dark shadow-sm">
+                            <button type="submit" class="btn btn-sm btn-warning fw-bold px-3 rounded-2 text-dark shadow-sm bulk-review-btn">
                                 Apply to Unassigned Rows
                             </button>
                         </form>
@@ -166,26 +159,26 @@
                 {% endif %}
 
                 {% if missing_payers %}
-                    <div class="card p-4 rounded-4 border bg-white shadow-sm text-start mb-3">
+                    <div class="card p-3 p-sm-4 rounded-4 border bg-white shadow-sm text-start mb-3">
                         <div class="pb-2 border-bottom mb-3">
-                            <h5 class="h6 fw-bold text-dark mb-1 text-uppercase tracking-wide" style="font-weight: 800; font-size: 0.85rem;">Ledger Payer Constraints Found</h5>
+                            <h5 class="h6 fw-bold text-dark mb-1 text-uppercase tracking-wide" style="font-weight: 800; font-size: 0.75rem;">Ledger Payer Constraints Found</h5>
                             <p class="text-muted small mb-2">Your spreadsheet parameters contain unmapped or misspelled Payer profile elements. Resolve them below to safely commit rows into active accounts data tables.</p>
                         </div>
 
                         {% for payer_name in missing_payers %}
                             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3 {% if not forloop.last %}border-bottom{% endif %} gap-3">
                                 <div>
-                                    <span class="small text-uppercase text-muted d-block fw-bold tracking-tight" style="font-size: 0.7rem;">Spreadsheet Payer Value</span>
+                                    <span class="small text-uppercase text-muted d-block fw-bold tracking-tight" style="font-size: 0.65rem;">Spreadsheet Payer Value</span>
                                     <strong class="text-dark fs-6">"{{ payer_name }}"</strong>
                                 </div>
                                 
-                                <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+                                <div class="d-flex flex-wrap gap-2">
                                     <form method="post" class="d-inline-flex gap-1 align-items-center border p-1.5 rounded-3 bg-light">
                                         {% csrf_token %}
                                         <input type="hidden" name="target_payer_name" value="{{ payer_name }}">
                                         <input type="hidden" name="action" value="create_custom_payer">
-                                        <button type="submit" class="btn btn-sm btn-success fw-bold px-3 rounded-2">
-                                            + Add Payer Profile
+                                        <button type="submit" class="btn btn-sm btn-success fw-bold px-2 px-sm-3 rounded-2 bulk-review-btn">
+                                            + Add Payer
                                         </button>
                                     </form>
 
@@ -194,13 +187,13 @@
                                         <input type="hidden" name="target_payer_name" value="{{ payer_name }}">
                                         <input type="hidden" name="action" value="map_existing_payer">
                                         
-                                        <select name="existing_payer_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="width: 170px;">
+                                        <select name="existing_payer_id" class="form-select form-select-sm rounded-2 border-secondary-subtle" required style="min-width: 150px;">
                                             <option value="" disabled selected>Map to Profile...</option>
                                             {% for payer in all_payers %}
                                                 <option value="{{ payer.id }}">{{ payer.name }}</option>
                                             {% endfor %}
                                         </select>
-                                        <button type="submit" class="btn btn-sm btn-primary fw-bold px-3 rounded-2">
+                                        <button type="submit" class="btn btn-sm btn-primary fw-bold px-2 px-sm-3 rounded-2 bulk-review-btn">
                                             Map Payer
                                         </button>
                                     </form>
@@ -212,22 +205,24 @@
 
             {% endif %}
 
-            <div class="card p-4 rounded-4 bg-dark text-white shadow border-0 mt-5 text-center text-sm-start">
-                <div class="d-sm-flex align-items-center justify-content-between gap-4">
-                    <div>
-                        <h5 class="fw-bold mb-1 text-white">Ready to finalize processing?</h5>
-                        <p class="text-white-50 small mb-0">Unresolved items cannot be automatically saved into the live tracking rows.</p>
+            <!-- Footer Actions - Clean & Professional -->
+            <div class="card p-3 p-sm-4 rounded-4 border-0 shadow-sm mt-4" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3">
+                    <div class="text-center text-sm-start">
+                        <h5 class="fw-bold mb-1 text-dark" style="font-size: 1rem;">
+                            <i class="bi bi-check2-circle text-success me-2"></i>Ready to finalize processing?
+                        </h5>
+                        <p class="text-muted small mb-0">Unresolved items cannot be automatically saved into the live tracking rows.</p>
                     </div>
                     
-                    <div class="mt-3 mt-sm-0 d-flex align-items-center gap-2 flex-shrink-0">
+                    <div class="d-flex flex-wrap gap-2 flex-shrink-0">
                         <a href="{% url 'bulk_upload_transactions' %}" 
-                           class="btn btn-outline-light border-secondary btn-md rounded-3 px-4 fw-medium text-white text-nowrap"
-                           onmouseover="this.classList.remove('text-white'); this.classList.add('text-dark');"
-                           onmouseout="this.classList.remove('text-dark'); this.classList.add('text-white');">
-                            Restart Upload
+                           class="btn btn-outline-secondary btn-md rounded-3 px-3 px-sm-4 fw-medium text-nowrap">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Restart Upload
                         </a>
-                        <a href="{% url 'bulk_upload_confirm_commit' %}" class="btn btn-success btn-md rounded-3 px-4 fw-bold text-white shadow-sm text-nowrap {% if not valid_rows_count %}disabled{% endif %}">
-                            Save {{ valid_rows_count }} Valid Rows →
+                        <a href="{% url 'bulk_upload_confirm_commit' %}" 
+                           class="btn btn-success btn-md rounded-3 px-3 px-sm-4 fw-bold text-white shadow-sm text-nowrap {% if not valid_rows_count %}disabled{% endif %}">
+                            <i class="bi bi-check2-circle me-1"></i> Save {{ valid_rows_count }} Valid Rows →
                         </a>
                     </div>
                 </div>
@@ -236,4 +231,4 @@
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}
