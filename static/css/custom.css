@@ -42,6 +42,7 @@ main {
     background-color: #000000;
     color: #adb5bd;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2rem 0;
 }
 
 .custom-dark-footer-link {
@@ -62,10 +63,9 @@ main {
     }
 }
 
-
-/* ==========================================================================
-   TRANSACTION LEDGER SPECIFIC STYLES
-   ========================================================================== */
+/* ========================================================================================
+   4. TRANSACTION LEDGER SPECIFIC STYLES
+   ======================================================================================== */
 
 /* Interactive table row highlighting mechanics */
 .table tbody tr {
@@ -100,10 +100,73 @@ main {
     font-size: 0.75rem; 
 }
 
+/* ========================================================================================
+   5. SEARCH & QUICK FILTERS STYLES - NEW
+   ======================================================================================== */
 
-/* ==========================================
-   Payer Profile Custom Color Palette Grid
-   ========================================== */
+/* Search highlight */
+.search-highlight {
+    background: #ffeb3b !important;
+    padding: 0 2px !important;
+    border-radius: 2px !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+}
+
+/* Quick filter buttons */
+.quick-filter-btn {
+    transition: all 0.2s ease;
+}
+
+.quick-filter-btn.active {
+    background: #0d6efd !important;
+    color: white !important;
+    border-color: #0d6efd !important;
+}
+
+.quick-filter-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Search input focus */
+#searchInput:focus {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15) !important;
+    background: white !important;
+}
+
+/* Filter indicator badge */
+#activeFilterIndicator {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Search result info */
+#searchResultInfo {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Export dropdown */
+.dropdown-item:hover {
+    background-color: #f1f3f5;
+}
+
+.dropdown-item i {
+    font-size: 1.1rem;
+}
+
+/* ========================================================================================
+   6. PAYER PROFILE COLOR PALETTE
+   ======================================================================================== */
 .dot-palette-item {
     width: 32px;
     height: 32px;
@@ -130,10 +193,9 @@ main {
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
-
-/* ==========================================================================
-   Price Input Flex Alignment Override
-   ========================================================================== */
+/* ========================================================================================
+   7. PRICE INPUT FLEX ALIGNMENT
+   ======================================================================================== */
 .input-group > .form-control:not(:first-child) {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
@@ -144,10 +206,9 @@ main {
     border-bottom-right-radius: 0 !important;
 }
 
-
-/* ==========================================================================
-    MULTI-SELECT KEYBOARD WORKFLOW NAVIGATION STYLES
-   ========================================================================== */
+/* ========================================================================================
+   8. MULTI-SELECT KEYBOARD WORKFLOW NAVIGATION
+   ======================================================================================== */
 .table tbody tr:focus {
     outline: none !important;
     background-color: rgba(248, 249, 250, 0.85) !important;
@@ -177,10 +238,9 @@ main {
     padding: 0.5rem 0.3rem !important;
 }
 
-
-/* ============================================
-   SELECTED ROW HIGHLIGHT - ELEGANT GRAY
-   ============================================ */
+/* ========================================================================================
+   9. SELECTED ROW HIGHLIGHT
+   ======================================================================================== */
 .table tbody tr.row-selected,
 .table tbody tr.row-selected td,
 .table tbody tr.row-selected:hover,
@@ -192,10 +252,9 @@ main {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
-
-/* ==========================================================================
-    UNIFIED CLEAR & DELETE ACTION BUTTONS
-   ========================================================================== */
+/* ========================================================================================
+   10. BULK ACTIONS
+   ======================================================================================== */
 #clear-selection-btn,
 #bulk-delete-btn {
     box-sizing: border-box !important;
@@ -248,86 +307,9 @@ main {
     margin-bottom: 1rem !important;
 }
 
-
-/* ==========================================================================
-   Spreadsheet Ingestion Staging Area Components
-   ========================================================================== */
-.staging-alert-banner {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #fff9db;
-    border: 1px solid #fff3bf;
-    border-left: 4px solid #f59f00;
-    padding: 10px 16px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-}
-
-.alert-icon {
-    width: 20px;
-    height: 20px;
-    color: #f59f00;
-    flex-shrink: 0;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.alert-heading {
-    margin: 0;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #d9480f;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.2;
-}
-
-.btn-svg-icon {
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
-    display: inline-block;
-    position: relative;
-    top: -0.5px; 
-}
-
-
-/* ==========================================================================
-   Spreadsheet Staging Area - Row Discard & Deletion Actions
-   ========================================================================== */
-.btn-skip-icon-only {
-    background: none;
-    border: none;
-    padding: 6px;
-    border-radius: 6px;
-    color: #adb5bd;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-.bin-svg {
-    width: 18px;
-    height: 18px;
-}
-
-.btn-skip-icon-only:hover {
-    color: #fa5252;
-    background-color: #fff5f5;
-}
-
-.btn-skip-icon-only:active {
-    transform: scale(0.95);
-}
-
-
-/* ==========================================================================
-   EXCEL-STYLE HEADER FILTERING & SORTING OVERLAYS
-   ========================================================================== */
+/* ========================================================================================
+   11. EXCEL-STYLE HEADER FILTERING & SORTING
+   ======================================================================================== */
 .sortable-header {
     cursor: pointer;
     user-select: none;
@@ -420,10 +402,9 @@ main {
     overflow: visible !important;
 }
 
-
-/* ===================================================
-   BULK ACTIONS DRAWER ANIMATION ENGINE
-   =================================================== */
+/* ========================================================================================
+   12. BULK ACTIONS DRAWER ANIMATION
+   ======================================================================================== */
 #bulk-delete-actions {
     opacity: 0;
     transform: translateX(8px);
@@ -457,10 +438,80 @@ main {
     transition: all 0.15s ease-in-out !important;
 }
 
+/* ========================================================================================
+   13. SPREADSHEET STAGING AREA
+   ======================================================================================== */
+.staging-alert-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff9db;
+    border: 1px solid #fff3bf;
+    border-left: 4px solid #f59f00;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
 
-/* ============================================
-   HOME PAGE DASHBOARD STYLES
-============================================ */
+.alert-icon {
+    width: 20px;
+    height: 20px;
+    color: #f59f00;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.alert-heading {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #d9480f;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.2;
+}
+
+.btn-svg-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: inline-block;
+    position: relative;
+    top: -0.5px; 
+}
+
+.btn-skip-icon-only {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    color: #adb5bd;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.bin-svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-skip-icon-only:hover {
+    color: #fa5252;
+    background-color: #fff5f5;
+}
+
+.btn-skip-icon-only:active {
+    transform: scale(0.95);
+}
+
+/* ========================================================================================
+   14. HOME PAGE DASHBOARD
+   ======================================================================================== */
 .custom-dashboard-bg { 
     background: transparent;
     min-height: calc(100vh - 120px); 
@@ -543,10 +594,9 @@ main {
     50% { transform: translateY(-15px); } 
 }
 
-
-/* ============================================
-   DELETE LOADING OVERLAY
-============================================ */
+/* ========================================================================================
+   15. DELETE LOADING OVERLAY
+   ======================================================================================== */
 #delete-loading-overlay {
     position: fixed;
     top: 0;
@@ -570,10 +620,9 @@ main {
     pointer-events: auto;
 }
 
-
-/* ============================================
-   ANALYTICS PAGE STYLES
-============================================ */
+/* ========================================================================================
+   16. ANALYTICS PAGE
+   ======================================================================================== */
 .view-hidden {
     display: none !important;
 }
@@ -590,10 +639,59 @@ main {
     box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 }
 
+/* ========================================================================================
+   17. PRINT STYLES
+   ======================================================================================== */
+@media print {
+    .navbar,
+    .btn,
+    .no-print,
+    #bulk-delete-actions,
+    .pagination,
+    footer,
+    .search-section,
+    .filter-section,
+    #quickFilterGroup,
+    .dropdown,
+    .card .d-flex.justify-content-between .btn,
+    #ledger-table-wrapper .table thead th:first-child,
+    #bulk-delete-form .d-flex.flex-wrap .btn {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    table {
+        font-size: 10px !important;
+    }
+    
+    .badge {
+        background: transparent !important;
+        border: 1px solid #ddd !important;
+        color: #000 !important;
+    }
+    
+    .table tbody tr:hover {
+        background-color: transparent !important;
+        border-left: none !important;
+    }
+    
+    .table tbody tr.row-selected {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+}
 
-/* ============================================
-   MOBILE FIX - CHECKBOX COLUMN OVERRIDE
-   ============================================ */
+/* ========================================================================================
+   18. MOBILE RESPONSIVE - CHECKBOX COLUMN
+   ======================================================================================== */
 @media (max-width: 576px) {
     .show-checkboxes .checkbox-col {
         max-width: 25px !important;
@@ -625,10 +723,9 @@ main {
     }
 }
 
-
-/* ============================================
-   MANAGE ITEMS PAGE - MOBILE RESPONSIVE
-   ============================================ */
+/* ========================================================================================
+   19. MOBILE RESPONSIVE - MANAGE ITEMS
+   ======================================================================================== */
 @media (max-width: 576px) {
     .manage-items-table td,
     .manage-items-table th {
@@ -655,10 +752,9 @@ main {
     }
 }
 
-
-/* ============================================
-   MANAGE PAYERS PAGE - MOBILE RESPONSIVE
-   ============================================ */
+/* ========================================================================================
+   20. MOBILE RESPONSIVE - MANAGE PAYERS
+   ======================================================================================== */
 @media (max-width: 576px) {
     .manage-payers-table td,
     .manage-payers-table th {
@@ -685,10 +781,9 @@ main {
     }
 }
 
-
-/* ============================================
-   BULK UPLOAD PAGE - MOBILE RESPONSIVE
-   ============================================ */
+/* ========================================================================================
+   21. MOBILE RESPONSIVE - BULK UPLOAD
+   ======================================================================================== */
 @media (max-width: 576px) {
     .bulk-upload-title {
         font-size: 1.1rem !important;
@@ -714,23 +809,9 @@ main {
     }
 }
 
-
-/* ============================================
-   GLOBAL MOBILE FIXES - ALL PAGES
-   ============================================ */
-@media (max-width: 576px) {
-    .container {
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-    }
-}
-
-
-
-/* ============================================
-   BULK REVIEW PAGE - MOBILE RESPONSIVE
-   ============================================ */
-
+/* ========================================================================================
+   22. MOBILE RESPONSIVE - BULK REVIEW
+   ======================================================================================== */
 @media (max-width: 576px) {
     .bulk-review-title {
         font-size: 1rem !important;
@@ -751,13 +832,45 @@ main {
     }
 }
 
+/* ========================================================================================
+   23. MOBILE RESPONSIVE - SEARCH & QUICK FILTERS
+   ======================================================================================== */
+@media (max-width: 576px) {
+    #searchInput {
+        font-size: 0.8rem !important;
+        height: 36px !important;
+        padding-left: 0.75rem !important;
+    }
+    
+    .quick-filter-btn {
+        font-size: 0.65rem !important;
+        padding: 0.15rem 0.6rem !important;
+    }
+    
+    #quickFilterGroup {
+        gap: 0.25rem !important;
+    }
+    
+    .dropdown-toggle {
+        font-size: 0.75rem !important;
+        padding: 0.25rem 0.6rem !important;
+        height: 36px !important;
+    }
+}
 
+/* ========================================================================================
+   24. GLOBAL MOBILE FIXES
+   ======================================================================================== */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+}
 
-
-
-
-
-
+/* ========================================================================================
+   25. PAGINATION MOBILE
+   ======================================================================================== */
 @media (max-width: 576px) {
     .pagination {
         gap: 2px;
@@ -790,3 +903,53 @@ main {
         margin-top: 0.5rem !important;
     }
 }
+
+/* ========================================================================================
+   26. DARK MODE SUPPORT (Optional - Uncomment if needed)
+   ======================================================================================== */
+/*
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1a1a2e !important;
+        background-image: linear-gradient(rgba(26, 26, 46, 0.94), rgba(26, 26, 46, 0.94)),
+                          url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');
+    }
+    
+    .bg-white {
+        background-color: #16213e !important;
+    }
+    
+    .text-dark {
+        color: #e2e8f0 !important;
+    }
+    
+    .text-muted {
+        color: #94a3b8 !important;
+    }
+    
+    .border {
+        border-color: #2d3748 !important;
+    }
+    
+    .table {
+        color: #e2e8f0 !important;
+    }
+    
+    .table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    .form-control,
+    .form-select {
+        background-color: #1e293b !important;
+        color: #e2e8f0 !important;
+        border-color: #2d3748 !important;
+    }
+    
+    .form-control:focus,
+    .form-select:focus {
+        background-color: #1e293b !important;
+        color: #e2e8f0 !important;
+    }
+}
+*/

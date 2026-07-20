@@ -17,10 +17,8 @@
 
                 <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
                     <a href="{% url 'bulk_upload_transactions' %}" class="btn btn-outline-primary btn-md rounded-3 fw-medium py-2 px-3 shadow-sm d-inline-flex align-items-center justify-content-center gap-2 flex-grow-1 flex-sm-grow-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-spreadsheet" viewBox="0 0 16 16">
-                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V9H3V2a1 1 0 0 1 1-1h5.5zM3 12v-2h2v2zm0 1h2v2H4a1 1 0 0 1-1-1zm3 2v-2h3v2zm4 0v-2h3v1a1 1 0 0 1-1 1zm3-3h-3v-2h3zm-7 0v-2h3v2zm0-3V9H3V7h3zm4 0v2H7V7h3zm0-1H7V4h3zm3 1v2h-3V6z"/>
-                        </svg>
-                        Bulk Upload Excel
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i>
+                        Bulk Upload
                     </a>
                     <a href="{% url 'create_transaction' %}" class="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm text-center flex-grow-1 flex-sm-grow-0">
                         + Add New Expense
@@ -28,6 +26,107 @@
                 </div>
             </div>
 
+            <!-- ============================================
+            SEARCH & QUICK FILTERS SECTION
+            ============================================ -->
+            <div class="card bg-white border shadow-sm rounded-4 p-3 mb-4">
+                <div class="d-flex flex-column flex-lg-row gap-3 align-items-stretch align-items-lg-center">
+                    
+                    <!-- Search Bar -->
+                    <div class="flex-grow-1" style="min-width: 180px;">
+                        <div class="position-relative">
+                            <input type="text" id="searchInput" class="form-control rounded-3 ps-4 pe-5" 
+                                   placeholder="🔍 Search transactions..." 
+                                   value="{{ filters.search|default:'' }}"
+                                   style="height: 42px; border: 1px solid #e4e7ec; background: #f8f9fa; font-size: 0.9rem; transition: all 0.2s ease;">
+                            <button type="button" id="clearSearchBtn" class="position-absolute top-50 end-0 translate-middle-y btn btn-link text-muted p-0 me-3" 
+                                    style="font-size: 1rem; text-decoration: none; opacity: 0.5; display: {% if filters.search %}block{% else %}none{% endif %}; z-index: 5;">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Filter Buttons -->
+                    <div class="d-flex flex-wrap gap-1 align-items-center" id="quickFilterGroup">
+                        <span class="text-muted small fw-bold me-1 d-none d-sm-inline">Filter:</span>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 quick-filter-btn {% if filters.period == 'all' or not filters.period %}active{% endif %}" data-period="all" style="font-size: 0.75rem; font-weight: 600;">
+                            All
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 quick-filter-btn {% if filters.period == '1w' %}active{% endif %}" data-period="1w" style="font-size: 0.75rem; font-weight: 600;">
+                            1W
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 quick-filter-btn {% if filters.period == '1m' %}active{% endif %}" data-period="1m" style="font-size: 0.75rem; font-weight: 600;">
+                            1M
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 quick-filter-btn {% if filters.period == '3m' %}active{% endif %}" data-period="3m" style="font-size: 0.75rem; font-weight: 600;">
+                            3M
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 quick-filter-btn {% if filters.period == '1y' %}active{% endif %}" data-period="1y" style="font-size: 0.75rem; font-weight: 600;">
+                            1Y
+                        </button>
+                    </div>
+
+                    <!-- Export Button -->
+                    <div class="d-flex gap-2">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-success btn-sm rounded-3 px-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 42px; font-weight: 500;">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 py-2">
+                                <li>
+                                    <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#" onclick="exportData('csv')">
+                                        <i class="bi bi-filetype-csv text-success"></i>
+                                        <span>Export as CSV</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#" onclick="exportData('excel')">
+                                        <i class="bi bi-file-earmark-excel text-success"></i>
+                                        <span>Export as Excel</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#" onclick="exportData('pdf')">
+                                        <i class="bi bi-filetype-pdf text-danger"></i>
+                                        <span>Export as PDF</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="#" onclick="exportData('print')">
+                                        <i class="bi bi-printer text-secondary"></i>
+                                        <span>Print</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Result Info -->
+                <div id="searchResultInfo" class="mt-2 small text-muted {% if filters.search %}d-block{% else %}d-none{% endif %}">
+                    Found <span id="resultCount">{{ paginator.count }}</span> matching transactions
+                </div>
+
+                <!-- Active Filter Indicator -->
+                <div id="activeFilterIndicator" class="mt-2 d-flex align-items-center gap-2 {% if filters.period and filters.period != 'all' %}d-flex{% else %}d-none{% endif %}">
+                    <span class="badge bg-primary bg-opacity-10 text-primary" style="font-size: 0.7rem; padding: 4px 12px;">
+                        <i class="bi bi-clock me-1"></i>
+                        <span id="activeFilterLabel">
+                            {% if filters.period == '1w' %}Last 7 Days
+                            {% elif filters.period == '1m' %}Last 30 Days
+                            {% elif filters.period == '3m' %}Last 90 Days
+                            {% elif filters.period == '1y' %}Last 365 Days
+                            {% else %}All{% endif %}
+                        </span>
+                        <button type="button" id="clearFilterBtn" class="btn btn-sm btn-link text-primary p-0 ms-2" style="text-decoration: none; font-size: 0.8rem;">
+                            ✕
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Messages -->
             {% if messages %}
                 <div class="row mb-3">
                     <div class="col-12">
@@ -41,81 +140,23 @@
                 </div>
             {% endif %}
 
-            <form method="post" action="{% url 'bulk_delete_transactions' %}" id="bulk-delete-form">
-                {% csrf_token %}
-
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3 text-start">
-                    
-                <div class="d-flex flex-wrap align-items-center gap-2 p-2 rounded-3" style="background: #fafbfc; border: 1px solid #eef0f2;">
-                    
-                    <!-- From Date -->
-                    <div class="d-flex align-items-center gap-1">
-                        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0;">From</span>
-                        <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 px-2" 
-                            style="max-width: 118px; font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02); transition: border-color 0.2s ease;"
-                            onfocus="this.style.borderColor='#6c7a8d';"
-                            onblur="this.style.borderColor='#e4e7ec';">
-                    </div>
-                    
-                    <!-- Separator -->
-                    <span class="text-muted px-1" style="font-size: 0.7rem; color: #d0d8e0 !important;">|</span>
-                    
-                    <!-- To Date -->
-                    <div class="d-flex align-items-center gap-1">
-                        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0;">To</span>
-                        <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 px-2" 
-                            style="max-width: 118px; font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02); transition: border-color 0.2s ease;"
-                            onfocus="this.style.borderColor='#6c7a8d';"
-                            onblur="this.style.borderColor='#e4e7ec';">
-                    </div>
-                    
-                    <!-- Clear Button -->
-                    <button type="button" id="clearDateRangeBtn" class="btn btn-sm rounded-2 px-2.5 d-inline-flex align-items-center gap-1" 
-                            style="font-size: 0.68rem; height: 30px; font-weight: 500; background: transparent; border: 1px solid #e4e7ec; color: #8b9cb0; transition: all 0.2s ease;"
-                            onmouseover="this.style.background='#f2f4f7'; this.style.borderColor='#ccd4de'; this.style.color='#5a6b7c';"
-                            onmouseout="this.style.background='transparent'; this.style.borderColor='#e4e7ec'; this.style.color='#8b9cb0';">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                        </svg>
-                    </button>
-                </div>
-                    <div id="bulk-delete-actions" class="d-flex flex-wrap justify-content-end align-items-center gap-1 m-0" style="min-height: 34px;">
-                        
-                        <!-- SELECT ALL -->
-                        <button type="button" id="select-all-btn" class="btn btn-sm btn-primary rounded-3 d-inline-flex align-items-center justify-content-center" 
-                                style="height: 34px; width: 34px; padding: 0;" 
-                                title="Select All">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/>
-                            </svg>
-                        </button>
-
-                        <!-- CLEAR SELECTION -->
-                        <button type="button" id="clear-selection-btn" class="btn btn-sm btn-warning rounded-3 d-inline-flex align-items-center justify-content-center" 
-                                style="height: 34px; width: 34px; padding: 0; color: #212529;" 
-                                title="Clear Selection">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                            </svg>
-                        </button>
-
-                        <!-- DELETE SELECTED -->
-                        <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger rounded-3 d-inline-flex align-items-center justify-content-center" 
-                                style="height: 34px; width: 34px; padding: 0;" 
-                                title="Delete Selected">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3V2h11v1z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
+            <!-- ============================================
+            FILTER FORM WITH HIDDEN INPUTS
+            ============================================ -->
+            <form method="get" action="" id="filter-form">
+                <!-- Hidden inputs for filter persistence -->
+                <input type="hidden" name="period" id="hiddenPeriod" value="{{ filters.period|default:'all' }}">
+                <input type="hidden" name="search" id="hiddenSearch" value="{{ filters.search|default:'' }}">
+                
+                <!-- Table -->
                 <div id="ledger-table-wrapper" class="table-responsive rounded-3 border">
                     <table class="table table-hover align-middle mb-0 text-start" id="ledgerTable">
                         <thead class="bg-light border-bottom">
                             <tr>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header sticky-top" data-column="1" style="width: 12%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3" style="width: 4%; background-color: #f8f9fa; z-index: 11;">
+                                    <input type="checkbox" id="select-all-checkbox" class="form-check-input" style="cursor: pointer;">
+                                </th>
+                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header sticky-top" data-column="1" style="width: 12%;background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
                                     Date
                                 </th>
                                 <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header d-none d-sm-table-cell sticky-top" data-column="2" style="width: 17%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">
@@ -143,8 +184,11 @@
                                 <tr class="transition-all cursor-pointer user-select-none ledger-row" 
                                     data-transaction-id="{{ transaction.id }}"
                                     ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
-                                    <!-- CHECKBOX COLUMN REMOVED -->
-                                    <td class="ps-3 text-nowrap text-dark fw-semibold" data-sort-val="{{ transaction.date|date:'Ymd' }}" style="font-size: clamp(0.5rem, 1.5vw, 0.8rem);">
+                                    <td class="ps-3">
+                                        <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" 
+                                               class="form-check-input transaction-checkbox" style="cursor: pointer;">
+                                    </td>
+                                    <td class="ps-3 text-nowrap text-dark fw-semibold" data-sort-val="{{ transaction.date|date:'Ymd' }}" style="font-size: clamp(0.5rem,1.5vw, 0.8rem);">
                                         {{ transaction.date|date:"j M Y" }}
                                     </td>
                                     <td class="excel-cat-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.item.category.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
@@ -162,10 +206,8 @@
                                     <td class="text-secondary small font-monospace ps-4 text-nowrap d-none d-sm-table-cell" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         {% if transaction.quantity %}
                                             {{ transaction.quantity|floatformat:"-2" }}
-                                            {% if transaction.item.unit and transaction.item.unit != "None" %}
+                                            {% if transaction.item.unit and transaction.item.unit != "-" and transaction.item.unit != "" %}
                                                 <span class="fs-7 ms-1 fw-bold">{{ transaction.item.unit }}</span>
-                                            {% elif transaction.item.default_unit and transaction.item.default_unit != "None" %}
-                                                <span class="fs-7 ms-1 fw-bold">{{ transaction.item.default_unit }}</span>
                                             {% endif %}
                                         {% else %}
                                             <span class="text-muted">-</span>
@@ -174,9 +216,7 @@
                                     <td class="excel-payer-cell" data-filter-val="{{ transaction.payer.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         <span class="badge rounded-pill px-2.5 py-1.5 fw-bold"
                                             style="background-color: {{ transaction.payer.color|default:'#6c757d' }}15; color: {{ transaction.payer.color|default:'#212529' }}; border: 1px solid {{ transaction.payer.color|default:'#6c757d' }}30;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                                            </svg>
+                                            <i class="bi bi-person-fill me-1"></i>
                                             {{ transaction.payer.name }}
                                         </span>
                                     </td>
@@ -186,14 +226,14 @@
                                 </tr>
                             {% empty %}
                                 <tr class="empty-row">
-                                    <td colspan="7" class="text-center py-5 text-muted">
+                                    <td colspan="8" class="text-center py-5 text-muted">
                                         No records available. Click "+ Add New Expense" to get started.
                                     </td>
                                 </tr>
                             {% endfor %}
                             
                             <tr id="excelNoMatchesRow" class="d-none empty-row">
-                                <td colspan="7" class="text-center py-5 text-muted small fw-medium">
+                                <td colspan="8" class="text-center py-5 text-muted small fw-medium">
                                     No records match the active filter criteria configuration.
                                 </td>
                             </tr>
@@ -202,49 +242,81 @@
                 </div>
             </form>
 
-            <!-- Pagination -->
-            {% if is_paginated %}
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                                <i class="bi bi-chevron-left"></i>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
-                        </li>
+            <!-- ============================================
+            FOOTER WITH TRANSACTION COUNT & PAGINATION (UPDATED)
+            ============================================ -->
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-4 pt-2 border-top">
+                <!-- Left: Transaction Count -->
+                <div class="text-muted small">
+                    <span class="fw-bold text-dark">{{ paginator.count }}</span> 
+                    transaction{{ paginator.count|pluralize }} 
+                    {% if filters.period and filters.period != 'all' %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary ms-1">
+                            <i class="bi bi-funnel me-1"></i> Filtered
+                        </span>
                     {% endif %}
-                    
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% if filters.search %}
+                        <span class="badge bg-success bg-opacity-10 text-success ms-1">
+                            <i class="bi bi-search me-1"></i> "{{ filters.search }}"
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Middle: Pagination -->
+                {% if is_paginated %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if filters.period and filters.period != 'all' %}&period={{ filters.period }}{% endif %}{% if filters.search %}&search={{ filters.search }}{% endif %}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                            </li>
                         {% endif %}
-                    {% endfor %}
-                    
-                    {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-                                <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if filters.period and filters.period != 'all' %}&period={{ filters.period }}{% endif %}{% if filters.search %}&search={{ filters.search }}{% endif %}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if filters.period and filters.period != 'all' %}&period={{ filters.period }}{% endif %}{% if filters.search %}&search={{ filters.search }}{% endif %}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+
+                <!-- Right: Page Info -->
+                <div class="text-muted small text-end">
+                    Page <span class="fw-semibold text-dark">{{ page_obj.number }}</span> 
+                    of <span class="fw-semibold text-dark">{{ page_obj.paginator.num_pages }}</span>
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
 
+<!-- Row Action Modal -->
 <div class="modal fade" id="rowActionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 320px;">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
@@ -270,6 +342,7 @@
     </div>
 </div>
 
+<!-- Delete Loading Overlay -->
 <div id="delete-loading-overlay">
     <div class="spinner-border text-light mb-3" role="status" style="width: 3rem; height: 3rem; border-width: 0.25em;">
         <span class="visually-hidden">Loading...</span>
@@ -277,7 +350,8 @@
     <h5 class="text-white fw-bold tracking-wide mb-1">Deleting Transactions</h5>
     <p class="text-white-50 small mb-0">Processing batch cleanup. Please do not close or reload this page...</p>
 </div>
-{% endblock content%}
+
+{% endblock content %}
 
 {% block extra_js %}
     <script>
@@ -285,6 +359,17 @@
             update: "{% url 'update_transaction' 0 %}",
             delete: "{% url 'delete_transaction' 0 %}"
         };
+        
+        // For export functionality - pass CSRF token
+        window.csrfToken = "{{ csrf_token }}";
+        
+        // Pass filter values to JS
+        window.filterValues = {
+            period: "{{ filters.period|default:'all' }}",
+            search: "{{ filters.search|default:'' }}"
+        };
     </script>
     <script src="{% static 'js/transaction_list.js' %}"></script>
+    <!-- Load SheetJS for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 {% endblock extra_js %}

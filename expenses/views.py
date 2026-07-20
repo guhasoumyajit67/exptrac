@@ -3,7 +3,7 @@ from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
-from django.db.models import ProtectedError, Count, Sum
+from django.db.models import ProtectedError, Count, Sum, Q
 from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from django.contrib import messages
@@ -11,6 +11,7 @@ from django.views import View
 from django.core.paginator import Paginator
 import openpyxl
 import re
+from datetime import datetime, timedelta
 
 from .models import Transaction, Item, Payer, Category, StagingTransaction
 from .forms import TransactionForm, ItemForm, PayerForm, ExcelUploadForm
@@ -172,11 +173,80 @@ class TransactionListView(LoginRequiredMixin, ListView):
     paginate_by = 50
 
     def get_queryset(self):
-        return (
+        queryset = (
             Transaction.objects.filter(user=self.request.user)
             .select_related("item__category", "payer")
             .order_by("-date", "-id")
         )
+        
+        # Get filter parameters from request
+        date_from = self.request.GET.get('date_from')
+        date_to = self.request.GET.get('date_to')
+        period = self.request.GET.get('period')
+        search = self.request.GET.get('search')
+        category = self.request.GET.get('category')
+        payer = self.request.GET.get('payer')
+        
+        # Apply date range filter
+        if date_from:
+            try:
+                queryset = queryset.filter(date__gte=date_from)
+            except ValueError:
+                pass
+        if date_to:
+            try:
+                queryset = queryset.filter(date__lte=date_to)
+            except ValueError:
+                pass
+        
+        # Apply quick period filter
+        if period and period != 'all':
+            today = timezone.now().date()
+            if period == '1w':
+                start_date = today - timedelta(days=7)
+            elif period == '1m':
+                start_date = today - timedelta(days=30)
+            elif period == '3m':
+                start_date = today - timedelta(days=90)
+            elif period == '1y':
+                start_date = today - timedelta(days=365)
+            else:
+                start_date = None
+            
+            if start_date:
+                queryset = queryset.filter(date__gte=start_date)
+        
+        # Apply search filter
+        if search:
+            queryset = queryset.filter(
+                Q(item__name__icontains=search) |
+                Q(payer__name__icontains=search) |
+                Q(item__category__name__icontains=search) |
+                Q(comment__icontains=search)
+            )
+        
+        # Apply category filter
+        if category:
+            queryset = queryset.filter(item__category__name=category)
+        
+        # Apply payer filter
+        if payer:
+            queryset = queryset.filter(payer__name=payer)
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass filter params back to template for persistence
+        context['filters'] = {
+            'date_from': self.request.GET.get('date_from', ''),
+            'date_to': self.request.GET.get('date_to', ''),
+            'period': self.request.GET.get('period', 'all'),
+            'search': self.request.GET.get('search', ''),
+            'category': self.request.GET.get('category', ''),
+            'payer': self.request.GET.get('payer', ''),
+        }
+        return context
 
 
 # ==============================================================================
