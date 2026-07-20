@@ -71,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Make updateUIState globally accessible
+    window.updateUIState = updateUIState;
+
     // ============================================
     // 2. SEARCH FUNCTIONALITY
     // ============================================
@@ -126,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function highlightText(row, term) {
-        const cells = row.querySelectorAll('td:not(:first-child)');
+        const cells = row.querySelectorAll('td');
         cells.forEach(cell => {
             const text = cell.textContent;
             if (text.toLowerCase().includes(term)) {
@@ -137,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function removeHighlight(row) {
-        const cells = row.querySelectorAll('td:not(:first-child)');
+        const cells = row.querySelectorAll('td');
         cells.forEach(cell => {
             cell.innerHTML = cell.textContent;
         });
@@ -521,91 +524,78 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    
     // ============================================
-    // 9. SELECT ALL FUNCTIONALITY
+    // 9. SELECT ALL & CLEAR SELECTION
     // ============================================
-    const selectAllCheckbox = document.getElementById('select-all-checkbox');
-    const checkboxes = document.querySelectorAll('.transaction-checkbox');
-
-    if (selectAllCheckbox) {
-        selectAllCheckbox.addEventListener('change', function() {
-            const isChecked = this.checked;
-            checkboxes.forEach(cb => {
-                const row = cb.closest('.ledger-row');
-                if (row && row.style.display !== 'none') {
-                    cb.checked = isChecked;
-                    if (isChecked) {
-                        row.classList.add('row-selected');
-                    } else {
-                        row.classList.remove('row-selected');
-                    }
-                }
-            });
-            updateUIState();
-        });
-    }
-
-    checkboxes.forEach(cb => {
-        cb.addEventListener('change', function() {
-            const row = this.closest('.ledger-row');
-            if (this.checked) {
-                row.classList.add('row-selected');
-            } else {
-                row.classList.remove('row-selected');
-            }
-            updateUIState();
-        });
-    });
-
+    
+    // Select All button
     const selectAllBtn = document.getElementById('select-all-btn');
     if (selectAllBtn) {
         selectAllBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            const allCheckboxes = document.querySelectorAll('.transaction-checkbox');
-            const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
+            const visibleRows = document.querySelectorAll('.ledger-row:not([style*="display: none"])');
+            const allSelected = Array.from(visibleRows).every(row => row.classList.contains('row-selected'));
             
-            allCheckboxes.forEach(cb => {
-                const row = cb.closest('.ledger-row');
-                if (row && row.style.display !== 'none') {
-                    cb.checked = !allChecked;
-                    if (cb.checked) {
-                        row.classList.add('row-selected');
-                    } else {
-                        row.classList.remove('row-selected');
-                    }
+            visibleRows.forEach(row => {
+                if (allSelected) {
+                    row.classList.remove('row-selected');
+                } else {
+                    row.classList.add('row-selected');
                 }
             });
             
-            if (selectAllCheckbox) {
-                selectAllCheckbox.checked = !allChecked;
-            }
             updateUIState();
         });
     }
 
+    // Clear Selection button
     const clearSelectionBtn = document.getElementById('clear-selection-btn');
     if (clearSelectionBtn) {
         clearSelectionBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
-            checkboxes.forEach(cb => {
-                cb.checked = false;
-                const row = cb.closest('.ledger-row');
-                if (row) row.classList.remove('row-selected');
+            document.querySelectorAll('.row-selected').forEach(row => {
+                row.classList.remove('row-selected');
             });
             
-            if (selectAllCheckbox) {
-                selectAllCheckbox.checked = false;
-            }
             updateUIState();
         });
     }
 
     // ============================================
-    // 10. KEYBOARD SHORTCUTS
+    // 10. ROW SELECTION - SINGLE CLICK
+    // ============================================
+    
+    const allRows = document.querySelectorAll('.ledger-row');
+    allRows.forEach(row => {
+        row.addEventListener('click', function(e) {
+            // Ignore clicks on buttons, links, or interactive elements inside the row
+            if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.no-bubble') || e.target.closest('.dropdown')) {
+                return;
+            }
+            
+            // Toggle selection
+            this.classList.toggle('row-selected');
+            
+            // Update bulk actions visibility
+            const selectedRows = document.querySelectorAll('.row-selected');
+            const actionsBar = document.getElementById('bulk-delete-actions');
+            if (selectedRows.length >= 1) {
+                actionsBar.classList.add('show-actions');
+            } else {
+                actionsBar.classList.remove('show-actions');
+            }
+        });
+    });
+
+
+
+    // ============================================
+    // 11. KEYBOARD SHORTCUTS
     // ============================================
     document.addEventListener('keydown', function(e) {
         if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
@@ -622,13 +612,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+
+
     // ============================================
-    // 11. INITIALIZATION
+    // 12. INITIALIZATION
     // ============================================
     populateFilterMenus();
 
     // ============================================
-    // 12. SEARCH HIGHLIGHT STYLES
+    // 13. SEARCH HIGHLIGHT STYLES
     // ============================================
     const highlightStyle = document.createElement('style');
     highlightStyle.textContent = `
@@ -667,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.head.appendChild(highlightStyle);
 
     // ============================================
-    // 13. RESTORE FILTER STATES FROM URL
+    // 14. RESTORE FILTER STATES FROM URL
     // ============================================
     function restoreFilterStates() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -727,7 +719,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // ============================================
-// 14. BATCH DELETION LOADER ENGINE
+// 15. BATCH DELETION LOADER ENGINE
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
     const bulkDeleteForm = document.getElementById("bulk-delete-form");
@@ -736,7 +728,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (bulkDeleteForm && processingLoader) {
         bulkDeleteForm.addEventListener("submit", function (event) {
-            // Prevent double submission
             if (isSubmitting) {
                 event.preventDefault();
                 return;

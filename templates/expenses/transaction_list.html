@@ -70,29 +70,29 @@
             ============================================ -->
             <div class="card bg-white border shadow-sm rounded-4 p-3 mb-3">
                 <div class="d-flex flex-column flex-lg-row gap-3 align-items-center justify-content-between">
-<!-- Date Range Filters - Vertical on mobile -->
-<div class="d-flex flex-column flex-sm-row flex-wrap align-items-center gap-2 justify-content-center justify-content-lg-start w-100 w-lg-auto">
-    <!-- From Date -->
-    <div class="d-flex align-items-center gap-1 w-100 w-sm-auto">
-        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0; min-width: 35px;">From</span>
-        <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 px-2 flex-grow-1" 
-            value="{{ filters.date_from|default:'' }}"
-            style="font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-    </div>
-    <!-- To Date -->
-    <div class="d-flex align-items-center gap-1 w-100 w-sm-auto">
-        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0; min-width: 35px;">To</span>
-        <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 px-2 flex-grow-1" 
-            value="{{ filters.date_to|default:'' }}"
-            style="font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-    </div>
-    
-    <!-- Clear Dates Button -->
-    <button type="button" id="clearDateRangeBtn" class="btn btn-sm rounded-2 px-2.5 d-inline-flex align-items-center gap-1 w-100 w-sm-auto justify-content-center" 
-            style="font-size: 0.68rem; height: 30px; font-weight: 500; background: transparent; border: 1px solid #e4e7ec; color: #8b9cb0; transition: all 0.2s ease;">
-        ✕ Clear Dates
-    </button>
-</div>
+                    <!-- Date Range Filters - Vertical on mobile -->
+                    <div class="d-flex flex-column flex-sm-row flex-wrap align-items-center gap-2 justify-content-center justify-content-lg-start w-100 w-lg-auto">
+                        <!-- From Date -->
+                        <div class="d-flex align-items-center gap-1 w-100 w-sm-auto">
+                            <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0; min-width: 35px;">From</span>
+                            <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 px-2 flex-grow-1" 
+                                value="{{ filters.date_from|default:'' }}"
+                                style="font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        </div>
+                        <!-- To Date -->
+                        <div class="d-flex align-items-center gap-1 w-100 w-sm-auto">
+                            <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0; min-width: 35px;">To</span>
+                            <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 px-2 flex-grow-1" 
+                                value="{{ filters.date_to|default:'' }}"
+                                style="font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        </div>
+                        
+                        <!-- Clear Dates Button -->
+                        <button type="button" id="clearDateRangeBtn" class="btn btn-sm rounded-2 px-2.5 d-inline-flex align-items-center gap-1 w-100 w-sm-auto justify-content-center" 
+                                style="font-size: 0.68rem; height: 30px; font-weight: 500; background: transparent; border: 1px solid #e4e7ec; color: #8b9cb0; transition: all 0.2s ease;">
+                            ✕ Clear Dates
+                        </button>
+                    </div>
                     <hr class="d-lg-none w-100 my-1">
                     <span class="text-muted d-none d-lg-block" style="font-size: 1.2rem; color: #dee2e6 !important;">|</span>
                     <div class="d-flex flex-wrap gap-1 align-items-center justify-content-center justify-content-lg-end w-100 w-lg-auto" id="quickFilterGroup">
@@ -133,19 +133,19 @@
                                         style="font-size: 1rem; text-decoration: none; opacity: 0.5; display: {% if filters.search %}block{% else %}none{% endif %}; z-index: 5;">✕</button>
                             </div>
                         </div>
-                        <div id="searchResultInfo" class="small text-muted {% if filters.search %}d-block{% else %}d-none{% endif %} text-center text-sm-start">
-                            Found <span id="resultCount">{{ paginator.count }}</span> matching transactions
-                        </div>
                         <!-- Bulk Actions -->
                         <div id="bulk-delete-actions" class="d-flex flex-wrap justify-content-center justify-content-sm-end align-items-center gap-1 m-0 w-100 w-sm-auto" style="min-height: 34px;">
+                            <!-- SELECT ALL -->
                             <button type="button" id="select-all-btn" class="btn btn-sm btn-primary rounded-3 d-inline-flex align-items-center justify-content-center" 
                                     style="height: 32px; width: 32px; padding: 0;" title="Select All">
                                 <i class="bi bi-check-all fs-6"></i>
                             </button>
+                            <!-- CLEAR SELECTION -->
                             <button type="button" id="clear-selection-btn" class="btn btn-sm btn-warning rounded-3 d-inline-flex align-items-center justify-content-center" 
                                     style="height: 32px; width: 32px; padding: 0; color: #212529;" title="Clear Selection">
                                 <i class="bi bi-x-lg fs-6"></i>
                             </button>
+                            <!-- DELETE SELECTED -->
                             <button type="submit" id="bulk-delete-btn" class="btn btn-sm btn-danger rounded-3 d-inline-flex align-items-center justify-content-center" 
                                     style="height: 32px; width: 32px; padding: 0;" title="Delete Selected">
                                 <i class="bi bi-trash3 fs-6"></i>
@@ -171,9 +171,6 @@
                     <table class="table table-hover align-middle mb-0 text-start" id="ledgerTable">
                         <thead class="bg-light border-bottom">
                             <tr>
-                                <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3" style="width: 4%; background-color: #f8f9fa; z-index: 11;">
-                                    <input type="checkbox" id="select-all-checkbox" class="form-check-input" style="cursor: pointer;">
-                                </th>
                                 <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 ps-3 sortable-header sticky-top" data-column="1" style="width: 12%;background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Date</th>
                                 <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 filterable-header d-none d-sm-table-cell sticky-top" data-column="2" style="width: 17%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Category</th>
                                 <th class="text-secondary fw-bold text-uppercase tracking-wider py-3 sortable-header sticky-top" data-column="3" style="width: 22%; background-color: #f8f9fa; z-index: 11; font-size: clamp(0.5rem, 1.5vw, 0.75rem);">Item</th>
@@ -188,10 +185,6 @@
                                 <tr class="transition-all cursor-pointer user-select-none ledger-row" 
                                     data-transaction-id="{{ transaction.id }}"
                                     ondblclick="showRowActions('{{ transaction.id }}', '{{ transaction.item.name|escapejs }}', '{{ transaction.price }}')">
-                                    <td class="ps-3">
-                                        <input type="checkbox" name="transaction_ids" value="{{ transaction.id }}" 
-                                               class="form-check-input transaction-checkbox" style="cursor: pointer;">
-                                    </td>
                                     <td class="ps-3 text-nowrap text-dark fw-semibold" data-sort-val="{{ transaction.date|date:'Ymd' }}" style="font-size: clamp(0.5rem,1.5vw, 0.8rem);">{{ transaction.date|date:"j M Y" }}</td>
                                     <td class="excel-cat-cell d-none d-sm-table-cell" data-filter-val="{{ transaction.item.category.name }}" style="font-size: clamp(0.6rem, 1.5vw, 0.85rem);">
                                         <span class="badge rounded-pill px-3 py-2 fw-bold text-uppercase tracking-wide" 
@@ -219,9 +212,9 @@
                                     <td class="text-muted small text-truncate d-none d-sm-table-cell" style="max-width: 200px; font-size: clamp(0.6rem, 1.5vw, 0.85rem);" title="{{ transaction.comment }}">{{ transaction.comment|default:"" }}</td>
                                 </tr>
                             {% empty %}
-                                <tr class="empty-row"><td colspan="8" class="text-center py-5 text-muted">No records available. Click "+ Add New Expense" to get started.</td></tr>
+                                <tr class="empty-row"><td colspan="7" class="text-center py-5 text-muted">No records available. Click "+ Add New Expense" to get started.</td></tr>
                             {% endfor %}
-                            <tr id="excelNoMatchesRow" class="d-none empty-row"><td colspan="8" class="text-center py-5 text-muted small fw-medium">No records match the active filter criteria configuration.</td></tr>
+                            <tr id="excelNoMatchesRow" class="d-none empty-row"><td colspan="7" class="text-center py-5 text-muted small fw-medium">No records match the active filter criteria configuration.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -312,6 +305,14 @@
             category: "{{ filters.category|default:'' }}",
             payer: "{{ filters.payer|default:'' }}"
         };
+        
+        // Row selection toggle function
+        function toggleRowSelection(row) {
+            row.classList.toggle('row-selected');
+            if (typeof updateUIState === 'function') {
+                updateUIState();
+            }
+        }
     </script>
     <script src="{% static 'js/transaction_list.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
