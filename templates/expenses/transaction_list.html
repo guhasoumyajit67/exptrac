@@ -70,25 +70,29 @@
             ============================================ -->
             <div class="card bg-white border shadow-sm rounded-4 p-3 mb-3">
                 <div class="d-flex flex-column flex-lg-row gap-3 align-items-center justify-content-between">
-                    <div class="d-flex flex-wrap align-items-center gap-2 justify-content-center justify-content-lg-start w-100 w-lg-auto">
-                        <div class="d-flex align-items-center gap-1">
-                            <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0;">From</span>
-                            <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 px-2" 
-                                value="{{ filters.date_from|default:'' }}"
-                                style="max-width: 118px; font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                        </div>
-                        <span class="text-muted px-1" style="font-size: 0.7rem; color: #d0d8e0 !important;">|</span>
-                        <div class="d-flex align-items-center gap-1">
-                            <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0;">To</span>
-                            <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 px-2" 
-                                value="{{ filters.date_to|default:'' }}"
-                                style="max-width: 118px; font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                        </div>
-                        <button type="button" id="clearDateRangeBtn" class="btn btn-sm rounded-2 px-2.5 d-inline-flex align-items-center gap-1" 
-                                style="font-size: 0.68rem; height: 30px; font-weight: 500; background: transparent; border: 1px solid #e4e7ec; color: #8b9cb0; transition: all 0.2s ease;">
-                            ✕ Clear Dates
-                        </button>
-                    </div>
+<!-- Date Range Filters - Vertical on mobile -->
+<div class="d-flex flex-column flex-sm-row flex-wrap align-items-center gap-2 justify-content-center justify-content-lg-start w-100 w-lg-auto">
+    <!-- From Date -->
+    <div class="d-flex align-items-center gap-1 w-100 w-sm-auto">
+        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0; min-width: 35px;">From</span>
+        <input type="date" id="dateFilterStart" class="form-control form-control-sm rounded-2 px-2 flex-grow-1" 
+            value="{{ filters.date_from|default:'' }}"
+            style="font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+    </div>
+    <!-- To Date -->
+    <div class="d-flex align-items-center gap-1 w-100 w-sm-auto">
+        <span class="text-uppercase tracking-wider fw-semibold" style="font-size: 0.55rem; letter-spacing: 0.08em; color: #8b9cb0; min-width: 35px;">To</span>
+        <input type="date" id="dateFilterEnd" class="form-control form-control-sm rounded-2 px-2 flex-grow-1" 
+            value="{{ filters.date_to|default:'' }}"
+            style="font-size: 0.78rem; height: 30px; background: white; border: 1px solid #e4e7ec; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+    </div>
+    
+    <!-- Clear Dates Button -->
+    <button type="button" id="clearDateRangeBtn" class="btn btn-sm rounded-2 px-2.5 d-inline-flex align-items-center gap-1 w-100 w-sm-auto justify-content-center" 
+            style="font-size: 0.68rem; height: 30px; font-weight: 500; background: transparent; border: 1px solid #e4e7ec; color: #8b9cb0; transition: all 0.2s ease;">
+        ✕ Clear Dates
+    </button>
+</div>
                     <hr class="d-lg-none w-100 my-1">
                     <span class="text-muted d-none d-lg-block" style="font-size: 1.2rem; color: #dee2e6 !important;">|</span>
                     <div class="d-flex flex-wrap gap-1 align-items-center justify-content-center justify-content-lg-end w-100 w-lg-auto" id="quickFilterGroup">
