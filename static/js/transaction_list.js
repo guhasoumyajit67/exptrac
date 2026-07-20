@@ -286,6 +286,54 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ============================================
+    // 3.5 CLEAR FILTER BUTTON (✕ on badge)
+    // ============================================
+    const clearFilterBtn = document.getElementById('clearFilterBtn');
+    if (clearFilterBtn) {
+        clearFilterBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Reset to "All" filter
+            const allBtn = document.querySelector('.quick-filter-btn[data-period="all"]');
+            if (allBtn) {
+                allBtn.click();
+            }
+            
+            // Clear date inputs
+            if (dateStartInput) dateStartInput.value = '';
+            if (dateEndInput) dateEndInput.value = '';
+            
+            // Clear hidden fields
+            const hiddenDateFrom = document.getElementById('hiddenDateFrom');
+            const hiddenDateTo = document.getElementById('hiddenDateTo');
+            if (hiddenDateFrom) hiddenDateFrom.value = '';
+            if (hiddenDateTo) hiddenDateTo.value = '';
+            
+            // Hide filter indicator
+            if (activeFilterIndicator) activeFilterIndicator.classList.add('d-none');
+            
+            // Reset active period
+            activePeriod = 'all';
+            const hiddenPeriod = document.getElementById('hiddenPeriod');
+            if (hiddenPeriod) hiddenPeriod.value = 'all';
+            
+            // Update button states
+            quickFilterBtns.forEach(btn => {
+                btn.classList.remove('active', 'btn-primary');
+                btn.classList.add('btn-outline-secondary');
+                if (btn.dataset.period === 'all') {
+                    btn.classList.remove('btn-outline-secondary');
+                    btn.classList.add('btn-primary', 'active');
+                }
+            });
+            
+            // Submit filter
+            submitFilterForm(true);
+        });
+    }
+
+    // ============================================
     // 4. FILTER FORM SUBMISSION
     // ============================================
     function submitFilterForm(resetPage = false) {
@@ -531,8 +579,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 quickFilterBtns.forEach(btn => {
                     btn.classList.remove('active', 'btn-primary');
                     btn.classList.add('btn-outline-secondary');
+                    if (btn.dataset.period === 'all') {
+                        btn.classList.remove('btn-outline-secondary');
+                        btn.classList.add('btn-primary', 'active');
+                    }
                 });
-                activeFilterIndicator.classList.add('d-none');
+                if (activeFilterIndicator) activeFilterIndicator.classList.add('d-none');
             }
             submitFilterForm(true);
         });
@@ -548,17 +600,45 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+    // ============================================
+    // 8.5 CLEAR DATE RANGE BUTTON
+    // ============================================
     if (clearDateBtn) {
         clearDateBtn.addEventListener('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
+            
+            // Clear date inputs
             if (dateStartInput) dateStartInput.value = "";
             if (dateEndInput) dateEndInput.value = "";
             
+            // Clear hidden fields
             const hiddenDateFrom = document.getElementById('hiddenDateFrom');
             const hiddenDateTo = document.getElementById('hiddenDateTo');
             if (hiddenDateFrom) hiddenDateFrom.value = '';
             if (hiddenDateTo) hiddenDateTo.value = '';
             
+            // Reset to "All" filter
+            const hiddenPeriod = document.getElementById('hiddenPeriod');
+            if (hiddenPeriod) hiddenPeriod.value = 'all';
+            
+            // Update button states
+            quickFilterBtns.forEach(btn => {
+                btn.classList.remove('active', 'btn-primary');
+                btn.classList.add('btn-outline-secondary');
+                if (btn.dataset.period === 'all') {
+                    btn.classList.remove('btn-outline-secondary');
+                    btn.classList.add('btn-primary', 'active');
+                }
+            });
+            
+            // Hide filter indicator
+            if (activeFilterIndicator) activeFilterIndicator.classList.add('d-none');
+            
+            // Reset active period
+            activePeriod = 'all';
+            
+            // Submit filter
             submitFilterForm(true);
         });
     }
