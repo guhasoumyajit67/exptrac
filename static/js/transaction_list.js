@@ -24,6 +24,19 @@ function showRowActions(id, itemName, price) {
 window.showRowActions = showRowActions;
 
 // ============================================
+// DELETE BUTTON CONFIRMATION HANDLER
+// ============================================
+document.addEventListener('click', function(e) {
+    const deleteBtn = e.target.closest('#modalDeleteBtn');
+    if (deleteBtn) {
+        if (!confirm('Are you sure you want to permanently delete this record?')) {
+            e.preventDefault();
+            return false;
+        }
+    }
+});
+
+// ============================================
 // MAIN - DOM READY
 // ============================================
 document.addEventListener("DOMContentLoaded", function() {
@@ -138,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (hiddenSearch) {
                     hiddenSearch.value = this.value.trim();
                 }
-                submitFilterForm(true); // Reset to page 1
+                submitFilterForm(true);
             }, 500);
         });
 
@@ -185,7 +198,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function applyQuickFilter(period) {
         activePeriod = period;
         
-        // Update hidden period input
         const hiddenPeriod = document.getElementById('hiddenPeriod');
         if (hiddenPeriod) {
             hiddenPeriod.value = period;
@@ -210,11 +222,9 @@ document.addEventListener("DOMContentLoaded", function() {
             activeFilterIndicator.classList.remove('d-none');
             activeFilterLabel.textContent = labels[period] || period;
             
-            // Clear date inputs when quick filter is applied
             if (dateStartInput) dateStartInput.value = '';
             if (dateEndInput) dateEndInput.value = '';
             
-            // Clear hidden date inputs
             const hiddenDateFrom = document.getElementById('hiddenDateFrom');
             const hiddenDateTo = document.getElementById('hiddenDateTo');
             if (hiddenDateFrom) hiddenDateFrom.value = '';
@@ -223,7 +233,6 @@ document.addEventListener("DOMContentLoaded", function() {
             activeFilterIndicator.classList.add('d-none');
         }
 
-        // Submit the filter form - reset to page 1
         submitFilterForm(true);
     }
 
@@ -241,10 +250,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (isApplyingFilter) return;
         isApplyingFilter = true;
         
-        // Build URL with query parameters
         const params = new URLSearchParams();
         
-        // Get date values
         const dateFrom = dateStartInput ? dateStartInput.value : '';
         const dateTo = dateEndInput ? dateEndInput.value : '';
         const period = document.getElementById('hiddenPeriod')?.value || 'all';
@@ -255,157 +262,80 @@ document.addEventListener("DOMContentLoaded", function() {
         if (period && period !== 'all') params.set('period', period);
         if (search) params.set('search', search);
         
-        // Always reset to page 1 when filtering
         params.set('page', '1');
         
-        // Navigate to filtered URL
         const url = window.location.pathname + '?' + params.toString();
         window.location.href = url;
     }
 
     // ============================================
-    // 5. EXPORT FUNCTIONALITY
+    // 5. EXPORT FUNCTIONALITY - SERVER SIDE
     // ============================================
     window.exportData = function(format) {
-        const rows = document.querySelectorAll('#ledgerTable tbody tr:not(.empty-row):not(.d-none)');
-        
-        if (rows.length === 0) {
-            alert('No transactions to export. Please adjust your filters.');
-            return;
+        const loadingOverlay = document.getElementById('delete-loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('active');
+            loadingOverlay.querySelector('h5').textContent = 'Preparing export...';
+            loadingOverlay.querySelector('p').textContent = `Generating ${format.toUpperCase()} file. Please wait...`;
         }
 
-        const headers = ['Date', 'Category', 'Item', 'Price (₹)', 'Quantity', 'Paid By', 'Comment'];
-        const data = [];
+        const urlParams = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams();
+        
+        const period = urlParams.get('period') || document.getElementById('hiddenPeriod')?.value || 'all';
+        const search = urlParams.get('search') || document.getElementById('hiddenSearch')?.value || '';
+        const dateFrom = urlParams.get('date_from') || document.getElementById('hiddenDateFrom')?.value || '';
+        const dateTo = urlParams.get('date_to') || document.getElementById('hiddenDateTo')?.value || '';
+        const category = urlParams.get('category') || '';
+        const payer = urlParams.get('payer') || '';
+        
+        if (period && period !== 'all') params.set('period', period);
+        if (search) params.set('search', search);
+        if (dateFrom) params.set('date_from', dateFrom);
+        if (dateTo) params.set('date_to', dateTo);
+        if (category) params.set('category', category);
+        if (payer) params.set('payer', payer);
+        
+        params.set('format', format);
 
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            if (cells.length >= 7) {
-                const rowData = {
-                    date: cells[1]?.textContent.trim() || '',
-                    category: cells[2]?.textContent.trim().replace('●', '').trim() || '',
-                    item: cells[3]?.textContent.trim() || '',
-                    price: cells[4]?.textContent.trim().replace('₹', '').trim() || '',
-                    quantity: cells[5]?.textContent.trim() || '',
-                    payer: cells[6]?.textContent.trim() || '',
-                    comment: cells[7]?.textContent.trim() || ''
-                };
-                data.push(rowData);
+        fetch(`/transaction/export/?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Export failed');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            const extension = format === 'csv' ? 'csv' : format === 'excel' ? 'xlsx' : 'pdf';
+            link.download = `transactions_${new Date().toISOString().split('T')[0]}.${extension}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('active');
+            }
+        })
+        .catch(error => {
+            console.error('Export error:', error);
+            alert('Failed to export data. Please try again.');
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('active');
             }
         });
-
-        switch(format) {
-            case 'csv':
-                exportCSV(headers, data);
-                break;
-            case 'excel':
-                exportExcel(headers, data);
-                break;
-            case 'pdf':
-                exportPDF(headers, data);
-                break;
-            case 'print':
-                window.print();
-                break;
-            default:
-                alert('Export format not supported');
-        }
     };
 
-    function exportCSV(headers, data) {
-        let csv = headers.join(',') + '\n';
-        data.forEach(row => {
-            csv += Object.values(row).join(',') + '\n';
-        });
-
-        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.href = url;
-        link.download = `transactions_${new Date().toISOString().split('T')[0]}.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
-
-    function exportExcel(headers, data) {
-        if (typeof XLSX === 'undefined') {
-            alert('Excel export library not loaded. Please refresh the page.');
-            return;
-        }
-
-        const wsData = [headers];
-        data.forEach(row => {
-            wsData.push(Object.values(row));
-        });
-
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(wsData);
-        XLSX.utils.book_append_sheet(wb, ws, 'Transactions');
-        XLSX.writeFile(wb, `transactions_${new Date().toISOString().split('T')[0]}.xlsx`);
-    }
-
-    function exportPDF(headers, data) {
-        if (typeof html2pdf === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-            script.onload = function() {
-                generatePDF(headers, data);
-            };
-            document.head.appendChild(script);
-        } else {
-            generatePDF(headers, data);
-        }
-    }
-
-    function generatePDF(headers, data) {
-        const tempDiv = document.createElement('div');
-        tempDiv.style.padding = '20px';
-        tempDiv.style.fontFamily = 'Arial, sans-serif';
-        
-        let html = `<h1>Transaction Report</h1>
-                    <p>Generated: ${new Date().toLocaleString()}</p>
-                    <p>Total: ${data.length} transactions</p>
-                    <table style="width:100%; border-collapse: collapse; margin-top: 20px;">
-                    <thead>
-                        <tr style="background: #0d6efd; color: white;">`;
-        
-        headers.forEach(h => {
-            html += `<th style="padding: 10px; border: 1px solid #ddd; text-align: left;">${h}</th>`;
-        });
-        
-        html += `</tr></thead><tbody>`;
-        
-        data.forEach(row => {
-            html += `<tr>`;
-            Object.values(row).forEach(val => {
-                html += `<td style="padding: 8px; border: 1px solid #ddd;">${val}</td>`;
-            });
-            html += `</tr>`;
-        });
-        
-        html += `</tbody></table>`;
-        html += `<p style="margin-top: 20px; color: #666; font-size: 12px;">Generated by ExpTrac</p>`;
-        tempDiv.innerHTML = html;
-        document.body.appendChild(tempDiv);
-
-        html2pdf()
-            .set({
-                margin: [15, 15],
-                filename: `transactions_${new Date().toISOString().split('T')[0]}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-            })
-            .from(tempDiv)
-            .save()
-            .then(() => {
-                document.body.removeChild(tempDiv);
-            });
-    }
-
     // ============================================
-    // 6. EXCEL FILTER ENGINE (Client-side fallback)
+    // 6. EXCEL FILTER ENGINE
     // ============================================
     function populateFilterMenus() {
         const uniqueCategories = new Set();
@@ -459,8 +389,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     masterCheckbox.indeterminate = (checkedSubs > 0 && checkedSubs < totalSubs);
                 }
                 
-                // For category/payer filters, we use server-side
-                // Just update the UI state
                 updateUIState();
             });
             container.appendChild(div);
@@ -497,7 +425,57 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // ============================================
-    // 7. DATE RANGE HANDLERS
+    // 7. SORTING
+    // ============================================
+    document.querySelectorAll(".sortable-header").forEach(header => {
+        header.addEventListener("click", function(e) {
+            if (e.target.closest('.excel-filter-menu') || e.target.classList.contains('excel-filter-icon')) return;
+            
+            const colIndex = parseInt(this.getAttribute("data-column"));
+            if (currentSortColumn === colIndex) {
+                isAscending = !isAscending;
+            } else {
+                currentSortColumn = colIndex;
+                isAscending = true;
+            }
+
+            syncSortIcons(this.querySelector("i"), isAscending);
+            sortColumn(colIndex, isAscending);
+        });
+    });
+
+    function syncSortIcons(activeIcon, asc) {
+        document.querySelectorAll(".sortable-header i").forEach(icon => {
+            icon.className = "bi bi-arrow-down-up text-muted extra-small";
+        });
+        if (activeIcon) {
+            activeIcon.className = asc ? "bi bi-arrow-up text-primary extra-small" : "bi bi-arrow-down text-primary extra-small";
+        }
+    }
+
+    function sortColumn(index, asc) {
+        const sortedRows = rows.sort((a, b) => {
+            const cellA = a.children[index];
+            const cellB = b.children[index];
+
+            let valA = cellA.getAttribute("data-sort-val") || cellA.innerText.trim();
+            let valB = cellB.getAttribute("data-sort-val") || cellB.innerText.trim();
+
+            const numA = parseFloat(valA.replace(/[₹,\s]/g, ''));
+            const numB = parseFloat(valB.replace(/[₹,\s]/g, ''));
+
+            if (!isNaN(numA) && !isNaN(numB)) {
+                return asc ? numA - numB : numB - numA;
+            }
+            return asc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        });
+
+        sortedRows.forEach(row => tableBody.appendChild(row));
+        if(noMatchesRow) tableBody.appendChild(noMatchesRow); 
+    }
+
+    // ============================================
+    // 8. DATE RANGE HANDLERS
     // ============================================
     if (dateStartInput) {
         dateStartInput.addEventListener('change', function() {
@@ -505,7 +483,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (hiddenDateFrom) {
                 hiddenDateFrom.value = this.value;
             }
-            // Clear quick filter indicator when date range is manually set
             const hiddenPeriod = document.getElementById('hiddenPeriod');
             if (hiddenPeriod && this.value) {
                 hiddenPeriod.value = 'all';
@@ -515,7 +492,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
                 activeFilterIndicator.classList.add('d-none');
             }
-            submitFilterForm(true); // Reset to page 1
+            submitFilterForm(true);
         });
     }
     
@@ -525,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (hiddenDateTo) {
                 hiddenDateTo.value = this.value;
             }
-            submitFilterForm(true); // Reset to page 1
+            submitFilterForm(true);
         });
     }
     
@@ -540,12 +517,12 @@ document.addEventListener("DOMContentLoaded", function() {
             if (hiddenDateFrom) hiddenDateFrom.value = '';
             if (hiddenDateTo) hiddenDateTo.value = '';
             
-            submitFilterForm(true); // Reset to page 1
+            submitFilterForm(true);
         });
     }
 
     // ============================================
-    // 8. SELECT ALL FUNCTIONALITY
+    // 9. SELECT ALL FUNCTIONALITY
     // ============================================
     const selectAllCheckbox = document.getElementById('select-all-checkbox');
     const checkboxes = document.querySelectorAll('.transaction-checkbox');
@@ -568,7 +545,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Individual checkbox change
     checkboxes.forEach(cb => {
         cb.addEventListener('change', function() {
             const row = this.closest('.ledger-row');
@@ -581,7 +557,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Select All button (icon)
     const selectAllBtn = document.getElementById('select-all-btn');
     if (selectAllBtn) {
         selectAllBtn.addEventListener('click', function(e) {
@@ -610,9 +585,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // ============================================
-    // 9. CLEAR SELECTION
-    // ============================================
     const clearSelectionBtn = document.getElementById('clear-selection-btn');
     if (clearSelectionBtn) {
         clearSelectionBtn.addEventListener('click', function(e) {
@@ -700,7 +672,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function restoreFilterStates() {
         const urlParams = new URLSearchParams(window.location.search);
         
-        // Restore period
         const period = urlParams.get('period');
         if (period && period !== 'all') {
             activePeriod = period;
@@ -725,28 +696,23 @@ document.addEventListener("DOMContentLoaded", function() {
             activeFilterIndicator.classList.remove('d-none');
             activeFilterLabel.textContent = labels[period] || period;
             
-            // Clear date inputs when period is active
             if (dateStartInput) dateStartInput.value = '';
             if (dateEndInput) dateEndInput.value = '';
         } else {
-            // Restore date range
             const dateFrom = urlParams.get('date_from');
             const dateTo = urlParams.get('date_to');
             if (dateFrom && dateStartInput) dateStartInput.value = dateFrom;
             if (dateTo && dateEndInput) dateEndInput.value = dateTo;
         }
         
-        // Restore search
         const search = urlParams.get('search');
         if (search && searchInput) {
             searchInput.value = search;
             const hiddenSearch = document.getElementById('hiddenSearch');
             if (hiddenSearch) hiddenSearch.value = search;
             
-            // Show search results info
             if (searchResultInfo) {
                 searchResultInfo.classList.remove('d-none');
-                // Get the count from the page
                 const countElement = document.querySelector('.pagination');
                 if (countElement) {
                     const totalItems = document.querySelector('tbody tr:not(.empty-row)')?.length || 0;
@@ -766,9 +732,16 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", function() {
     const bulkDeleteForm = document.getElementById("bulk-delete-form");
     const processingLoader = document.getElementById("delete-loading-overlay");
+    let isSubmitting = false;
 
     if (bulkDeleteForm && processingLoader) {
         bulkDeleteForm.addEventListener("submit", function (event) {
+            // Prevent double submission
+            if (isSubmitting) {
+                event.preventDefault();
+                return;
+            }
+            
             const selectedRows = document.querySelectorAll('.row-selected');
             if (selectedRows.length === 0) {
                 event.preventDefault();
@@ -778,7 +751,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             const userConfirmed = confirm(`Are you sure you want to permanently delete ${selectedRows.length} selected transaction(s)?`);
             if (userConfirmed) {
-                // Remove any existing hidden inputs to avoid duplicates
+                isSubmitting = true;
                 const existingInputs = document.querySelectorAll('#bulk-delete-form input[name="transaction_ids"]');
                 existingInputs.forEach(input => input.remove());
                 

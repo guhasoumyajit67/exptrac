@@ -403,42 +403,6 @@ main {
 }
 
 /* ========================================================================================
-   12. BULK ACTIONS DRAWER ANIMATION
-   ======================================================================================== */
-#bulk-delete-actions {
-    opacity: 0;
-    transform: translateX(8px);
-    visibility: hidden;
-    display: inline-flex !important;
-    align-items: center !important;
-    height: 31px !important; 
-    margin: 0 !important;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#bulk-delete-actions.show-actions {
-    opacity: 1;
-    transform: translateX(0);
-    visibility: visible;
-}
-
-#clear-selection-btn,
-#bulk-delete-btn {
-    box-sizing: border-box !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-    font-size: 0.8rem !important;
-    height: 31px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    line-height: 1 !important;
-    border-radius: 8px !important;
-    letter-spacing: -0.01em !important;
-    transition: all 0.15s ease-in-out !important;
-}
-
-/* ========================================================================================
    13. SPREADSHEET STAGING AREA
    ======================================================================================== */
 .staging-alert-banner {
@@ -953,3 +917,61 @@ main {
     }
 }
 */
+
+
+
+/* ========================================================================================
+   27. MOBILE RESPONSIVE - ACTION BUTTONS
+   ======================================================================================== */
+
+/* Mobile: Stack buttons vertically with full width */
+@media (max-width: 576px) {
+    /* Action buttons container */
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 {
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+    
+    /* Make all buttons full width on mobile */
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 .dropdown,
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 .btn,
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 a.btn {
+        width: 100% !important;
+        flex: 0 0 auto !important;
+    }
+    
+    /* Export dropdown button full width */
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 .dropdown .btn {
+        width: 100% !important;
+    }
+    
+    /* Ensure dropdown menu matches button width */
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 .dropdown-menu {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+    
+    /* Consistent button sizing on mobile */
+    .btn-md {
+        font-size: 0.85rem !important;
+        padding: 8px 12px !important;
+        height: 40px !important;
+        justify-content: center !important;
+    }
+}
+
+/* Desktop: Buttons inline */
+@media (min-width: 577px) {
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 {
+        flex-direction: row !important;
+        width: auto !important;
+    }
+    
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 .dropdown,
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 .btn,
+    .d-flex.flex-column.flex-sm-row.gap-2.align-items-stretch.align-items-sm-center.justify-content-end.w-100 a.btn {
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }
+}
+

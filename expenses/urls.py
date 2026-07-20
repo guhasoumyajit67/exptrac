@@ -17,6 +17,7 @@ from .views import (
     TransactionBulkDeleteView,
     ItemManagementListView,
     PayerManagementListView,
+    TransactionExportView,  # Add this import
 )
 
 urlpatterns = [
@@ -52,4 +53,7 @@ urlpatterns = [
     # Consolidated Dashboard Deletion Target URIs
     path("items/manage/<int:pk>/delete/", ItemDeleteView.as_view(), name="delete_managed_item"),
     path("payers/manage/<int:pk>/delete/", PayerDeleteView.as_view(), name="delete_managed_payer"),
+
+    # Export
+    path('transaction/export/', TransactionExportView.as_view(), name='export_transactions'),  # Add this
 ]

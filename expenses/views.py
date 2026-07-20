@@ -5,12 +5,15 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.db.models import ProtectedError, Count, Sum, Q
 from django.shortcuts import redirect, render
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.views import View
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 import openpyxl
 import re
+import csv
+import io
 from datetime import datetime, timedelta
 
 from .models import Transaction, Item, Payer, Category, StagingTransaction
@@ -164,7 +167,15 @@ class TransactionDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
-    
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        item_name = self.object.item.name
+        success_url = self.get_success_url()
+        self.object.delete()
+        messages.success(request, f"Transaction '{item_name}' has been successfully deleted.")
+        return redirect(success_url)
+
 
 class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
@@ -247,6 +258,328 @@ class TransactionListView(LoginRequiredMixin, ListView):
             'payer': self.request.GET.get('payer', ''),
         }
         return context
+
+
+# ==============================================================================
+# EXPORT VIEW
+# ==============================================================================
+
+class TransactionExportView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        format_type = request.GET.get('format', 'csv')
+        
+        # Get all transactions for the user with filters
+        queryset = Transaction.objects.filter(
+            user=request.user
+        ).select_related('item', 'item__category', 'payer').order_by('-date')
+        
+        # Apply filters from request (same as TransactionListView)
+        date_from = request.GET.get('date_from')
+        date_to = request.GET.get('date_to')
+        period = request.GET.get('period')
+        search = request.GET.get('search')
+        category = request.GET.get('category')
+        payer = request.GET.get('payer')
+        
+        # Apply date range filter
+        if date_from:
+            try:
+                queryset = queryset.filter(date__gte=date_from)
+            except ValueError:
+                pass
+        if date_to:
+            try:
+                queryset = queryset.filter(date__lte=date_to)
+            except ValueError:
+                pass
+        
+        # Apply quick period filter
+        if period and period != 'all':
+            today = timezone.now().date()
+            if period == '1w':
+                start_date = today - timedelta(days=7)
+            elif period == '1m':
+                start_date = today - timedelta(days=30)
+            elif period == '3m':
+                start_date = today - timedelta(days=90)
+            elif period == '1y':
+                start_date = today - timedelta(days=365)
+            else:
+                start_date = None
+            
+            if start_date:
+                queryset = queryset.filter(date__gte=start_date)
+        
+        # Apply search filter
+        if search:
+            queryset = queryset.filter(
+                Q(item__name__icontains=search) |
+                Q(payer__name__icontains=search) |
+                Q(item__category__name__icontains=search) |
+                Q(comment__icontains=search)
+            )
+        
+        # Apply category filter
+        if category:
+            queryset = queryset.filter(item__category__name=category)
+        
+        # Apply payer filter
+        if payer:
+            queryset = queryset.filter(payer__name=payer)
+        
+        # Prepare data
+        data = []
+        for t in queryset:
+            data.append({
+                'Date': t.date.strftime('%Y-%m-%d'),
+                'Category': t.item.category.name if t.item.category else '',
+                'Item': t.item.name,
+                'Price': float(t.price),
+                'Quantity': float(t.quantity) if t.quantity else '',
+                'Unit': t.item.unit or '',
+                'Paid_By': t.payer.name,
+                'Comment': t.comment or ''
+            })
+        
+        # Export based on format
+        if format_type == 'csv':
+            return self.export_csv(data)
+        elif format_type == 'excel':
+            return self.export_excel(data)
+        elif format_type == 'pdf':
+            return self.export_pdf(data)
+        else:
+            return JsonResponse({'error': 'Unsupported format'}, status=400)
+    
+    def export_csv(self, data):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="transactions_{timezone.now().strftime("%Y%m%d_%H%M%S")}.csv"'
+        
+        writer = csv.writer(response)
+        if data:
+            # Write headers
+            headers = list(data[0].keys())
+            writer.writerow(headers)
+            # Write data
+            for row in data:
+                writer.writerow(row.values())
+        else:
+            writer.writerow(['No transactions found'])
+        
+        return response
+    
+    def export_excel(self, data):
+        try:
+            import openpyxl
+            from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+        except ImportError:
+            return JsonResponse({'error': 'openpyxl not installed'}, status=500)
+        
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Transactions"
+        
+        if data:
+            headers = list(data[0].keys())
+            
+            # Style for headers
+            header_font = Font(bold=True, color="FFFFFF")
+            header_fill = PatternFill(start_color="0D6EFD", end_color="0D6EFD", fill_type="solid")
+            header_alignment = Alignment(horizontal="center", vertical="center")
+            thin_border = Border(
+                left=Side(style='thin'),
+                right=Side(style='thin'),
+                top=Side(style='thin'),
+                bottom=Side(style='thin')
+            )
+            
+            # Write headers
+            for col, header in enumerate(headers, 1):
+                cell = ws.cell(row=1, column=col, value=header)
+                cell.font = header_font
+                cell.fill = header_fill
+                cell.alignment = header_alignment
+                cell.border = thin_border
+            
+            # Write data
+            for row_idx, row_data in enumerate(data, 2):
+                for col_idx, header in enumerate(headers, 1):
+                    cell = ws.cell(row=row_idx, column=col_idx, value=row_data.get(header, ''))
+                    cell.alignment = Alignment(horizontal="left", vertical="center")
+                    cell.border = thin_border
+            
+            # Auto-width columns
+            for col in ws.columns:
+                max_length = 0
+                column_letter = col[0].column_letter
+                for cell in col:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 3, 50)
+                ws.column_dimensions[column_letter].width = adjusted_width
+            
+            # Add total row count
+            total_row = len(data) + 2
+            ws.cell(row=total_row, column=1, value=f"Total: {len(data)} transactions")
+            ws.cell(row=total_row, column=1).font = Font(bold=True)
+        
+        response = HttpResponse(
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = f'attachment; filename="transactions_{timezone.now().strftime("%Y%m%d_%H%M%S")}.xlsx"'
+        wb.save(response)
+        return response
+    
+    def export_pdf(self, data):
+        # Generate HTML content for PDF
+        context = {
+            'data': data,
+            'total': len(data),
+            'generated_date': timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+        }
+        html_string = render_to_string('expenses/export_pdf.html', context)
+        
+        try:
+            from weasyprint import HTML, CSS
+            from weasyprint.text.fonts import FontConfiguration
+            
+            font_config = FontConfiguration()
+            
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="transactions_{timezone.now().strftime("%Y%m%d_%H%M%S")}.pdf"'
+            
+            HTML(string=html_string).write_pdf(
+                response,
+                font_config=font_config,
+                stylesheets=[CSS(string='@page { size: A4 landscape; margin: 1cm; }')]
+            )
+            return response
+        except ImportError:
+            # Fallback: Use reportlab if weasyprint not available
+            return self.export_pdf_reportlab(data)
+    
+    def export_pdf_reportlab(self, data):
+        """Fallback PDF generation using reportlab"""
+        try:
+            from reportlab.lib.pagesizes import A4, landscape
+            from reportlab.lib import colors
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+            from reportlab.lib.units import inch
+        except ImportError:
+            return JsonResponse({'error': 'reportlab not installed'}, status=500)
+        
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="transactions_{timezone.now().strftime("%Y%m%d_%H%M%S")}.pdf"'
+        
+        # Create PDF
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(
+            buffer,
+            pagesize=landscape(A4),
+            rightMargin=30,
+            leftMargin=30,
+            topMargin=30,
+            bottomMargin=30,
+        )
+        
+        styles = getSampleStyleSheet()
+        elements = []
+        
+        # Title
+        title_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Heading1'],
+            fontSize=16,
+            textColor=colors.HexColor('#0D6EFD'),
+            spaceAfter=12
+        )
+        elements.append(Paragraph('Transaction Report', title_style))
+        
+        # Info
+        info_style = ParagraphStyle(
+            'Info',
+            parent=styles['Normal'],
+            fontSize=10,
+            textColor=colors.grey,
+            spaceAfter=8
+        )
+        elements.append(Paragraph(f'Generated: {timezone.now().strftime("%Y-%m-%d %H:%M:%S")}', info_style))
+        elements.append(Paragraph(f'Total Transactions: {len(data)}', info_style))
+        elements.append(Spacer(1, 0.2 * inch))
+        
+        # Table data
+        if data:
+            headers = list(data[0].keys())
+            table_data = [headers]
+            
+            for row in data:
+                table_data.append([row.get(h, '') for h in headers])
+            
+            # Create table
+            table = Table(table_data, repeatRows=1)
+            
+            # Style table
+            table_style = TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#0D6EFD')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 8),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+                ('TOPPADDING', (0, 0), (-1, -1), 4),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+                ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#F8F9FA')]),
+            ])
+            
+            # Set column widths
+            col_widths = []
+            for i in range(len(headers)):
+                col_widths.append(1.0 * inch)
+            table._argW = col_widths
+            
+            table.setStyle(table_style)
+            elements.append(table)
+            
+            # Total
+            elements.append(Spacer(1, 0.1 * inch))
+            total_style = ParagraphStyle(
+                'Total',
+                parent=styles['Normal'],
+                fontSize=10,
+                textColor=colors.HexColor('#0D6EFD'),
+                alignment=2  # Right align
+            )
+            elements.append(Paragraph(f'Total: {len(data)} transactions', total_style))
+        else:
+            elements.append(Paragraph('No transactions found', styles['Normal']))
+        
+        # Footer
+        footer_style = ParagraphStyle(
+            'Footer',
+            parent=styles['Normal'],
+            fontSize=8,
+            textColor=colors.grey,
+            alignment=1  # Center align
+        )
+        elements.append(Spacer(1, 0.2 * inch))
+        elements.append(Paragraph('Generated by ExpTrac - Expense Tracker', footer_style))
+        
+        # Build PDF
+        doc.build(elements)
+        
+        # Get value from buffer
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        
+        return response
 
 
 # ==============================================================================
