@@ -133,6 +133,9 @@
                                         style="font-size: 1rem; text-decoration: none; opacity: 0.5; display: {% if filters.search %}block{% else %}none{% endif %}; z-index: 5;">✕</button>
                             </div>
                         </div>
+                        <div id="searchResultInfo" class="small text-muted {% if filters.search %}d-block{% else %}d-none{% endif %} text-center text-sm-start">
+                            Found <span id="resultCount">{{ paginator.count }}</span> matching transactions
+                        </div>
                         <!-- Bulk Actions -->
                         <div id="bulk-delete-actions" class="d-flex flex-wrap justify-content-center justify-content-sm-end align-items-center gap-1 m-0 w-100 w-sm-auto" style="min-height: 34px;">
                             <!-- SELECT ALL -->
@@ -305,14 +308,6 @@
             category: "{{ filters.category|default:'' }}",
             payer: "{{ filters.payer|default:'' }}"
         };
-        
-        // Row selection toggle function
-        function toggleRowSelection(row) {
-            row.classList.toggle('row-selected');
-            if (typeof updateUIState === 'function') {
-                updateUIState();
-            }
-        }
     </script>
     <script src="{% static 'js/transaction_list.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>

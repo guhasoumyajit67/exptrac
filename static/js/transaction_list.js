@@ -215,6 +215,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
+        const now = new Date();
+        let startDate = null;
+        let endDate = null;
+        let label = '';
+
         if (period !== 'all') {
             const labels = {
                 '1w': 'Last 7 Days',
@@ -222,18 +227,52 @@ document.addEventListener("DOMContentLoaded", function() {
                 '3m': 'Last 90 Days',
                 '1y': 'Last 365 Days'
             };
+            label = labels[period] || period;
             activeFilterIndicator.classList.remove('d-none');
-            activeFilterLabel.textContent = labels[period] || period;
+            activeFilterLabel.textContent = label;
             
+            const today = new Date();
+            if (period === '1w') {
+                startDate = new Date(today);
+                startDate.setDate(today.getDate() - 7);
+            } else if (period === '1m') {
+                startDate = new Date(today);
+                startDate.setMonth(today.getMonth() - 1);
+            } else if (period === '3m') {
+                startDate = new Date(today);
+                startDate.setMonth(today.getMonth() - 3);
+            } else if (period === '1y') {
+                startDate = new Date(today);
+                startDate.setFullYear(today.getFullYear() - 1);
+            }
+            endDate = new Date(today);
+            
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+            
+            if (dateStartInput) {
+                dateStartInput.value = formatDate(startDate);
+                const hiddenDateFrom = document.getElementById('hiddenDateFrom');
+                if (hiddenDateFrom) hiddenDateFrom.value = formatDate(startDate);
+            }
+            if (dateEndInput) {
+                dateEndInput.value = formatDate(endDate);
+                const hiddenDateTo = document.getElementById('hiddenDateTo');
+                if (hiddenDateTo) hiddenDateTo.value = formatDate(endDate);
+            }
+            
+        } else {
+            activeFilterIndicator.classList.add('d-none');
             if (dateStartInput) dateStartInput.value = '';
             if (dateEndInput) dateEndInput.value = '';
-            
             const hiddenDateFrom = document.getElementById('hiddenDateFrom');
             const hiddenDateTo = document.getElementById('hiddenDateTo');
             if (hiddenDateFrom) hiddenDateFrom.value = '';
             if (hiddenDateTo) hiddenDateTo.value = '';
-        } else {
-            activeFilterIndicator.classList.add('d-none');
         }
 
         submitFilterForm(true);
@@ -524,7 +563,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    
     // ============================================
     // 9. SELECT ALL & CLEAR SELECTION
     // ============================================
@@ -592,8 +630,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-
-
     // ============================================
     // 11. KEYBOARD SHORTCUTS
     // ============================================
@@ -611,8 +647,6 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelector('.dropdown-toggle')?.click();
         }
     });
-
-
 
     // ============================================
     // 12. INITIALIZATION
@@ -688,8 +722,38 @@ document.addEventListener("DOMContentLoaded", function() {
             activeFilterIndicator.classList.remove('d-none');
             activeFilterLabel.textContent = labels[period] || period;
             
-            if (dateStartInput) dateStartInput.value = '';
-            if (dateEndInput) dateEndInput.value = '';
+            // Calculate and set date range
+            const today = new Date();
+            let startDate = null;
+            if (period === '1w') {
+                startDate = new Date(today);
+                startDate.setDate(today.getDate() - 7);
+            } else if (period === '1m') {
+                startDate = new Date(today);
+                startDate.setMonth(today.getMonth() - 1);
+            } else if (period === '3m') {
+                startDate = new Date(today);
+                startDate.setMonth(today.getMonth() - 3);
+            } else if (period === '1y') {
+                startDate = new Date(today);
+                startDate.setFullYear(today.getFullYear() - 1);
+            }
+            
+            if (startDate) {
+                const formatDate = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                };
+                if (dateStartInput) {
+                    dateStartInput.value = formatDate(startDate);
+                }
+                if (dateEndInput) {
+                    dateEndInput.value = formatDate(today);
+                }
+            }
+            
         } else {
             const dateFrom = urlParams.get('date_from');
             const dateTo = urlParams.get('date_to');
