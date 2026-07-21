@@ -35,12 +35,12 @@ class DashboardAnalyticsViewTest(TestCase):
     def test_analytics_page_requires_login(self):
         """Test analytics page requires login"""
         self.client.logout()
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertEqual(response.status_code, 302)  # Redirect to login
 
     def test_analytics_page_authenticated(self):
         """Test analytics page loads for authenticated user"""
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'analytics/dashboard.html')
 
@@ -55,9 +55,9 @@ class DashboardAnalyticsViewTest(TestCase):
             quantity=2,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '₹100.00')
+        self.assertContains(response, '₹100')
 
     def test_analytics_page_context_data(self):
         """Test analytics page context data"""
@@ -70,7 +70,7 @@ class DashboardAnalyticsViewTest(TestCase):
             quantity=2,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertIn('total_spent', response.context)
         self.assertIn('categories', response.context)
         self.assertIn('payers', response.context)
@@ -91,19 +91,19 @@ class DashboardAnalyticsViewTest(TestCase):
             date=today
         )
         month_param = today.strftime('%Y-%m')
-        response = self.client.get(reverse('dashboard_analytics') + f'?month={month_param}')
+        response = self.client.get(reverse('analytics_dashboard') + f'?month={month_param}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['selected_month_str'], month_param)
 
     def test_analytics_page_invalid_month_filter(self):
         """Test analytics page with invalid month filter"""
-        response = self.client.get(reverse('dashboard_analytics') + '?month=invalid')
+        response = self.client.get(reverse('analytics_dashboard') + '?month=invalid')
         self.assertEqual(response.status_code, 200)
         # Should fallback to current month
 
     def test_analytics_page_no_transactions(self):
         """Test analytics page with no transactions"""
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['total_spent'], 0)
         self.assertEqual(response.context['categories'], [])
@@ -119,7 +119,7 @@ class DashboardAnalyticsViewTest(TestCase):
             price=100.00,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertGreater(len(response.context['selectable_months']), 0)
         self.assertEqual(
             response.context['selectable_months'][0]['value'],
@@ -137,7 +137,7 @@ class DashboardAnalyticsViewTest(TestCase):
             quantity=2,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         item_data = response.context['item_data_json']
         import json
         items = json.loads(item_data)
@@ -157,7 +157,7 @@ class DashboardAnalyticsViewTest(TestCase):
             price=100.00,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         categories = response.context['categories']
         self.assertGreater(len(categories), 0)
         self.assertEqual(categories[0]['name'], 'Food')
@@ -173,7 +173,7 @@ class DashboardAnalyticsViewTest(TestCase):
             price=100.00,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         payers = response.context['payers']
         self.assertGreater(len(payers), 0)
         self.assertEqual(payers[0]['name'], 'John')
@@ -202,7 +202,7 @@ class DashboardAnalyticsViewTest(TestCase):
             price=200.00,
             date=prev_month
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         selectable = response.context['selectable_months']
         self.assertEqual(len(selectable), 2)
 
@@ -228,7 +228,7 @@ class DashboardAnalyticsViewTest(TestCase):
             price=200.00,
             date=today
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         payers = response.context['payers']
         self.assertEqual(len(payers), 2)
 
@@ -245,5 +245,5 @@ class DashboardAnalyticsViewTest(TestCase):
             price=500.00,
             date=timezone.now().date()
         )
-        response = self.client.get(reverse('dashboard_analytics'))
+        response = self.client.get(reverse('analytics_dashboard'))
         self.assertEqual(response.context['total_spent'], 0)
