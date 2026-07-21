@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count
-from django.db.models.functions import ExtractDay, TruncMonth
+from django.db.models.functions import ExtractDay, TruncMonth, ExtractWeek
 from django.utils import timezone
 import json
 import calendar
@@ -14,8 +14,11 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
+        # Get user
+        user = self.request.user
+        
         # 1. Fetch distinct months for dropdown navigation
-        all_tx = Transaction.objects.filter(user=self.request.user)
+        all_tx = Transaction.objects.filter(user=user)
         distinct_months = (
             all_tx.annotate(month_date=TruncMonth('date'))
             .values('month_date')
@@ -48,10 +51,10 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
         selected_month_str = f"{target_year}-{str(target_month).zfill(2)}"
         monthly_tx = all_tx.filter(date__year=target_year, date__month=target_month).select_related('item', 'item__category', 'payer')
 
-        # 3. Total Outflow Matrix
+        # 3. Total Outflow
         total_spent = monthly_tx.aggregate(total=Sum('price'))['total'] or 0
 
-        # 4. Comprehensive Timeline Matrix Generation
+        # 4. Daily Timeline
         _, num_days = calendar.monthrange(target_year, target_month)
         db_daily_data = (
             monthly_tx.annotate(day=ExtractDay('date'))
@@ -62,15 +65,35 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
         daily_labels = [str(day) for day in range(1, num_days + 1)]
         daily_totals = [db_daily_map.get(day, 0.0) for day in range(1, num_days + 1)]
 
-        # 5. Median Calculation
+        # 5. Stats Calculations
         sorted_totals = sorted(daily_totals)
         n = len(sorted_totals)
         median_value = 0.0
+        avg_spend = 0.0
+        max_spend = 0.0
+        min_spend = 0.0
+        total_days_with_spend = 0
+        transaction_count = monthly_tx.count()
+        
         if n > 0:
+            # Median
             if n % 2 == 1:
                 median_value = sorted_totals[n // 2]
             else:
                 median_value = (sorted_totals[(n // 2) - 1] + sorted_totals[n // 2]) / 2.0
+            
+            # Days with spend
+            non_zero = [d for d in daily_totals if d > 0]
+            total_days_with_spend = len(non_zero)
+            
+            # Average (only over days with spend)
+            if total_days_with_spend > 0:
+                avg_spend = sum(non_zero) / total_days_with_spend
+            
+            # Max/Min (excluding zeros)
+            if non_zero:
+                max_spend = max(non_zero)
+                min_spend = min(non_zero)
 
         # 6. Category Allocations
         category_data = (
@@ -83,11 +106,10 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
         category_totals = [c['total'] for c in category_list]
         category_colors = [c['color'] for c in category_list]
 
-        # 7. SOLIDIFIED DATABASE-DRIVEN GROUP-BY PATTERN
-        # Pulls 'item__unit' natively and annotates purchase_count to track purchase frequency frequencies
+        # 7. Item Data
         item_group_data = (
             Transaction.objects.filter(
-                user=self.request.user,
+                user=user,
                 date__year=target_year,
                 date__month=target_month,
                 item__isnull=False
@@ -102,6 +124,9 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
         )
 
         item_data = []
+        top_items = []  # For top spending items
+        top_items_total = 0  # Track total for footer
+        
         for entry in item_group_data:
             raw_qty = entry['total_qty']
             db_unit = entry['item__unit']
@@ -115,25 +140,59 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
                     qty_val = int(qty_val)
                 unit_label = db_unit
 
+            cost = float(entry['total_cost'])
             item_data.append({
                 'name': entry['item__name'],
                 'category': entry['item__category__name'] or 'Uncategorized',
-                'cost': float(entry['total_cost']),
+                'cost': cost,
                 'qty': qty_val,
                 'unit': unit_label,
                 'times': entry['purchase_count']
             })
 
-        # Sort the final dictionary structure cleanly by total monthly item cost descending
+        # Sort and limit items
         item_data = sorted(item_data, key=lambda x: x['cost'], reverse=True)
+        item_data = item_data[:30]  # Limit to top 30 for performance
+        
+        # Top Spending Items (top 10 for display)
+        top_items = sorted(item_data, key=lambda x: x['cost'], reverse=True)[:10]
+        top_items_total = sum(item['cost'] for item in top_items)  # Calculate total
 
-        # 8. Payer Breakdown Matrix
+        # 8. Payer Breakdown
         payer_data = (
             monthly_tx.values('payer__name', 'payer__color')
             .annotate(total_amount=Sum('price'))
             .order_by('-total_amount')
         )
         payer_list = [{'name': item['payer__name'], 'color': item['payer__color'] or '#0d6efd', 'total': float(item['total_amount'])} for item in payer_data]
+
+        # 9. Year-over-Year Comparison
+        prev_year_total = Transaction.objects.filter(
+            user=user,
+            date__year=target_year-1,
+            date__month=target_month
+        ).aggregate(total=Sum('price'))['total'] or 0
+        
+        yoy_change = 0
+        if prev_year_total > 0:
+            yoy_change = ((total_spent - prev_year_total) / prev_year_total) * 100
+
+        # 10. Weekly Breakdown
+        weekly_data = (
+            monthly_tx.annotate(week=ExtractWeek('date'))
+            .values('week')
+            .annotate(total=Sum('price'))
+            .order_by('week')
+        )
+        weekly_labels = [f"Week {w['week']}" for w in weekly_data]
+        weekly_totals = [float(w['total']) for w in weekly_data]
+
+        # 11. Top Spend Days (kept for reference)
+        top_days = sorted(
+            [{'day': day, 'amount': amount} for day, amount in db_daily_map.items() if amount > 0],
+            key=lambda x: x['amount'],
+            reverse=True
+        )[:5]
 
         context.update({
             'current_month_label': datetime(target_year, target_month, 1).strftime('%B %Y'),
@@ -143,6 +202,16 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
             'categories': category_list,
             'payers': payer_list,
             'median_value': median_value,
+            'avg_spend': avg_spend,
+            'max_spend': max_spend,
+            'min_spend': min_spend,
+            'yoy_change': yoy_change,
+            'prev_year_total': prev_year_total,
+            'top_days': top_days,
+            'top_items': top_items,  # Add top items to context
+            'top_items_total': top_items_total,  # Add total for footer
+            'transaction_count': transaction_count,
+            'total_days_with_spend': total_days_with_spend,
             
             'daily_labels_json': json.dumps(daily_labels),
             'daily_totals_json': json.dumps(daily_totals),
@@ -150,6 +219,8 @@ class DashboardAnalyticsView(LoginRequiredMixin, TemplateView):
             'category_totals_json': json.dumps(category_totals),
             'category_colors_json': json.dumps(category_colors),
             'item_data_json': json.dumps(item_data),
+            'weekly_labels_json': json.dumps(weekly_labels),
+            'weekly_totals_json': json.dumps(weekly_totals),
         })
         
         return context
