@@ -76,49 +76,21 @@ function exportChartAsImage(chartId, format = 'png') {
 }
 
 /**
- * Export analytics as PDF
+ * Export analytics as PDF (Server-side with WeasyPrint)
  */
 function exportAnalyticsPDF() {
-    const loadingOverlay = document.getElementById('delete-loading-overlay');
-    if (loadingOverlay) {
-        loadingOverlay.classList.add('active');
-        loadingOverlay.querySelector('h5').textContent = 'Generating Report...';
-        loadingOverlay.querySelector('p').textContent = 'Please wait while we prepare your analytics report...';
+    // Get the selected month from dropdown
+    const select = document.querySelector('select[name="month"]');
+    const month = select ? select.value : '';
+    
+    // Build the URL
+    let url = '/analytics/dashboard/export-analytics-pdf/';
+    if (month) {
+        url += `?month=${month}`;
     }
     
-    const dashboard = document.querySelector('.container.py-4');
-    if (!dashboard) {
-        if (loadingOverlay) loadingOverlay.classList.remove('active');
-        return;
-    }
-    
-    if (typeof html2pdf === 'undefined') {
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-        script.onload = function() {
-            generatePDFReport(dashboard);
-        };
-        document.head.appendChild(script);
-    } else {
-        generatePDFReport(dashboard);
-    }
-}
-
-function generatePDFReport(element) {
-    html2pdf()
-        .set({
-            margin: [10, 10],
-            filename: `analytics_report_${new Date().toISOString().split('T')[0]}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 1.5, useCORS: true, letterRendering: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        })
-        .from(element)
-        .save()
-        .then(() => {
-            const loadingOverlay = document.getElementById('delete-loading-overlay');
-            if (loadingOverlay) loadingOverlay.classList.remove('active');
-        });
+    // Open PDF in new tab (server-side generation)
+    window.open(url, '_blank');
 }
 
 // Make functions globally accessible
