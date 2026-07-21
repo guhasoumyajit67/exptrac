@@ -9,13 +9,13 @@
     <!-- Header -->
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
         <div>
-            <h3 class="fw-bold mb-0" style="font-size: clamp(1.1rem, 1.8vw, 1.5rem);">Analysis Matrix: <span class="text-primary">{{ current_month_label }}</span></h3>
-            <p class="text-muted small mb-0" style="font-size: clamp(0.65rem, 0.75vw, 0.8rem);">Track your spending patterns and insights</p>
+            <h3 class="fw-bold mb-0" style="font-size: clamp(1.1rem, 2.5vw, 2.1rem);">Analysis Matrix: <span class="text-primary">{{ current_month_label }}</span></h3>
+            <p class="text-muted small mb-0" style="font-size: clamp(0.65rem, 1vw, 1.1rem);">Track your spending patterns and insights</p>
         </div>
         <div class="d-flex flex-wrap gap-2 align-items-center">
             <!-- Month Selector -->
             <form method="GET" id="monthFilterForm" class="d-flex gap-2">
-                <select name="month" class="form-select border-0 shadow-sm rounded-3 ps-3 pe-5" style="min-width: 160px; font-size: clamp(0.7rem, 0.8vw, 0.85rem); height: 38px;" onchange="document.getElementById('monthFilterForm').submit();">
+                <select name="month" class="form-select border-0 shadow-sm rounded-3 ps-3 pe-5" style="min-width: 160px; font-size: clamp(0.7rem, 0.9vw, 1.05rem); height: 44px;" onchange="document.getElementById('monthFilterForm').submit();">
                     {% for m in selectable_months %}
                         <option value="{{ m.value }}" {% if m.value == selected_month_str %}selected{% endif %}>
                             {{ m.label }}
@@ -26,8 +26,8 @@
                 </select>
             </form>
             <!-- Export Button -->
-            <button class="btn btn-outline-primary btn-sm rounded-3 px-3 d-flex align-items-center gap-1" onclick="exportAnalyticsPDF()" title="Export Report" style="font-size: clamp(0.7rem, 0.8vw, 0.85rem); height: 38px; white-space: nowrap;">
-                <i class="bi bi-file-earmark-pdf" style="font-size: clamp(0.8rem, 0.9vw, 1rem);"></i> Export
+            <button class="btn btn-outline-primary rounded-3 px-4 d-flex align-items-center gap-2" onclick="exportAnalyticsPDF()" title="Export Report" style="font-size: clamp(0.7rem, 0.9vw, 1.05rem); height: 44px; white-space: nowrap; font-weight: 500;">
+                <i class="bi bi-file-earmark-pdf" style="font-size: clamp(0.8rem, 1.1vw, 1.2rem);"></i> Export
             </button>
         </div>
     </div>
@@ -37,260 +37,383 @@
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="text-muted mt-2" style="font-size: clamp(0.7rem, 0.8vw, 0.85rem);">Loading analytics data...</p>
+        <p class="text-muted mt-2" style="font-size: clamp(0.7rem, 0.9vw, 1.05rem);">Loading analytics data...</p>
     </div>
+
+
+
 
     <!-- Stats Cards -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center h-100">
-                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.65vw, 0.65rem); letter-spacing: 0.3px;">Total Spent</h6>
-                <h4 class="fw-bold text-primary mb-0" style="font-size: clamp(1.1rem, 1.5vw, 1.5rem);">₹{{ total_spent|floatformat:0 }}</h4>
-                <small class="text-muted" style="font-size: clamp(0.55rem, 0.6vw, 0.65rem);">{{ transaction_count }} transactions</small>
+                <div class="d-flex justify-content-center mb-2">
+                    <div class="bg-primary bg-opacity-10 p-2 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                            <path d="M8 8a4 4 0 0 1 8 0"/>
+                        </svg>
+                    </div>
+                </div>
+                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.8vw, 0.85rem); letter-spacing: 0.5px;">Total Spent</h6>
+                <h4 class="fw-bold text-primary mb-0" style="font-size: clamp(1.1rem, 2vw, 2.1rem);">₹{{ total_spent|floatformat:0 }}</h4>
+                <small class="text-muted" style="font-size: clamp(0.55rem, 0.7vw, 0.8rem);">{{ transaction_count }} transactions</small>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center h-100">
-                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.65vw, 0.65rem); letter-spacing: 0.3px;">Daily Average</h6>
-                <h4 class="fw-bold text-dark mb-0" style="font-size: clamp(1.1rem, 1.5vw, 1.5rem);">₹{{ avg_spend|floatformat:0 }}</h4>
-                <small class="text-muted" style="font-size: clamp(0.55rem, 0.6vw, 0.65rem);">{{ total_days_with_spend }} active days</small>
+                <div class="d-flex justify-content-center mb-2">
+                    <div class="bg-success bg-opacity-10 p-2 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#198754" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                </div>
+                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.8vw, 0.85rem); letter-spacing: 0.5px;">Daily Average</h6>
+                <h4 class="fw-bold text-dark mb-0" style="font-size: clamp(1.1rem, 2vw, 2.1rem);">₹{{ avg_spend|floatformat:0 }}</h4>
+                <small class="text-muted" style="font-size: clamp(0.55rem, 0.7vw, 0.8rem);">{{ total_days_with_spend }} active days</small>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center h-100">
-                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.65vw, 0.65rem); letter-spacing: 0.3px;">Highest Day</h6>
-                <h4 class="fw-bold text-danger mb-0" style="font-size: clamp(1.1rem, 1.5vw, 1.5rem);">₹{{ max_spend|floatformat:0 }}</h4>
-                <small class="text-muted" style="font-size: clamp(0.55rem, 0.6vw, 0.65rem);">Peak spending day</small>
+                <div class="d-flex justify-content-center mb-2">
+                    <div class="bg-danger bg-opacity-10 p-2 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                            <polyline points="17 6 23 6 23 12"/>
+                        </svg>
+                    </div>
+                </div>
+                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.8vw, 0.85rem); letter-spacing: 0.5px;">Highest Day</h6>
+                <h4 class="fw-bold text-danger mb-0" style="font-size: clamp(1.1rem, 2vw, 2.1rem);">₹{{ max_spend|floatformat:0 }}</h4>
+                <small class="text-muted" style="font-size: clamp(0.55rem, 0.7vw, 0.8rem);">Peak spending day</small>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm rounded-4 p-3 text-center h-100">
-                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.65vw, 0.65rem); letter-spacing: 0.3px;">YoY Change</h6>
-                <h4 class="fw-bold {% if yoy_change > 0 %}text-danger{% else %}text-success{% endif %} mb-0" style="font-size: clamp(1.1rem, 1.5vw, 1.5rem);">
+                <div class="d-flex justify-content-center mb-2">
+                    <div class="bg-warning bg-opacity-10 p-2 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4"/>
+                            <path d="M12 18v4"/>
+                            <path d="M4.93 4.93l2.83 2.83"/>
+                            <path d="M16.24 16.24l2.83 2.83"/>
+                            <path d="M2 12h4"/>
+                            <path d="M18 12h4"/>
+                            <path d="M4.93 19.07l2.83-2.83"/>
+                            <path d="M16.24 7.76l2.83-2.83"/>
+                        </svg>
+                    </div>
+                </div>
+                <h6 class="text-muted small text-uppercase mb-1" style="font-size: clamp(0.55rem, 0.8vw, 0.85rem); letter-spacing: 0.5px;">YoY Change</h6>
+                <h4 class="fw-bold {% if yoy_change > 0 %}text-danger{% else %}text-success{% endif %} mb-0" style="font-size: clamp(1.1rem, 2vw, 2.1rem);">
                     {{ yoy_change|floatformat:1 }}%
                 </h4>
-                <small class="text-muted" style="font-size: clamp(0.55rem, 0.6vw, 0.65rem);">vs ₹{{ prev_year_total|floatformat:0 }}</small>
+                <small class="text-muted" style="font-size: clamp(0.55rem, 0.7vw, 0.8rem);">vs ₹{{ prev_year_total|floatformat:0 }}</small>
             </div>
         </div>
     </div>
 
-    <!-- Top Spending Items -->
-    {% if top_items %}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4" style="background: #ffffff; transition: all 0.2s ease;">
-                
-                <!-- Header -->
-                <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-light">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="bg-primary bg-opacity-10 p-2 rounded-3 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d6efd" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                <polyline points="17 6 23 6 23 12"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h6 class="fw-bold text-dark mb-0" style="font-size: clamp(0.82rem, 1vw, 0.95rem); letter-spacing: -0.3px;">Top Spending</h6>
-                            <span class="text-muted small" style="font-size: clamp(0.55rem, 0.65vw, 0.65rem);">Highest expenses this month</span>
-                        </div>
+
+
+
+    
+<!-- Top Spending Items -->
+{% if top_items %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+            
+            <!-- Header -->
+            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-light">
+                <div class="d-flex align-items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                        <path d="M4 22h16"/>
+                        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+                    </svg>
+                    <div>
+                        <h6 class="fw-bold text-dark mb-0" style="font-size: clamp(0.85rem, 1.2vw, 1.2rem); letter-spacing: -0.3px;">Top Spending</h6>
+                        <span class="text-muted small" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem);">Highest expenses this month</span>
                     </div>
-                    <span class="badge bg-light text-secondary border-0 px-3 py-1.5 rounded-pill" style="font-size: clamp(0.5rem, 0.6vw, 0.6rem); font-weight: 600; letter-spacing: 0.3px; background: #f1f4f9 !important;">
-                        {{ top_items|length }} items
-                    </span>
                 </div>
-                
-                <!-- Ranking List -->
-                <div class="d-flex flex-column gap-1.5">
-                    {% for item in top_items %}
-                    <div class="d-flex align-items-center px-2 px-sm-3 py-2.5 rounded-3 {% if forloop.counter == 1 %}bg-warning bg-opacity-10{% elif forloop.counter == 2 %}bg-light{% else %}bg-white{% endif %}" 
-                         style="border-left: 3px solid {% if forloop.counter == 1 %}#f59e0b{% elif forloop.counter == 2 %}#9ca3af{% elif forloop.counter == 3 %}#d97706{% else %}#e5e7eb{% endif %}; transition: all 0.15s ease; cursor: default;">
-                        
-                        <!-- Rank -->
-                        <span class="fw-bold me-2 me-sm-3" style="min-width: 28px; font-size: clamp(0.6rem, 0.75vw, 0.7rem); color: {% if forloop.counter == 1 %}#f59e0b{% elif forloop.counter == 2 %}#9ca3af{% else %}#6b7280{% endif %}; text-align: center;">
-                            {% if forloop.counter == 1 %}🥇
-                            {% elif forloop.counter == 2 %}🥈
-                            {% elif forloop.counter == 3 %}🥉
-                            {% else %}<span style="font-size: clamp(0.5rem, 0.6vw, 0.55rem); font-weight: 600;">#{{ forloop.counter }}</span>{% endif %}
-                        </span>
-                        
-                        <!-- Item Name -->
-                        <div class="flex-grow-1 d-flex flex-wrap align-items-center gap-1 gap-sm-2">
-                            <span class="fw-semibold text-dark" style="font-size: clamp(0.75rem, 0.9vw, 0.82rem); letter-spacing: -0.2px;">
-                                {{ item.name }}
-                            </span>
-                            {% if item.times %}
-                            <span class="text-muted" style="font-size: clamp(0.55rem, 0.65vw, 0.6rem);">
-                                {{ item.times }}×
-                            </span>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- Amount -->
-                        <span class="fw-bold {% if forloop.counter == 1 %}text-warning{% else %}text-dark{% endif %}" style="font-size: clamp(0.75rem, 0.9vw, 0.85rem); min-width: 65px; text-align: right; letter-spacing: -0.2px;">
-                            ₹{{ item.cost|floatformat:0 }}
-                        </span>
-                        
-                        <!-- Bar Indicator -->
-                        <div class="ms-2 d-none d-sm-block" style="width: clamp(35px, 4vw, 45px);">
-                            <div class="bg-light rounded-pill" style="height: 3px; overflow: hidden; background: #eef2f6 !important;">
-                                <div class="rounded-pill" style="height: 100%; width: {% widthratio item.cost top_items.0.cost 100 %}%; background: {% if forloop.counter == 1 %}#f59e0b{% elif forloop.counter == 2 %}#9ca3af{% else %}#d1d5db{% endif %};"></div>
+                <span class="badge bg-light text-secondary border-0 px-3 py-1.5 rounded-pill" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem); font-weight: 600; background: #f1f4f9 !important;">
+                    {{ top_items|length }} items
+                </span>
+            </div>
+            
+            <!-- Two Column Grid -->
+            <div class="row g-0 g-md-5" style="--bs-gutter-x: 4rem;">
+                <!-- Left Column - Items 1 to 5 -->
+                <div class="col-12 col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                        {% for item in top_items %}
+                            {% if forloop.counter <= 5 %}
+                            <div class="d-flex align-items-center px-2 px-sm-3 py-2 rounded-3 {% if forloop.counter == 1 %}bg-warning bg-opacity-10{% elif forloop.counter == 2 %}bg-light{% else %}bg-white{% endif %}" 
+                                 style="border-left: 4px solid {% if forloop.counter == 1 %}#f59e0b{% elif forloop.counter == 2 %}#9ca3af{% elif forloop.counter == 3 %}#d97706{% else %}#e5e7eb{% endif %}; transition: all 0.15s ease;">
+                                
+                                <!-- Rank -->
+                                <span class="fw-bold me-2 me-sm-3" style="min-width: 32px; font-size: clamp(0.6rem, 0.9vw, 0.95rem); color: {% if forloop.counter == 1 %}#f59e0b{% elif forloop.counter == 2 %}#9ca3af{% else %}#6b7280{% endif %}; text-align: center;">
+                                    {% if forloop.counter == 1 %}🥇
+                                    {% elif forloop.counter == 2 %}🥈
+                                    {% elif forloop.counter == 3 %}🥉
+                                    {% else %}<span style="font-size: clamp(0.5rem, 0.7vw, 0.7rem); font-weight: 600;">#{{ forloop.counter }}</span>{% endif %}
+                                </span>
+                                
+                                <!-- Item Name -->
+                                <span class="flex-grow-1 fw-semibold text-dark text-truncate" style="font-size: clamp(0.72rem, 1vw, 1.05rem); letter-spacing: -0.1px;">
+                                    {{ item.name }}
+                                </span>
+                                
+                                <!-- Times -->
+                                {% if item.times %}
+                                <span class="text-muted me-2" style="font-size: clamp(0.5rem, 0.7vw, 0.75rem); white-space: nowrap; flex-shrink: 0;">
+                                    {{ item.times }}×
+                                </span>
+                                {% endif %}
+                                
+                                <!-- Amount -->
+                                <span class="fw-bold {% if forloop.counter == 1 %}text-warning{% else %}text-dark{% endif %}" style="font-size: clamp(0.72rem, 1vw, 1.05rem); min-width: 65px; text-align: right; flex-shrink: 0;">
+                                    ₹{{ item.cost|floatformat:0 }}
+                                </span>
                             </div>
-                        </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
                 
-                <!-- Footer -->
-                <div class="mt-3 pt-2 border-top border-light d-flex flex-wrap justify-content-between align-items-center gap-2" style="font-size: clamp(0.5rem, 0.6vw, 0.6rem);">
-                    <span class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="12" x2="12" y2="16"/>
-                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                <!-- Right Column - Items 6 to 10 -->
+                <div class="col-12 col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                        {% for item in top_items %}
+                            {% if forloop.counter > 5 %}
+                            <div class="d-flex align-items-center px-2 px-sm-3 py-2 rounded-3 bg-white" 
+                                 style="border-left: 4px solid #e5e7eb; transition: all 0.15s ease;">
+                                
+                                <!-- Rank -->
+                                <span class="fw-bold me-2 me-sm-3" style="min-width: 32px; font-size: clamp(0.6rem, 0.9vw, 0.95rem); color: #6b7280; text-align: center;">
+                                    <span style="font-size: clamp(0.5rem, 0.7vw, 0.7rem); font-weight: 600;">#{{ forloop.counter }}</span>
+                                </span>
+                                
+                                <!-- Item Name -->
+                                <span class="flex-grow-1 fw-semibold text-dark text-truncate" style="font-size: clamp(0.72rem, 1vw, 1.05rem); letter-spacing: -0.1px;">
+                                    {{ item.name }}
+                                </span>
+                                
+                                <!-- Times -->
+                                {% if item.times %}
+                                <span class="text-muted me-2" style="font-size: clamp(0.5rem, 0.7vw, 0.75rem); white-space: nowrap; flex-shrink: 0;">
+                                    {{ item.times }}×
+                                </span>
+                                {% endif %}
+                                
+                                <!-- Amount -->
+                                <span class="fw-bold text-dark" style="font-size: clamp(0.72rem, 1vw, 1.05rem); min-width: 65px; text-align: right; flex-shrink: 0;">
+                                    ₹{{ item.cost|floatformat:0 }}
+                                </span>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="mt-3 pt-2 border-top border-light d-flex flex-wrap justify-content-between align-items-center gap-2" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem);">
+                <span class="text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="12" x2="12" y2="16"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    Top {{ top_items|length }} spending items
+                </span>
+                <span class="fw-semibold text-dark" style="font-size: clamp(0.6rem, 0.85vw, 0.9rem);">
+                    Total: <span style="font-weight: 700;">₹{{ top_items_total|floatformat:0 }}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Timeline Chart -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                            <polyline points="17 6 23 6 23 12"/>
                         </svg>
-                        Top {{ top_items|length }} spending items
-                    </span>
-                    <span class="fw-semibold text-dark" style="font-size: clamp(0.6rem, 0.7vw, 0.7rem);">
-                        Total: <span style="font-weight: 700;">₹{{ top_items_total|floatformat:0 }}</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Timeline Chart -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark mb-0" style="font-size: clamp(0.85rem, 1.1vw, 1.1rem);">Cost Timeline</h5>
-                        <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-2 py-1" onclick="toggleView('timeline-chart-wrapper','timeline-table-wrapper')" title="Toggle View">
-                            <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
-                        </button>
-                    </div>
-                    
-                    <div id="timeline-chart-wrapper" style="position: relative; min-height: clamp(300px, 45vh, 380px); width: 100%;">
-                        <canvas id="dailyBarChart"></canvas>
-                        <div id="medianTooltip" class="position-absolute bg-danger text-white rounded px-2 py-1 small fw-bold shadow-sm d-none" style="pointer-events: none; z-index: 10; font-size: 11px;"></div>
-                    </div>
-
-                    <div id="timeline-table-wrapper" class="view-hidden">
-                        <div class="table-responsive" style="max-height: clamp(300px, 45vh, 380px); overflow-y: auto;">
-                            <table class="table table-sm align-middle mb-0">
-                                <thead>
-                                    <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">
-                                        <th style="padding: 8px 4px;">Date</th>
-                                        <th class="text-end" style="padding: 8px 4px;">Cost</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="timeline-table-body" style="font-size: clamp(0.65rem, 0.75vw, 0.8rem);"></tbody>
-                            </table>
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark" style="font-size: clamp(0.85rem, 1.3vw, 1.4rem);">Cost Timeline</h5>
+                            <span class="text-muted small" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">Daily spending trend</span>
                         </div>
                     </div>
+                    <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-3 py-1.5" onclick="toggleView('timeline-chart-wrapper','timeline-table-wrapper')" title="Toggle View" style="font-size: clamp(0.65rem, 0.8vw, 0.85rem);">
+                        <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
+                    </button>
                 </div>
-            </div>
-        </div>
-    </div>
+                
+                <div id="timeline-chart-wrapper" style="position: relative; min-height: clamp(300px, 45vh, 420px); width: 100%;">
+                    <canvas id="dailyBarChart"></canvas>
+                    <div id="medianTooltip" class="position-absolute bg-danger text-white rounded px-2 py-1 small fw-bold shadow-sm d-none" style="pointer-events: none; z-index: 10; font-size: 12px;"></div>
+                </div>
 
-    <!-- Category Allocation -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0 text-dark" style="font-size: clamp(0.85rem, 1.1vw, 1.1rem);">Category Allocation</h5>
-                        <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-2 py-1" onclick="toggleView('category-chart-wrapper','category-table-wrapper')" title="Toggle View">
-                            <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
-                        </button>
-                    </div>
-
-                    <div id="category-chart-wrapper" style="position: relative; height: clamp(280px, 40vh, 360px); width: 100%;">
-                        <canvas id="categoryDoughnutChart"></canvas>
-                    </div>
-
-                    <div id="category-table-wrapper" class="view-hidden table-responsive" style="max-height: clamp(280px, 40vh, 360px); overflow-y: auto;">
+                <div id="timeline-table-wrapper" class="view-hidden">
+                    <div class="table-responsive" style="max-height: clamp(300px, 45vh, 420px); overflow-y: auto;">
                         <table class="table table-sm align-middle mb-0">
                             <thead>
-                                <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">
-                                    <th style="padding: 8px 4px;">Category</th>
-                                    <th class="text-end" style="padding: 8px 4px;">Cost</th>
-                                    <th class="text-end" style="padding: 8px 4px;">%</th>
+                                <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem);">
+                                    <th style="padding: 10px 4px;">Date</th>
+                                    <th class="text-end" style="padding: 10px 4px;">Cost</th>
                                 </tr>
                             </thead>
-                            <tbody id="category-table-body" style="font-size: clamp(0.65rem, 0.75vw, 0.82rem);"></tbody>
+                            <tbody id="timeline-table-body" style="font-size: clamp(0.65rem, 0.85vw, 0.95rem);"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Item Wise Outflow -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold text-dark mb-0" style="font-size: clamp(0.85rem, 1.1vw, 1.1rem);">Item Wise Outflow Distribution</h5>
-                        <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-2 py-1" onclick="toggleView('item-treemap-wrapper', 'item-table-wrapper')" title="Toggle View">
-                            <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
-                        </button>
-                    </div>
-
-                    <div id="item-treemap-wrapper" style="position: relative; min-height: clamp(340px, 50vh, 420px); width: 100%;">
-                        <canvas id="itemTreemapChart"></canvas>
-                    </div>
-
-                    <div id="item-table-wrapper" class="view-hidden">
-                        <div class="table-responsive" style="max-height: clamp(340px, 50vh, 420px); overflow-y: auto;">
-                            <table class="table table-sm table-hover align-middle mb-0" id="itemSortingTable">
-                                <thead>
-                                    <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem); user-select: none;">
-                                        <th onclick="sortItemTable(0, false)" style="cursor: pointer; padding: 8px 4px;">Item <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
-                                        <th onclick="sortItemTable(1, true)" style="cursor: pointer; padding: 8px 4px;" class="text-end">Cost <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
-                                        <th onclick="sortItemTable(2, false)" style="cursor: pointer; padding: 8px 4px;" class="text-end">Qty <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
-                                        <th onclick="sortItemTable(3, true)" style="cursor: pointer; padding: 8px 4px;" class="text-end">Times <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="item-table-body" style="font-size: clamp(0.65rem, 0.75vw, 0.82rem);"></tbody>
-                            </table>
+<!-- Category Allocation -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                            <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                        </svg>
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark" style="font-size: clamp(0.85rem, 1.3vw, 1.4rem);">Category Allocation</h5>
+                            <span class="text-muted small" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">Spending by category</span>
                         </div>
+                    </div>
+                    <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-3 py-1.5" onclick="toggleView('category-chart-wrapper','category-table-wrapper')" title="Toggle View" style="font-size: clamp(0.65rem, 0.8vw, 0.85rem);">
+                        <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
+                    </button>
+                </div>
+
+                <div id="category-chart-wrapper" style="position: relative; height: clamp(280px, 40vh, 400px); width: 100%;">
+                    <canvas id="categoryDoughnutChart"></canvas>
+                </div>
+
+                <div id="category-table-wrapper" class="view-hidden table-responsive" style="max-height: clamp(280px, 40vh, 400px); overflow-y: auto;">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem);">
+                                <th style="padding: 10px 4px;">Category</th>
+                                <th class="text-end" style="padding: 10px 4px;">Cost</th>
+                                <th class="text-end" style="padding: 10px 4px;">%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="category-table-body" style="font-size: clamp(0.65rem, 0.85vw, 0.95rem);"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Item Wise Outflow -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        </svg>
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark" style="font-size: clamp(0.85rem, 1.3vw, 1.4rem);">Item Wise Outflow Distribution</h5>
+                            <span class="text-muted small" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">Breakdown by item</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-3 py-1.5" onclick="toggleView('item-treemap-wrapper', 'item-table-wrapper')" title="Toggle View" style="font-size: clamp(0.65rem, 0.8vw, 0.85rem);">
+                        <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
+                    </button>
+                </div>
+
+                <div id="item-treemap-wrapper" style="position: relative; min-height: clamp(340px, 50vh, 460px); width: 100%;">
+                    <canvas id="itemTreemapChart"></canvas>
+                </div>
+
+                <div id="item-table-wrapper" class="view-hidden">
+                    <div class="table-responsive" style="max-height: clamp(340px, 50vh, 460px); overflow-y: auto;">
+                        <table class="table table-sm table-hover align-middle mb-0" id="itemSortingTable">
+                            <thead>
+                                <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem); user-select: none;">
+                                    <th onclick="sortItemTable(0, false)" style="cursor: pointer; padding: 10px 4px;">Item <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
+                                    <th onclick="sortItemTable(1, true)" style="cursor: pointer; padding: 10px 4px;" class="text-end">Cost <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
+                                    <th onclick="sortItemTable(2, false)" style="cursor: pointer; padding: 10px 4px;" class="text-end">Qty <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
+                                    <th onclick="sortItemTable(3, true)" style="cursor: pointer; padding: 10px 4px;" class="text-end">Times <i class="bi bi-arrow-down-up ms-1 small text-muted"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody id="item-table-body" style="font-size: clamp(0.65rem, 0.85vw, 0.95rem);"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Share Allocations -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
-                <div class="card-body d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0 text-dark" style="font-size: clamp(0.85rem, 1.1vw, 1.1rem);">Share Allocations</h5>
-                        <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-2 py-1" onclick="toggleView('payer-chart-wrapper', 'payer-table-wrapper')" title="Toggle View">
-                            <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
-                        </button>
+  <!-- Share Allocations -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark" style="font-size: clamp(0.85rem, 1.3vw, 1.4rem);">Share Allocations</h5>
+                            <span class="text-muted small" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">Distribution by payer</span>
+                        </div>
                     </div>
+                    <button class="btn btn-sm btn-light border shadow-sm rounded-3 px-3 py-1.5" onclick="toggleView('payer-chart-wrapper', 'payer-table-wrapper')" title="Toggle View" style="font-size: clamp(0.65rem, 0.8vw, 0.85rem);">
+                        <i class="bi bi-arrow-left-right text-secondary fs-6"></i>
+                    </button>
+                </div>
 
-                    <div id="payer-chart-wrapper" style="position: relative; height: clamp(280px, 40vh, 320px); width: 100%;">
-                        <canvas id="payerBarChart"></canvas>
-                    </div>
+                <div id="payer-chart-wrapper" style="position: relative; height: clamp(280px, 40vh, 360px); width: 100%;">
+                    <canvas id="payerBarChart"></canvas>
+                </div>
 
-                    <div id="payer-table-wrapper" class="view-hidden table-responsive" style="max-height: clamp(280px, 40vh, 320px); overflow-y: auto;">
-                        <table class="table table-sm align-middle mb-0">
-                            <thead>
-                                <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.6vw, 0.65rem);">
-                                    <th style="padding: 8px 4px;">Name</th>
-                                    <th class="text-end" style="padding: 8px 4px;">Cost</th>
-                                    <th class="text-end" style="padding: 8px 4px;">%</th>
-                                </tr>
-                            </thead>
-                            <tbody id="payer-table-body" style="font-size: clamp(0.65rem, 0.75vw, 0.82rem);"></tbody>
-                        </table>
-                    </div>
+                <div id="payer-table-wrapper" class="view-hidden table-responsive" style="max-height: clamp(280px, 40vh, 360px); overflow-y: auto;">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr class="table-light text-secondary small text-uppercase" style="font-size: clamp(0.5rem, 0.7vw, 0.8rem);">
+                                <th style="padding: 10px 4px;">Name</th>
+                                <th class="text-end" style="padding: 10px 4px;">Cost</th>
+                                <th class="text-end" style="padding: 10px 4px;">%</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payer-table-body" style="font-size: clamp(0.65rem, 0.85vw, 0.95rem);"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -302,8 +425,8 @@
     <div class="spinner-border text-light mb-3" role="status" style="width: 3rem; height: 3rem; border-width: 0.25em;">
         <span class="visually-hidden">Loading...</span>
     </div>
-    <h5 class="text-white fw-bold tracking-wide mb-1" style="font-size: clamp(1rem, 1.3vw, 1.2rem);">Generating Report</h5>
-    <p class="text-white-50 small mb-0" style="font-size: clamp(0.7rem, 0.8vw, 0.85rem);">Please wait while we prepare your analytics report...</p>
+    <h5 class="text-white fw-bold tracking-wide mb-1" style="font-size: clamp(1rem, 1.5vw, 1.5rem);">Generating Report</h5>
+    <p class="text-white-50 small mb-0" style="font-size: clamp(0.7rem, 0.9vw, 1.05rem);">Please wait while we prepare your analytics report...</p>
 </div>
 
 {% endblock content %}
