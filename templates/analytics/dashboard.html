@@ -6,31 +6,38 @@
 {% block content %}
 
 <div class="container py-4">
-    <!-- Header -->
-    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
-        <div>
-            <h3 class="fw-bold mb-0" style="font-size: clamp(1.1rem, 2.5vw, 2.1rem);">Analysis Matrix: <span class="text-primary">{{ current_month_label }}</span></h3>
-            <p class="text-muted small mb-0" style="font-size: clamp(0.65rem, 1vw, 1.1rem);">Track your spending patterns and insights</p>
-        </div>
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-            <!-- Month Selector -->
-            <form method="GET" id="monthFilterForm" class="d-flex gap-2">
-                <select name="month" class="form-select border-0 shadow-sm rounded-3 ps-3 pe-5" style="min-width: 160px; font-size: clamp(0.7rem, 0.9vw, 1.05rem); height: 44px;" onchange="document.getElementById('monthFilterForm').submit();">
-                    {% for m in selectable_months %}
-                        <option value="{{ m.value }}" {% if m.value == selected_month_str %}selected{% endif %}>
-                            {{ m.label }}
-                        </option>
-                    {% empty %}
-                        <option value="">No Data Logged</option>
-                    {% endfor %}
-                </select>
-            </form>
-            <!-- Export Button -->
-            <button class="btn btn-outline-primary rounded-3 px-4 d-flex align-items-center gap-2" onclick="exportAnalyticsPDF()" title="Export Report" style="font-size: clamp(0.7rem, 0.9vw, 1.05rem); height: 44px; white-space: nowrap; font-weight: 500;">
-                <i class="bi bi-file-earmark-pdf" style="font-size: clamp(0.8rem, 1.1vw, 1.2rem);"></i> Export
-            </button>
-        </div>
+<!-- Header - With Tooltip -->
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+    <div>
+        <h3 class="fw-bold mb-0" style="font-size: clamp(1.3rem, 3vw, 2.5rem);">Analysis Matrix: <span class="text-primary">{{ current_month_label }}</span></h3>
+        <p class="text-muted small mb-0" style="font-size: clamp(0.8rem, 1.2vw, 1.2rem);">Track your spending patterns and insights</p>
     </div>
+    <div class="d-flex flex-column flex-sm-row gap-2" style="width: 100%; max-width: 420px;">
+        <form method="GET" id="monthFilterForm" class="w-100 position-relative">
+            <select name="month" class="form-select border-0 shadow-sm rounded-3 w-100" style="font-size: clamp(1rem, 1.3vw, 1.3rem); height: 52px; background: #f8f9fa; border: 1px solid #e9ecef; font-weight: 600; cursor: pointer; text-align: center; text-align-last: center; appearance: none; -webkit-appearance: none; padding: 0;" 
+                title="Click to change month" 
+                onchange="document.getElementById('monthFilterForm').submit();">
+                {% for m in selectable_months %}
+                    <option value="{{ m.value }}" {% if m.value == selected_month_str %}selected{% endif %}>
+                        {{ m.label }}
+                    </option>
+                {% empty %}
+                    <option value="">No Data Logged</option>
+                {% endfor %}
+            </select>
+            <!-- Dropdown arrow -->
+            <span class="position-absolute top-50 translate-middle-y" style="right: 14px; color: #6c757d; pointer-events: none;">
+                <i class="bi bi-chevron-down" style="font-size: 0.8rem;"></i>
+            </span>
+        </form>
+        <button class="btn btn-outline-primary rounded-3 d-flex align-items-center justify-content-center gap-2 w-100" onclick="exportAnalyticsPDF()" title="Export Report" style="font-size: clamp(1rem, 1.3vw, 1.3rem); height: 52px; white-space: nowrap; font-weight: 600; padding: 0 20px;">
+            <i class="bi bi-file-earmark-pdf" style="font-size: clamp(1.1rem, 1.5vw, 1.5rem);"></i> Export
+        </button>
+    </div>
+</div>
+
+
+
 
     <!-- Loading Overlay -->
     <div id="analytics-loading" class="d-none text-center py-5">
