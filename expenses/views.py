@@ -68,13 +68,19 @@ class HomePageView(TemplateView):
             if frequency_map:
                 context['top_frequency_name'] = frequency_map[0]['item__name']
                 context['top_frequency_count'] = frequency_map[0]['count']
+            volume_map = tx_queryset.filter(
+                quantity__gt=0,
+                quantity__isnull=False
+            ).values('item__name', 'item__unit').annotate(
+                volume=Sum('quantity')
+            ).order_by('-volume')
 
-            volume_map = tx_queryset.values('item__name', 'item__unit').annotate(volume=Sum('quantity')).order_by('-volume')
             if volume_map and volume_map[0]['volume']:
                 context['top_volume_name'] = volume_map[0]['item__name']
                 context['top_volume_count'] = volume_map[0]['volume']
-                context['top_volume_unit'] = volume_map[0]['item__unit'] or "Units"
+                context['top_volume_unit'] = volume_map[0]['item__unit'] or "Pcs"
             else:
+                # Fallback to top frequency if no volume data
                 context['top_volume_name'] = context.get('top_frequency_name', "None")
                 context['top_volume_count'] = context.get('top_frequency_count', 0)
                 context['top_volume_unit'] = "logs"
