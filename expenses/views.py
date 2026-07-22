@@ -47,7 +47,7 @@ class HomePageView(TemplateView):
         total_outflow = tx_queryset.aggregate(total=Sum('price'))['total'] or 0.00
         context['total_outflow'] = total_outflow
 
-        context['recent_transactions'] = tx_queryset.order_by('-date')
+        context['recent_transactions'] = tx_queryset.order_by('-date', '-id')
 
         category_data = tx_queryset.values('item__category__name').annotate(total=Sum('price')).order_by('-total')
         context['category_list_data'] = category_data
